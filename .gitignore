@@ -1,0 +1,14 @@
+node_modules/
+.output/
+.vercel/
+.env
+.env.*
+!.env.example
+dist/
+coverage/
+test-results/
+playwright-report/
+site-06-visual-matrix/
+*.log
+.DS_Store
+Thumbs.db
