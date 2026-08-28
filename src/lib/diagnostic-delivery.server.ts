@@ -245,7 +245,10 @@ export async function sendLeadWithResend(
 	});
 	const payload: Record<string, unknown> = {
 		from: input.env.RESEND_FROM_EMAIL,
-		to: [input.env.MARKETING_LEAD_RECIPIENT],
+		to: input.env.MARKETING_LEAD_RECIPIENT
+			.split(",")
+			.map((recipient) => recipient.trim())
+			.filter(Boolean),
 		subject: emailSubject(input.lead),
 		text: emailText(input.lead),
 	};

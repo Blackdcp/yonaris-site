@@ -78,6 +78,23 @@ describe("regional lead handler", () => {
 });
 
 describe("Resend regional delivery", () => {
+	it("delivers a comma-separated recipient list to each configured mailbox", async () => {
+		let payload: Record<string, unknown> | undefined;
+		const fetchImpl: typeof fetch = async (_input, init) => {
+			payload = JSON.parse(String(init?.body));
+			return new Response('{"id":"email_multi"}', { status: 200 });
+		};
+		await sendLeadWithResend({
+			lead: globalLead,
+			env: {
+				...env,
+				MARKETING_LEAD_RECIPIENT: "owner@yonaris.com, partner@yonaris.com",
+			},
+			idempotencyKey,
+		}, fetchImpl);
+		expect(payload?.to).toEqual(["owner@yonaris.com", "partner@yonaris.com"]);
+	});
+
 	it("sends global email as reply-to and keeps all approved fields", async () => {
 		let payload: Record<string, unknown> | undefined;
 		const fetchImpl: typeof fetch = async (_input, init) => {
