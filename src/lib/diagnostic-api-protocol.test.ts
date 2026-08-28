@@ -3,7 +3,6 @@ import {
 	DIAGNOSTIC_API_PATH,
 	DIAGNOSTIC_IDEMPOTENCY_HEADER,
 	parseDiagnosticIdempotencyKey,
-	toResendIdempotencyKey,
 } from "./diagnostic-api-protocol";
 
 const UUID = "018f47a2-4b6e-7d8c-9a10-12b3c4d5e6f7";
@@ -14,9 +13,8 @@ describe("diagnostic API protocol", () => {
 		expect(DIAGNOSTIC_IDEMPOTENCY_HEADER).toBe("Idempotency-Key");
 	});
 
-	it("accepts one canonical UUID and derives the exact Resend key", () => {
+	it("accepts one canonical UUID", () => {
 		expect(parseDiagnosticIdempotencyKey(UUID)).toEqual({ success: true, data: UUID });
-		expect(toResendIdempotencyKey(UUID)).toBe(`diagnostic/${UUID}`);
 	});
 
 	it.each([

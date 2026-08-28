@@ -263,13 +263,13 @@ describe("Site 06 English experience", () => {
 
 	it("discloses the localized contact-data processor, purpose, retention, and deletion route", () => {
 		const privacy = markupFor("privacy");
-		expect(privacy).toContain("Resend");
-		expect(privacy).toContain("email processor");
+		expect(privacy).toContain("Cloudflare Email Service");
+		expect(privacy).toContain("email delivery processor");
 		expect(privacy).toContain("understand and respond to your request");
-		expect(privacy).toContain("processed and stored in the United States");
-		expect(privacy).toContain('href="https://resend.com/docs/dashboard/domains/regions"');
-		expect(privacy).toContain('href="https://resend.com/legal/dpa"');
-		expect(privacy).toContain("documentation</a> and its <a");
+		expect(privacy).toContain("processed through Cloudflare");
+		expect(privacy).toContain('href="https://developers.cloudflare.com/email-service/"');
+		expect(privacy).toContain('href="https://www.cloudflare.com/cloudflare-customer-dpa/"');
+		expect(privacy).not.toContain("Resend");
 		expect(privacy).toContain("reviewed manually");
 		expect(privacy).toContain("same contact and company details");
 		expect(privacy).toContain("does not automatically delete");

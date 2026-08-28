@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createDiagnosticLeadHandler, sendLeadWithResend } from "@/lib/diagnostic-delivery.server";
+import { createDiagnosticLeadHandler, sendLeadWithCloudflare } from "@/lib/diagnostic-delivery.server";
 
 const handleDiagnosticLead = createDiagnosticLeadHandler({
 	getEnv: () => process.env,
-	deliver: sendLeadWithResend,
+	deliver: sendLeadWithCloudflare,
 	now: Date.now,
 });
 

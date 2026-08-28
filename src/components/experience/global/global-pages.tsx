@@ -474,11 +474,11 @@ export function GlobalPrivacyPage() {
 					<section>
 						<h2>How the request is delivered</h2>
 						<p>
-							Yonaris uses Resend as an email processor to send the form contents to Yonaris. The details are used to
-							understand and respond to your request; browser analytics do not receive the form values. According to{" "}
-							<a href="https://resend.com/docs/dashboard/domains/regions">Resend region documentation</a> and its{" "}
-							<a href="https://resend.com/legal/dpa">Data Processing Addendum</a>, form contents sent through Resend are
-							processed and stored in the United States.
+							Yonaris uses Cloudflare Email Service as its email delivery processor to send the form contents only to
+							Yonaris&apos;s verified recipient mailboxes. The details are used to understand and respond to your request;
+							browser analytics do not receive the form values. Form contents are processed through Cloudflare; see the{" "}
+							<a href="https://developers.cloudflare.com/email-service/">Cloudflare Email Service documentation</a> and{" "}
+							<a href="https://www.cloudflare.com/cloudflare-customer-dpa/">Cloudflare Data Processing Addendum</a>.
 						</p>
 					</section>
 					<section>

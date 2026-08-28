@@ -192,15 +192,16 @@ describe("Site 06 中国站", () => {
 
 	it("用中文说明联系信息处理者、用途、保存期和删除路径", () => {
 		const privacy = render("privacy");
-		expect(privacy).toContain("Resend");
-		expect(privacy).toContain("邮件处理者");
+		expect(privacy).toContain("Cloudflare Email Service");
+		expect(privacy).toContain("邮件送达处理者");
 		expect(privacy).toContain("理解并回复这次咨询");
 		expect(privacy).toContain("人工核对并处理");
 		expect(privacy).toContain("相同的联系信息和公司信息");
 		expect(privacy).toContain("不会自动删除");
-		expect(privacy).toContain("美国处理和存储");
-		expect(privacy).toContain('href="https://resend.com/docs/dashboard/domains/regions"');
-		expect(privacy).toContain('href="https://resend.com/legal/dpa"');
+		expect(privacy).toContain("通过 Cloudflare 处理");
+		expect(privacy).toContain('href="https://developers.cloudflare.com/email-service/"');
+		expect(privacy).toContain('href="https://www.cloudflare.com/cloudflare-customer-dpa/"');
+		expect(privacy).not.toContain("Resend");
 		expect(privacy).toContain('href="/zh/diagnostic?intent=privacy"');
 		expect(privacy).not.toMatch(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
 	});

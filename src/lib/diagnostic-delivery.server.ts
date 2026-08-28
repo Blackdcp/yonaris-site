@@ -4,7 +4,6 @@ import {
 	type DiagnosticApiErrorCode,
 	type DiagnosticApiResponse,
 	parseDiagnosticIdempotencyKey,
-	toResendIdempotencyKey,
 } from "./diagnostic-api-protocol";
 import { type DiagnosticLead, parseDiagnosticLead } from "./diagnostic-schema";
 
@@ -12,11 +11,12 @@ const MAX_BODY_BYTES = 20_480;
 const RATE_LIMIT_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1_000;
 const RATE_LIMIT_BUCKET_CAP = 10_000;
-const RESEND_TIMEOUT_MS = 10_000;
+const EMAIL_DELIVERY_TIMEOUT_MS = 10_000;
 
 export interface DiagnosticDeliveryEnv {
-	RESEND_API_KEY: string;
-	RESEND_FROM_EMAIL: string;
+	CLOUDFLARE_ACCOUNT_ID: string;
+	CLOUDFLARE_EMAIL_API_TOKEN: string;
+	CLOUDFLARE_EMAIL_FROM: string;
 	MARKETING_LEAD_RECIPIENT: string;
 }
 
@@ -66,11 +66,14 @@ function errorResponse(status: number, code: DiagnosticApiErrorCode, retryAfter?
 }
 
 function readDeliveryEnv(values: Record<string, string | undefined>): DiagnosticDeliveryEnv | null {
-	const RESEND_API_KEY = values.RESEND_API_KEY?.trim();
-	const RESEND_FROM_EMAIL = values.RESEND_FROM_EMAIL?.trim();
+	const CLOUDFLARE_ACCOUNT_ID = values.CLOUDFLARE_ACCOUNT_ID?.trim();
+	const CLOUDFLARE_EMAIL_API_TOKEN = values.CLOUDFLARE_EMAIL_API_TOKEN?.trim();
+	const CLOUDFLARE_EMAIL_FROM = values.CLOUDFLARE_EMAIL_FROM?.trim();
 	const MARKETING_LEAD_RECIPIENT = values.MARKETING_LEAD_RECIPIENT?.trim();
-	if (!RESEND_API_KEY || !RESEND_FROM_EMAIL || !MARKETING_LEAD_RECIPIENT) return null;
-	return { RESEND_API_KEY, RESEND_FROM_EMAIL, MARKETING_LEAD_RECIPIENT };
+	if (!CLOUDFLARE_ACCOUNT_ID || !CLOUDFLARE_EMAIL_API_TOKEN || !CLOUDFLARE_EMAIL_FROM || !MARKETING_LEAD_RECIPIENT) {
+		return null;
+	}
+	return { CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_EMAIL_API_TOKEN, CLOUDFLARE_EMAIL_FROM, MARKETING_LEAD_RECIPIENT };
 }
 
 function requestClientIp(request: Request): string {
@@ -231,39 +234,54 @@ export function createDiagnosticLeadHandler(deps: DiagnosticHandlerDeps): (reque
 	};
 }
 
-export async function sendLeadWithResend(
+function confirmedCloudflareRecipients(value: unknown): Set<string> | null {
+	if (!value || typeof value !== "object") return null;
+	const envelope = value as {
+		success?: unknown;
+		result?: { delivered?: unknown; queued?: unknown; permanent_bounces?: unknown };
+	};
+	if (envelope.success !== true || !envelope.result) return null;
+	const { delivered, queued, permanent_bounces } = envelope.result;
+	if (!Array.isArray(delivered) || !Array.isArray(queued) || !Array.isArray(permanent_bounces)) return null;
+	if (![...delivered, ...queued, ...permanent_bounces].every((address) => typeof address === "string")) return null;
+	if (permanent_bounces.length > 0) return null;
+	return new Set([...delivered, ...queued]);
+}
+
+export async function sendLeadWithCloudflare(
 	input: { lead: DiagnosticLead; env: DiagnosticDeliveryEnv; idempotencyKey: string },
 	fetchImpl: typeof fetch = fetch,
 ): Promise<void> {
+	const recipients = input.env.MARKETING_LEAD_RECIPIENT
+		.split(",")
+		.map((recipient) => recipient.trim())
+		.filter(Boolean);
 	const controller = new AbortController();
 	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 	const timeout = new Promise<never>((_resolve, reject) => {
 		timeoutId = setTimeout(() => {
 			controller.abort();
 			reject(new DiagnosticDeliveryError("delivery_unconfirmed"));
-		}, RESEND_TIMEOUT_MS);
+		}, EMAIL_DELIVERY_TIMEOUT_MS);
 	});
 	const payload: Record<string, unknown> = {
-		from: input.env.RESEND_FROM_EMAIL,
-		to: input.env.MARKETING_LEAD_RECIPIENT
-			.split(",")
-			.map((recipient) => recipient.trim())
-			.filter(Boolean),
+		from: { address: input.env.CLOUDFLARE_EMAIL_FROM, name: "Yonaris" },
+		to: recipients,
 		subject: emailSubject(input.lead),
 		text: emailText(input.lead),
+		headers: { "X-Yonaris-Submission-ID": input.idempotencyKey },
 	};
 	if (input.lead.locale === "en") payload.reply_to = input.lead.email;
 
 	try {
 		const response = await Promise.race([
-			fetchImpl("https://api.resend.com/emails", {
+			fetchImpl(`https://api.cloudflare.com/client/v4/accounts/${input.env.CLOUDFLARE_ACCOUNT_ID}/email/sending/send`, {
 				method: "POST",
 				headers: {
-					Authorization: `Bearer ${input.env.RESEND_API_KEY}`,
+					Authorization: `Bearer ${input.env.CLOUDFLARE_EMAIL_API_TOKEN}`,
 					"Content-Type": "application/json",
 					Accept: "application/json",
 					"User-Agent": "Yonaris-Diagnostic/1",
-					"Idempotency-Key": toResendIdempotencyKey(input.idempotencyKey),
 				},
 				body: JSON.stringify(payload),
 				signal: controller.signal,
@@ -271,6 +289,10 @@ export async function sendLeadWithResend(
 			timeout,
 		]);
 		if (!response.ok) throw new DiagnosticDeliveryError("service_unavailable");
+		const confirmed = confirmedCloudflareRecipients(await response.json());
+		if (!confirmed || recipients.some((recipient) => !confirmed.has(recipient))) {
+			throw new DiagnosticDeliveryError("delivery_unconfirmed");
+		}
 	} catch (error) {
 		if (error instanceof DiagnosticDeliveryError) throw error;
 		throw new DiagnosticDeliveryError("delivery_unconfirmed");

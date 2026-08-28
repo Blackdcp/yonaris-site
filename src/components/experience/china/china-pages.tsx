@@ -429,11 +429,11 @@ export function ChinaPrivacyPage() {
 					<section>
 						<h2>咨询怎样送达</h2>
 						<p>
-							Yonaris 使用 Resend 作为邮件处理者，把表单内容发送给
-							Yonaris，用于理解并回复这次咨询；浏览器分析不会收到表单字段内容。通过 Resend
-							发送的表单内容会在美国处理和存储；参见{" "}
-							<a href="https://resend.com/docs/dashboard/domains/regions">Resend 地区说明</a>和
-							<a href="https://resend.com/legal/dpa">数据处理附录</a>。
+							Yonaris 使用 Cloudflare Email Service 作为邮件送达处理者，把表单内容只发送到 Yonaris
+							已验证的收件邮箱，用于理解并回复这次咨询；浏览器分析不会收到表单字段内容。表单内容会通过 Cloudflare
+							处理；参见{" "}
+							<a href="https://developers.cloudflare.com/email-service/">Cloudflare Email Service 说明</a>和
+							<a href="https://www.cloudflare.com/cloudflare-customer-dpa/">Cloudflare 数据处理附录</a>。
 						</p>
 					</section>
 					<section>

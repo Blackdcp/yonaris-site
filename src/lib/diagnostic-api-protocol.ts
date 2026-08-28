@@ -21,7 +21,3 @@ export function parseDiagnosticIdempotencyKey(
 	if (value === null || !CANONICAL_UUID.test(value)) return { success: false };
 	return { success: true, data: value };
 }
-
-export function toResendIdempotencyKey(uuid: string): `diagnostic/${string}` {
-	return `diagnostic/${uuid}`;
-}

@@ -1,12 +1,13 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
-import { createDiagnosticLeadHandler, sendLeadWithResend } from "./diagnostic-delivery.server";
+import { createDiagnosticLeadHandler, sendLeadWithCloudflare } from "./diagnostic-delivery.server";
 import type { DiagnosticLead } from "./diagnostic-schema";
 
 const idempotencyKey = "0198ef3d-34e1-7f14-a74d-e09b66d14b11";
 const env = {
-	RESEND_API_KEY: "re_test",
-	RESEND_FROM_EMAIL: "Yonaris <leads@yonaris.com>",
+	CLOUDFLARE_ACCOUNT_ID: "account_test",
+	CLOUDFLARE_EMAIL_API_TOKEN: "cf_test",
+	CLOUDFLARE_EMAIL_FROM: "leads@yonaris.com",
 	MARKETING_LEAD_RECIPIENT: "team@yonaris.com",
 };
 const globalLead: DiagnosticLead = {
@@ -77,14 +78,27 @@ describe("regional lead handler", () => {
 	});
 });
 
-describe("Resend regional delivery", () => {
+describe("Cloudflare regional delivery", () => {
 	it("delivers a comma-separated recipient list to each configured mailbox", async () => {
+		let endpoint: string | undefined;
+		let authorization: string | null = null;
 		let payload: Record<string, unknown> | undefined;
-		const fetchImpl: typeof fetch = async (_input, init) => {
+		const fetchImpl: typeof fetch = async (input, init) => {
+			endpoint = String(input);
+			authorization = new Headers(init?.headers).get("Authorization");
 			payload = JSON.parse(String(init?.body));
-			return new Response('{"id":"email_multi"}', { status: 200 });
+			return Response.json({
+				success: true,
+				errors: [],
+				messages: [],
+				result: {
+					delivered: ["owner@yonaris.com", "partner@yonaris.com"],
+					permanent_bounces: [],
+					queued: [],
+				},
+			});
 		};
-		await sendLeadWithResend({
+		await sendLeadWithCloudflare({
 			lead: globalLead,
 			env: {
 				...env,
@@ -92,16 +106,48 @@ describe("Resend regional delivery", () => {
 			},
 			idempotencyKey,
 		}, fetchImpl);
-		expect(payload?.to).toEqual(["owner@yonaris.com", "partner@yonaris.com"]);
+		expect(endpoint).toBe("https://api.cloudflare.com/client/v4/accounts/account_test/email/sending/send");
+		expect(authorization).toBe("Bearer cf_test");
+		expect(payload).toMatchObject({
+			to: ["owner@yonaris.com", "partner@yonaris.com"],
+			from: { address: "leads@yonaris.com", name: "Yonaris" },
+			headers: { "X-Yonaris-Submission-ID": idempotencyKey },
+		});
+	});
+
+	it("fails closed unless Cloudflare confirms every configured mailbox", async () => {
+		const fetchImpl: typeof fetch = async () => Response.json({
+			success: true,
+			errors: [],
+			messages: [],
+			result: {
+				delivered: ["owner@yonaris.com"],
+				permanent_bounces: [],
+				queued: [],
+			},
+		});
+		await expect(sendLeadWithCloudflare({
+			lead: globalLead,
+			env: {
+				...env,
+				MARKETING_LEAD_RECIPIENT: "owner@yonaris.com,partner@yonaris.com",
+			},
+			idempotencyKey,
+		}, fetchImpl)).rejects.toMatchObject({ code: "delivery_unconfirmed" });
 	});
 
 	it("sends global email as reply-to and keeps all approved fields", async () => {
 		let payload: Record<string, unknown> | undefined;
 		const fetchImpl: typeof fetch = async (_input, init) => {
 			payload = JSON.parse(String(init?.body));
-			return new Response('{"id":"email_1"}', { status: 200 });
+			return Response.json({
+				success: true,
+				errors: [],
+				messages: [],
+				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+			});
 		};
-		await sendLeadWithResend({ lead: globalLead, env, idempotencyKey }, fetchImpl);
+		await sendLeadWithCloudflare({ lead: globalLead, env, idempotencyKey }, fetchImpl);
 		expect(payload).toMatchObject({
 			to: ["team@yonaris.com"],
 			reply_to: "ava@acme.example",
@@ -116,9 +162,14 @@ describe("Resend regional delivery", () => {
 		let payload: Record<string, unknown> | undefined;
 		const fetchImpl: typeof fetch = async (_input, init) => {
 			payload = JSON.parse(String(init?.body));
-			return new Response('{"id":"email_2"}', { status: 200 });
+			return Response.json({
+				success: true,
+				errors: [],
+				messages: [],
+				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+			});
 		};
-		await sendLeadWithResend({ lead: chinaLead, env, idempotencyKey }, fetchImpl);
+		await sendLeadWithCloudflare({ lead: chinaLead, env, idempotencyKey }, fetchImpl);
 		expect(payload).not.toHaveProperty("reply_to");
 		expect(payload?.subject).toBe("Yonaris 中国官网留资 / 示例科技");
 		expect(String(payload?.text)).toContain("电话：13800138000");
@@ -128,11 +179,16 @@ describe("Resend regional delivery", () => {
 		const payloads: Record<string, unknown>[] = [];
 		const fetchImpl: typeof fetch = async (_input, init) => {
 			payloads.push(JSON.parse(String(init?.body)));
-			return new Response('{"id":"email_privacy"}', { status: 200 });
+			return Response.json({
+				success: true,
+				errors: [],
+				messages: [],
+				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+			});
 		};
-		await sendLeadWithResend({ lead: { ...globalLead, requestType: "consultation" }, env, idempotencyKey }, fetchImpl);
-		await sendLeadWithResend({ lead: { ...globalLead, requestType: "privacy" }, env, idempotencyKey }, fetchImpl);
-		await sendLeadWithResend({ lead: { ...chinaLead, requestType: "privacy" }, env, idempotencyKey }, fetchImpl);
+		await sendLeadWithCloudflare({ lead: { ...globalLead, requestType: "consultation" }, env, idempotencyKey }, fetchImpl);
+		await sendLeadWithCloudflare({ lead: { ...globalLead, requestType: "privacy" }, env, idempotencyKey }, fetchImpl);
+		await sendLeadWithCloudflare({ lead: { ...chinaLead, requestType: "privacy" }, env, idempotencyKey }, fetchImpl);
 
 		expect(payloads[0]?.subject).toBe("Yonaris global website lead / Acme");
 		expect(String(payloads[0]?.text)).not.toMatch(/privacy request|manual privacy action/i);
@@ -153,7 +209,7 @@ describe("privacy request operations", () => {
 		);
 		expect(sop).toContain("submitted contact and company details");
 		expect(sop).toContain("marketing recipient mailbox");
-		expect(sop).toContain("Resend message records or logs");
+		expect(sop).toContain("Cloudflare Email Service activity logs");
 		expect(sop).toContain("submitted contact channel");
 		expect(sop).toContain("minimal completion record");
 		expect(sop).toContain("does not promise a fixed completion time");

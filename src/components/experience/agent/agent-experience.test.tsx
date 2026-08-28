@@ -141,11 +141,13 @@ describe("zero-to-one Agent experience", () => {
 		const zh = JSON.stringify(AGENT_FACTS.zh.privacy);
 		expect(en).toContain("privacy request");
 		expect(en).toContain("reviewed manually");
-		expect(en).toContain("processed and stored in the United States");
+		expect(en).toContain("Cloudflare Email Service");
+		expect(en).toContain("processed through Cloudflare");
 		expect(en).toContain("does not automatically delete");
 		expect(zh).toContain("隐私请求");
 		expect(zh).toContain("人工核对并处理");
-		expect(zh).toContain("美国处理和存储");
+		expect(zh).toContain("Cloudflare Email Service");
+		expect(zh).toContain("通过 Cloudflare 处理");
 		expect(zh).toContain("不会自动删除");
 	});
 
