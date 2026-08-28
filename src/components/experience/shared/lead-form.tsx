@@ -290,17 +290,6 @@ export function LeadFormView({
 				</div>
 			</fieldset>
 			<input type="hidden" name="requestType" value={requestType} />
-			<div className="lead-trap" aria-hidden="true">
-				<label htmlFor={`lead-${locale}-url`}>Website</label>
-				<input
-					id={`lead-${locale}-url`}
-					name="companyUrl"
-					value={values.companyUrl}
-					tabIndex={-1}
-					autoComplete="off"
-					onChange={(event) => onUpdate("companyUrl", event.currentTarget.value)}
-				/>
-			</div>
 			{validationFailed ? (
 				<p className="lead-message" role="alert">
 					{labels.validation}

@@ -52,6 +52,17 @@ function renderView(
 }
 
 describe("LeadForm field feedback", () => {
+	it("does not expose an autofillable hidden company URL field", () => {
+		const markup = renderView({
+			locale: "zh",
+			values: { name: "窦超鹏", contact: "18817327186", company: "Chukong Technologies", companyUrl: "" },
+			submission: "idle",
+			errors: {},
+		});
+		expect(markup).not.toContain('name="companyUrl"');
+		expect(markup).not.toContain(">Website</label>");
+	});
+
 	it("associates each global field with a natural inline error", () => {
 		expect(subject.validateLeadValues).toBeDefined();
 		if (!subject.validateLeadValues) return;

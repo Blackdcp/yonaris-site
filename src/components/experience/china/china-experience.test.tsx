@@ -294,7 +294,7 @@ describe("Site 06 中国站", () => {
 		const form = diagnostic.match(/<form[\s\S]*?<\/form>/)?.[0] ?? "";
 		expect(form.match(/data-lead-field=/g) ?? []).toHaveLength(3);
 		for (const field of ["姓名", "电话", "公司"]) expect(form).toContain(field);
-		expect(form).toContain('name="companyUrl"');
+		expect(form).not.toContain('name="companyUrl"');
 		expect(form).not.toMatch(/工作邮箱|name="email"|type="email"/);
 		expect(diagnostic).toContain('data-contact-fact="true"');
 		expect(diagnostic).not.toContain("site-06-contact-scene__record");
