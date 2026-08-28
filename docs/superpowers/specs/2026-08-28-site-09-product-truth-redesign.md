@@ -62,24 +62,20 @@ All public product demonstrations consume a single typed scenario model. A scena
 - one recommended action;
 - a review state under the same conditions.
 
-Three de-identified scenarios prevent the product from appearing limited to CRM:
+Site 09 uses one primary industrial operating-continuity scenario across Home, Product, Approach, Company, and Across Markets. It replaces the repeated CRM example and lets the site go deeper without pretending to show several customer cases. The typed model remains capable of supporting additional scenarios later, but no second scenario is published until its question, searches, answer, citations, action, and review state are internally coherent.
 
-1. an enterprise analytics-partner decision;
-2. an industrial operating-continuity decision;
-3. a multi-market enterprise-software decision.
-
-Every visible number, sentence, source, and action changes together when the selected scenario changes. No drawer may continue showing data from the previous question.
+Every visible number, sentence, source, and action is derived from the same scenario object. No drawer may show data that belongs to another question.
 
 ### Continuous Decision Replay
 
-The homepage replay has six causally linked stages:
+The homepage replay has six causally linked stages grounded in real Portal task structures:
 
-1. **Question** — establish the buying question and observation boundary.
-2. **Searches** — reveal the query fan-out behind the answer.
-3. **Answer** — show the deciding sentence in the observed answer.
-4. **Evidence** — identify the sources doing the persuasive work.
-5. **Action** — turn the evidence gap into one reviewable next move.
-6. **Review** — compare the same question under the same visible conditions.
+1. **Scope** — establish the tracked buying question and observation boundary.
+2. **Observe** — expose the selected answer run and its model, market, language, and time window.
+3. **Explain** — reveal the query fan-out and word changes behind that answer.
+4. **Prove** — identify the citations and the content gap shaping the comparison.
+5. **Decide** — turn the evidence gap into one human-reviewed content or channel action.
+6. **Verify** — freeze the protocol, capture the answer and sources, verify the evidence artefact, and accept the observation without implying that the market outcome has already improved.
 
 The replay may run once automatically, but it must expose previous, next, pause/play, and replay controls. User interaction stops automatic advance. Stage changes update a persistent visual field rather than replacing an isolated paragraph. `prefers-reduced-motion` renders the same state transitions without animation.
 
@@ -217,4 +213,3 @@ Site 09 is accepted only when all of the following are true:
 6. Desktop and mobile screenshots show a different task-led composition for Home, Product, Approach, Company, Across Markets, and Contact.
 7. No English Site 09 surface uses Arial, Georgia, Consolas, copyrighted stock imagery, customer claims, fake hashes, or fake production metadata.
 8. Build, type-check, Vitest, script tests, smoke tests, and the visual interaction matrix all pass.
-
