@@ -1,5 +1,7 @@
 # Yonaris Site 09 Product-Truth Redesign Implementation Plan
 
+> Superseded on 2026-08-29 by `2026-08-29-site-09-interactive-prototype.md`. Do not execute this production plan.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the English Site 06 presentation layer with a production-ready Site 09 experience whose visual authorship, real product causality, Human/Agent evidence transformation, consultation path, and original imagery work as one coherent system.

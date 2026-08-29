@@ -2,7 +2,7 @@
 
 ## 状态与适用范围
 
-- 状态：设计方向已确认；本书面规范等待用户复核后进入原型实施计划。
+- 状态：设计方向与本书面规范均已由用户确认，可进入原型实施计划。
 - 本文件取代 `2026-08-28-site-09-product-truth-redesign.md` 作为 Site 09 的唯一设计依据。
 - 当前阶段只制作独立本地原型，不修改、不发布 `yonaris-site` 生产页面。
 - 首轮范围为英文站六个完整页面：Home、Product、Approach、Human / Agent、Casework、Contact。
