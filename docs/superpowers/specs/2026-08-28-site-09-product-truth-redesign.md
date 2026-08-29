@@ -1,5 +1,7 @@
 # Yonaris Site 09 Product-Truth Redesign
 
+> Superseded on 2026-08-29 by `2026-08-29-site-09-interactive-prototype-design.md`. Do not use this document for new Site 09 work.
+
 ## Purpose
 
 Site 09 moves the public website from a polished concept presentation to a credible first encounter with the Yonaris product. It keeps the strongest existing idea—the Human/Agent evidence lens—and rebuilds the English site around real product tasks, one coherent visual world, restrained editorial composition, and a clear consultation path.
