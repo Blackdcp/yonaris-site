@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { Window } from "happy-dom";
 
 const sourceRoot = dirname(fileURLToPath(import.meta.url));
 const read = (relative: string) => readFileSync(join(sourceRoot, relative), "utf8");
@@ -27,7 +28,16 @@ describe("zero-to-one stylesheet boundary", () => {
 		const css = read("styles/site-v1/privacy.css");
 		expect(ruleFor(css, ".site-v1-privacy")).toContain("overflow-x: clip");
 		expect(ruleFor(css, ".site-v1-privacy__document")).toContain("display: grid");
-		expect(css).toContain("[data-privacy-section]");
+		const window = new Window({ url: "https://yonaris.com/privacy" });
+		window.happyDOM.setInnerWidth(390);
+		const style = window.document.createElement("style");
+		style.textContent = css;
+		window.document.head.append(style);
+		const privacySection = window.document.createElement("section");
+		privacySection.className = "site-v1-privacy__section";
+		privacySection.dataset.privacySection = "submitted";
+		window.document.body.append(privacySection);
+		expect(window.getComputedStyle(privacySection).gridTemplateColumns).toBe("minmax(0, 1fr)");
 		expect(css).toContain("@media (max-width: 44rem)");
 		const reduced = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
 		expect(reduced).toContain("animation: none !important");

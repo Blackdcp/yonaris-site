@@ -159,7 +159,7 @@
 	.site-v1-privacy__hero-copy h1 { font-size: clamp(3.2rem, 15vw, 4.8rem); overflow-wrap: anywhere; }
 	.site-v1-privacy__hero-copy > p:last-child { font-size: 0.96rem; }
 	.site-v1-privacy__document { gap: 2rem; padding-block: 5rem; }
-	.site-v1-privacy__section { grid-template-columns: minmax(0, 1fr); gap: var(--site-v1-space-2); }
+	.site-v1-privacy__section[data-privacy-section] { grid-template-columns: minmax(0, 1fr); gap: var(--site-v1-space-2); }
 	.site-v1-privacy__section h2 { max-width: none; font-size: clamp(2rem, 10vw, 3.2rem); }
 	.site-v1-privacy__action { grid-template-columns: minmax(0, 1fr); }
 	.site-v1-privacy__action a { width: 100%; }
