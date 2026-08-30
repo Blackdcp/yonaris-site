@@ -230,7 +230,11 @@
 		display: none;
 	}
 
-	.site-v1-header__menu-button {
+	.site-v1-header[data-site-v1-enhanced="true"] .site-v1-header__primary {
+		display: none;
+	}
+
+	.site-v1-header[data-site-v1-enhanced="true"] .site-v1-header__menu-button {
 		display: inline-flex;
 	}
 

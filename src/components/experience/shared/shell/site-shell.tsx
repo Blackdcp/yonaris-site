@@ -16,6 +16,7 @@ export interface SiteShellCopy {
 	readonly contactCtaLabel: string;
 	readonly localeLabel: string;
 	readonly localeAccessibleLabel: string;
+	readonly readingControlDescription: string;
 	readonly labels: Readonly<Record<SiteShellLabelKey, string>>;
 }
 

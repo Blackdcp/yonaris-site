@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { SiteShellCopy } from "./site-shell";
 import { SiteShell } from "./site-shell";
@@ -19,6 +20,7 @@ const englishCopy = {
 	contactCtaLabel: "Talk to Yonaris",
 	localeLabel: "中文",
 	localeAccessibleLabel: "View this page in Chinese",
+	readingControlDescription: "One canonical fact, two readers",
 	labels: {
 		home: "Home",
 		product: "Product",
@@ -43,6 +45,7 @@ const chineseCopy = {
 	contactCtaLabel: "联系 Yonaris",
 	localeLabel: "English",
 	localeAccessibleLabel: "查看此页面的英文版本",
+	readingControlDescription: "同一条规范事实，两种读法",
 	labels: {
 		home: "首页",
 		product: "产品",
@@ -94,6 +97,14 @@ describe("Site 1.0 shell", () => {
 		expect(markup).toContain('data-site-v1-reading-control="human-agent"');
 		expect(markup).toContain('href="/human-agent"');
 		expect(markup).toContain("Human / Agent");
+		expect(markup).toContain("One canonical fact, two readers");
+	});
+
+	it("derives the footer category from canonical product facts instead of authoring a second literal", () => {
+		const source = readFileSync(new URL("./site-footer.tsx", import.meta.url), "utf8");
+		expect(source).toContain("PRODUCT_FACTS.category.value[edition]");
+		expect(source).not.toContain('"AI-Native MarTech Infrastructure"');
+		expect(source).not.toContain('"AI 原生营销科技基础设施"');
 	});
 
 	it("renders an SSR-readable header, main and footer with semantic links and no external host or attribution", () => {

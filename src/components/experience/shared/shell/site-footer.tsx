@@ -1,3 +1,4 @@
+import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
 import { getAgentPath, getPublicPagePath, resolveNavigationTarget } from "@/site/route-selectors";
 import type { NavigationTarget, PublicPageKey, SiteEdition } from "@/site/route-types";
 import type { SiteShellCopy } from "./site-shell";
@@ -24,7 +25,7 @@ export function SiteFooter({ edition, pageKey, copy }: { edition: SiteEdition; p
 					<a href={getPublicPagePath(edition, "home")} aria-label={copy.brandLabel}>
 						Yonaris
 					</a>
-					<p>{edition === "global-en" ? "AI-Native MarTech Infrastructure" : "AI 原生营销科技基础设施"}</p>
+					<p>{PRODUCT_FACTS.category.value[edition]}</p>
 				</div>
 				<a
 					className="site-v1-footer__reading-control"
@@ -33,7 +34,7 @@ export function SiteFooter({ edition, pageKey, copy }: { edition: SiteEdition; p
 					aria-current={pageKey === "human-agent" ? "page" : undefined}
 				>
 					<span>{copy.labels["human-agent"]}</span>
-					<small>{edition === "global-en" ? "One fact, two readers" : "同一个事实，两种读法"}</small>
+					<small>{copy.readingControlDescription}</small>
 				</a>
 				<nav className="site-v1-footer__navigation" aria-label={copy.footerNavigationLabel}>
 					{footerTargets.slice(1).map((target) => {

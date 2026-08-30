@@ -35,8 +35,8 @@ export function SceneOrchestrator({
 				<button
 					type="button"
 					className="site-v1-scene-orchestrator__control"
+					data-site-v1-motion-control="true"
 					onClick={control.paused ? control.resume : control.pause}
-					aria-pressed={control.paused}
 				>
 					{control.paused ? resumeLabel : pauseLabel}
 				</button>

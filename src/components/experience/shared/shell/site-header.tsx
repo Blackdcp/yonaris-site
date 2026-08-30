@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { GLOBAL_EN_NAVIGATION } from "@/content/public-site/global-en/navigation";
 import { ZH_CN_NAVIGATION } from "@/content/public-site/zh-cn/navigation";
 import { getPublicPagePath, resolveNavigationTarget } from "@/site/route-selectors";
@@ -68,15 +68,25 @@ function PrimaryNavigation({
 
 export function SiteHeader({ edition, pageKey, copy }: { edition: SiteEdition; pageKey: PublicPageKey; copy: SiteShellCopy }) {
 	const [menuOpen, setMenuOpen] = useState(false);
-	const closeMenu = () => setMenuOpen(nextMenuState(menuOpen, "route-select"));
+	const [enhanced, setEnhanced] = useState(false);
+	const menuButtonRef = useRef<HTMLButtonElement>(null);
+	useEffect(() => setEnhanced(true), []);
+	const closeMenu = () => setMenuOpen(false);
 	const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
 		if (event.key !== "Escape" || !menuOpen) return;
 		event.preventDefault();
 		setMenuOpen(nextMenuState(menuOpen, "escape"));
+		if (event.target instanceof Element && event.target.closest("#site-v1-mobile-navigation")) {
+			menuButtonRef.current?.focus();
+		}
 	};
 
 	return (
-		<header className="site-v1-header" onKeyDown={handleKeyDown}>
+		<header
+			className="site-v1-header"
+			data-site-v1-enhanced={enhanced ? "true" : undefined}
+			onKeyDown={handleKeyDown}
+		>
 			<div className="site-v1-header__inner">
 				<a
 					className="site-v1-header__brand"
@@ -106,6 +116,7 @@ export function SiteHeader({ edition, pageKey, copy }: { edition: SiteEdition; p
 					</EditionLink>
 				</div>
 				<button
+					ref={menuButtonRef}
 					type="button"
 					aria-expanded={menuOpen}
 					aria-controls="site-v1-mobile-navigation"

@@ -36,6 +36,10 @@ export interface InteractionControl extends InteractionControlState {
 	readonly resume: () => void;
 }
 
+function originatesInsideMotionControl(event: Event): boolean {
+	return event.target instanceof Element && Boolean(event.target.closest("[data-site-v1-motion-control]"));
+}
+
 export function useInteractionControl(preferenceOverride?: MotionPreference): InteractionControl {
 	const detectedPreference = useMotionPreference();
 	const preference = preferenceOverride ?? detectedPreference;
@@ -47,9 +51,15 @@ export function useInteractionControl(preferenceOverride?: MotionPreference): In
 
 	useEffect(() => {
 		if (typeof window === "undefined" || preference === "reduced") return;
-		const onPointer = () => dispatch({ type: "direct-input", source: "pointer" });
-		const onKeyboard = () => dispatch({ type: "direct-input", source: "keyboard" });
-		const onTouch = () => dispatch({ type: "direct-input", source: "touch" });
+		const onPointer = (event: PointerEvent) => {
+			if (!originatesInsideMotionControl(event)) dispatch({ type: "direct-input", source: "pointer" });
+		};
+		const onKeyboard = (event: KeyboardEvent) => {
+			if (!originatesInsideMotionControl(event)) dispatch({ type: "direct-input", source: "keyboard" });
+		};
+		const onTouch = (event: TouchEvent) => {
+			if (!originatesInsideMotionControl(event)) dispatch({ type: "direct-input", source: "touch" });
+		};
 		window.addEventListener("pointerdown", onPointer, { passive: true });
 		window.addEventListener("keydown", onKeyboard);
 		window.addEventListener("touchstart", onTouch, { passive: true });
