@@ -3,6 +3,7 @@ import type { ExperienceLocale, HumanPageKey } from "@/content/experience/types"
 import { agentCatalogPath, agentMarkdownPath, buildAgentEntityGraph, getAgentTopic } from "./machine-documents";
 import { getMarketingOgImage } from "./og";
 import { canonicalUrl, SITE_URL, siteHref } from "./site-origin";
+import type { PageMetadata } from "@/content/public-site/contracts/common";
 
 export { canonicalUrl, SITE_URL, siteHref } from "./site-origin";
 export const SITE_NAME = "Yonaris";
@@ -60,7 +61,7 @@ export function organizationJsonLd() {
 	});
 }
 
-export function publicEntityGraph(options: { locale: ExperienceLocale; pageKey: HumanPageKey }): {
+export function publicEntityGraph(options: { locale: ExperienceLocale; pageKey: HumanPageKey; publicMetadata?: PageMetadata }): {
 	type: "application/ld+json";
 	children: string;
 } {
@@ -68,7 +69,12 @@ export function publicEntityGraph(options: { locale: ExperienceLocale; pageKey: 
 		type: "application/ld+json",
 		children: JSON.stringify({
 			"@context": "https://schema.org",
-			"@graph": buildAgentEntityGraph(options.locale, [options.pageKey], siteHref),
+			"@graph": buildAgentEntityGraph(
+				options.locale,
+				[options.pageKey],
+				siteHref,
+				options.publicMetadata ? { [options.pageKey]: options.publicMetadata } : undefined,
+			),
 		}),
 	};
 }

@@ -24,6 +24,7 @@ afterEach(async () => {
 	vi.useRealTimers();
 	await act(async () => root.unmount());
 	host.remove();
+	vi.restoreAllMocks();
 });
 
 function button(label: string): HTMLButtonElement {
@@ -35,6 +36,117 @@ function button(label: string): HTMLButtonElement {
 }
 
 describe("mounted Home answer field", () => {
+	it("keeps the motion control in flow after the disclosure", () => {
+		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
+		const disclosure = field?.querySelector<HTMLElement>(".site-v1-representative-disclosure");
+		const orchestrator = field?.closest<HTMLElement>(".site-v1-scene-orchestrator");
+		const control = orchestrator?.querySelector<HTMLButtonElement>("[data-site-v1-motion-control]");
+		const flow = control?.parentElement;
+		if (!field || !disclosure || !orchestrator || !control || !flow) throw new Error("Answer-field motion controls not mounted");
+
+		expect(orchestrator.dataset.controlPlacement).toBe("flow");
+		expect(flow.classList.contains("site-v1-scene-orchestrator__flow-control")).toBe(true);
+		expect(disclosure.compareDocumentPosition(flow) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
+	});
+
+	it("lets touch, Enter, Space and pointer input take control of the scene", async () => {
+		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
+		const orchestrator = field?.closest<HTMLElement>(".site-v1-scene-orchestrator");
+		if (!field || !orchestrator) throw new Error("Home answer field not mounted");
+
+		const search = button("Search");
+		await act(async () => {
+			search.dispatchEvent(new Event("touchstart", { bubbles: true }));
+			search.click();
+		});
+		expect(field.dataset.v1State).toBe("answer.search");
+		expect(orchestrator.dataset.motionState).toBe("controlled");
+		expect(orchestrator.dataset.motionPaused).toBe("true");
+
+		const editorial = button("Editorial & reviews");
+		await act(async () => {
+			editorial.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+			editorial.click();
+		});
+		expect(field.dataset.v1State).toBe("answer.editorial");
+
+		const company = button("Company-owned content");
+		await act(async () => {
+			company.dispatchEvent(new KeyboardEvent("keydown", { key: " ", code: "Space", bubbles: true }));
+			company.click();
+		});
+		expect(field.dataset.v1State).toBe("answer.company-owned");
+
+		await act(async () => company.dispatchEvent(new Event("pointerdown", { bubbles: true })));
+		expect(orchestrator.dataset.motionState).toBe("controlled");
+	});
+
+	it("honors reduced motion while keeping direct channel controls usable", async () => {
+		await act(async () => root.unmount());
+		vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+			matches: query === "(prefers-reduced-motion: reduce)",
+			media: query,
+			onchange: null,
+			addEventListener: vi.fn(),
+			removeEventListener: vi.fn(),
+			addListener: vi.fn(),
+			removeListener: vi.fn(),
+			dispatchEvent: vi.fn(() => true),
+		}) as MediaQueryList);
+		root = createRoot(host);
+		await act(async () => root.render(<HomeRouteComponent />));
+
+		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
+		const orchestrator = field?.closest<HTMLElement>(".site-v1-scene-orchestrator");
+		if (!field || !orchestrator) throw new Error("Reduced-motion answer field not mounted");
+		expect(orchestrator.dataset.motionState).toBe("reduced");
+		expect(orchestrator.dataset.motionPaused).toBe("true");
+		expect(orchestrator.querySelector("[data-site-v1-motion-control]")).toBeNull();
+
+		await act(async () => button("Search").click());
+		expect(field.dataset.v1State).toBe("answer.search");
+	});
+
+	it("projects a distinct canonical reason and evidence trace for every channel", async () => {
+		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
+		if (!field) throw new Error("Home answer field not mounted");
+		const cases = [
+			{
+				label: "AI answers",
+				state: "answer.ai",
+				reasons: ["reason.alternative-a.included", "reason.your-company.excluded"],
+				evidence: ["evidence.alternative-a.relationship", "evidence.your-company.capability"],
+			},
+			{
+				label: "Search",
+				state: "answer.search",
+				reasons: ["reason.search.alternative-a.source", "reason.search.your-company.context-missing"],
+				evidence: ["evidence.search.alternative-a.source", "evidence.search.your-company.result"],
+			},
+			{
+				label: "Editorial & reviews",
+				state: "answer.editorial",
+				reasons: ["reason.editorial.alternative-a.context", "reason.editorial.your-company.broad"],
+				evidence: ["evidence.editorial.alternative-a.context", "evidence.editorial.your-company.description"],
+			},
+			{
+				label: "Company-owned content",
+				state: "answer.company-owned",
+				reasons: ["reason.company-owned.your-company.context-missing"],
+				evidence: ["evidence.company-owned.your-company.capability"],
+			},
+		] as const;
+
+		for (const scenario of cases) {
+			await act(async () => button(scenario.label).click());
+			expect(field.dataset.v1State).toBe(scenario.state);
+			expect(field.querySelectorAll("[data-comparison-reason]")).toHaveLength(scenario.reasons.length);
+			expect([...field.querySelectorAll<HTMLElement>('[data-comparison-reason][data-active="true"]')].map((node) => node.dataset.comparisonReason)).toEqual(scenario.reasons);
+			await act(async () => button("Trace the reason").click());
+			expect([...field.querySelectorAll<HTMLElement>("[data-evidence-trace] [data-evidence-id]")].map((node) => node.dataset.evidenceId)).toEqual(scenario.evidence);
+		}
+	});
+
 	it("changes the real channel answer and attached reason while preserving the buyer question", async () => {
 		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
 		if (!field) throw new Error("Home answer field not mounted");
@@ -70,7 +182,7 @@ describe("mounted Home answer field", () => {
 		const evidence = host.querySelector<HTMLElement>("[data-evidence-trace]");
 		expect(evidence?.hidden).toBe(false);
 		expect(evidence?.textContent).toContain("Source attached");
-		expect(evidence?.textContent).toContain("Yonaris representative walkthrough source");
+		expect(evidence?.textContent).toContain("Yonaris representative search walkthrough");
 	});
 });
 
@@ -80,7 +192,7 @@ describe("mounted five-view stable record", () => {
 		if (!preview) throw new Error("Product record preview not mounted");
 		expect(preview.dataset.recordId).toBe(RECORD_ID);
 		expect(preview.dataset.v1State).toBe("buyer-question");
-		expect(preview.querySelector<HTMLElement>("[data-active-record-view]")?.dataset.geometry).toBe("question-plane");
+		expect(preview.querySelector("[data-active-record-view] blockquote")).not.toBeNull();
 
 		const first = button("What buyers ask");
 		first.focus();
@@ -91,7 +203,8 @@ describe("mounted five-view stable record", () => {
 		expect(last.getAttribute("aria-selected")).toBe("true");
 		expect(preview.dataset.recordId).toBe(RECORD_ID);
 		expect(preview.dataset.v1State).toBe("later-review");
-		expect(preview.querySelector<HTMLElement>("[data-active-record-view]")?.dataset.geometry).toBe("review-overlay");
+		expect(preview.querySelector('[data-active-record-view] [data-review-result="changed"]')).not.toBeNull();
+		expect(preview.querySelector('[data-active-record-view] [data-review-result="unchanged"]')).not.toBeNull();
 		expect(preview.querySelector<HTMLElement>("[data-active-record-view]")?.textContent).toContain("recommendation order did not change");
 	});
 

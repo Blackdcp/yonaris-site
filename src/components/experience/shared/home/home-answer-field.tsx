@@ -17,7 +17,9 @@ export function HomeAnswerField({ copy, disclosure }: { readonly copy: HeroEvent
 	const [traceOpen, setTraceOpen] = useState(false);
 	const activeAnswer = record.channelAnswers.find((answer) => answer.id === activeId) ?? record.channelAnswers[0];
 	if (!activeAnswer) return null;
-	const activeReasonIds = new Set(activeAnswer.reasonIds);
+	const activeReasons = activeAnswer.reasonIds
+		.map((reasonId) => record.comparisonReasons.find((reason) => reason.id === reasonId))
+		.filter((reason) => reason !== undefined);
 	const activeEvidence = record.evidence.filter((item) => activeAnswer.evidenceIds.includes(item.id));
 	const tabs = useRovingTabs({
 		items: channelIds,
@@ -32,7 +34,7 @@ export function HomeAnswerField({ copy, disclosure }: { readonly copy: HeroEvent
 	const sourceLabel = copy.inspectionLabels[3] ?? "";
 
 	return (
-		<SceneOrchestrator ariaLabel={copy.question} pauseLabel="Pause scene" resumeLabel="Resume scene">
+		<SceneOrchestrator ariaLabel={copy.question} pauseLabel="Pause scene" resumeLabel="Resume scene" controlPlacement="flow">
 			<section
 				className="site-v1-answer-field"
 				data-home-answer-field="true"
@@ -58,21 +60,13 @@ export function HomeAnswerField({ copy, disclosure }: { readonly copy: HeroEvent
 					))}
 				</div>
 				<div className="site-v1-answer-field__reasons">
-					{record.comparisonReasons.map((reason, index) => {
-						const active = activeReasonIds.has(reason.id);
-						return (
-							<article
-								key={reason.id}
-								data-comparison-reason={reason.id}
-								data-active={active ? "true" : "false"}
-								style={{ order: active ? index : index + record.comparisonReasons.length }}
-							>
-								<span>{reason.disposition === "included" ? copy.inspectionLabels[0] : copy.inspectionLabels[1]}</span>
-								<h3>{reason.subject}</h3>
-								<p>{reason.reason}</p>
-							</article>
-						);
-					})}
+					{activeReasons.map((reason) => (
+						<article key={reason.id} data-comparison-reason={reason.id} data-active="true">
+							<span>{reason.disposition === "included" ? copy.inspectionLabels[0] : copy.inspectionLabels[1]}</span>
+							<h3>{reason.subject}</h3>
+							<p>{reason.reason}</p>
+						</article>
+					))}
 				</div>
 				<div className="site-v1-answer-field__trace-control">
 					<button type="button" aria-expanded={traceOpen} aria-controls="home-evidence-trace" onClick={() => setTraceOpen((open) => !open)}>

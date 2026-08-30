@@ -160,6 +160,7 @@
 
 .site-v1-answer-field > .site-v1-representative-disclosure { position: relative; z-index: 3; grid-column: 1 / -1; width: 100%; margin-top: 0; }
 .site-v1-scene-orchestrator > .site-v1-scene-orchestrator__control { position: absolute; z-index: 8; right: var(--site-v1-space-2); bottom: var(--site-v1-space-2); }
+.site-v1-scene-orchestrator__flow-control { display: flex; justify-content: flex-end; min-height: var(--site-v1-target); padding-top: var(--site-v1-space-2); }
 
 @media (max-width: 60rem) {
 	.site-v1-answer-field { grid-template-columns: 1fr; }
@@ -181,7 +182,9 @@
 	.site-v1-answer-environment { inset-inline: 0; width: calc(100% - (var(--answer-layer) * 0.7rem)); padding: var(--site-v1-space-3); }
 	.site-v1-answer-field__reasons { flex-direction: column; }
 	.site-v1-answer-field__reasons article { min-width: 100%; }
-	.site-v1-answer-field__resolution { padding-right: 4rem; }
+	.site-v1-answer-field__resolution { padding-right: 0; }
+	.site-v1-scene-orchestrator__flow-control { justify-content: stretch; }
+	.site-v1-scene-orchestrator__flow-control .site-v1-scene-orchestrator__control { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

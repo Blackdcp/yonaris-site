@@ -66,6 +66,25 @@ describe("English Site 1.0 Home route", () => {
 		expect(html).toContain("Cannot attribute");
 	});
 
+	it("renders five materially different record geometries from the same SSR record", () => {
+		const html = renderToStaticMarkup(<HomeRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		const views = [...document.querySelectorAll<HTMLElement>("[data-record-view]")];
+
+		expect(views).toHaveLength(5);
+		expect(new Set(views.map((view) => view.dataset.recordId))).toEqual(new Set([RECORD_ID]));
+		expect(document.querySelector('[data-record-view="buyer-question"] blockquote')).not.toBeNull();
+		expect(document.querySelectorAll('[data-record-view="buyer-question"] dl > div')).toHaveLength(3);
+		expect(document.querySelectorAll('[data-record-view="current-answer"] [data-answer-environment]')).toHaveLength(4);
+		expect(document.querySelectorAll('[data-record-view="comparison-evidence"] [data-comparison-node]')).toHaveLength(2);
+		expect(document.querySelector('[data-record-view="comparison-evidence"] [data-evidence-gap]')).not.toBeNull();
+		expect(document.querySelector('[data-record-view="reviewed-action"] [data-reviewed-action]')).not.toBeNull();
+		expect(document.querySelector('[data-record-view="reviewed-action"] [data-human-reviewer="human-team"]')).not.toBeNull();
+		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="changed"]')).not.toBeNull();
+		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="unchanged"]')).not.toBeNull();
+		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="cannot-attribute"]')).not.toBeNull();
+	});
+
 	it("uses the local responsive hero asset and canonical Human / Agent fact routes", () => {
 		const html = renderToStaticMarkup(<HomeRouteComponent />);
 		expect(html).toContain("/assets/site-v1/hero-evidence-field-640.avif");

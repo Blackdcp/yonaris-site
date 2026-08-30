@@ -27,6 +27,6 @@ export function buildPageHead(edition: SiteEdition, page: PublicPageKey, legacyC
 			{ rel: "alternate", hrefLang: "x-default", href: siteHref(isGlobal ? canonicalPath : alternatePath) },
 			...machineDiscoveryLinks(isGlobal ? "en" : "zh", humanPage),
 		],
-		scripts: [publicEntityGraph({ locale: isGlobal ? "en" : "zh", pageKey: humanPage })],
+		scripts: [publicEntityGraph({ locale: isGlobal ? "en" : "zh", pageKey: humanPage, publicMetadata })],
 	};
 }

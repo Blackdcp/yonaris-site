@@ -244,6 +244,8 @@ ${HUMAN_PAGE_KEYS.flatMap((key) => (["en", "zh"] as const).map((locale) => rende
 }
 
 type HrefBuilder = (path: string) => string;
+type PublicPageMetadata = { readonly title: string; readonly description: string };
+type PublicPageMetadataByKey = Readonly<Partial<Record<HumanPageKey, PublicPageMetadata>>>;
 
 function organizationNode(locale: ExperienceLocale, href: HrefBuilder) {
 	return {
@@ -267,7 +269,7 @@ function websiteNode(href: HrefBuilder) {
 	};
 }
 
-function topicNodes(topic: AgentTopic, href: HrefBuilder) {
+function topicNodes(topic: AgentTopic, href: HrefBuilder, publicMetadata?: PublicPageMetadata) {
 	const chinese = topic.locale === "zh";
 	const humanPage = href(topic.humanPath);
 	const itemListId = `${humanPage}#facts`;
@@ -276,8 +278,8 @@ function topicNodes(topic: AgentTopic, href: HrefBuilder) {
 		{
 			"@type": "WebPage",
 			"@id": `${href(topic.humanPath)}#webpage`,
-			name: topic.title,
-			description: topic.summary,
+			name: publicMetadata?.title ?? topic.title,
+			description: publicMetadata?.description ?? topic.summary,
 			url: href(topic.humanPath),
 			inLanguage: topic.language,
 			isPartOf: { "@id": href("/#website") },
@@ -326,11 +328,12 @@ export function buildAgentEntityGraph(
 	locale: ExperienceLocale,
 	pageKeys: readonly HumanPageKey[],
 	href: HrefBuilder = siteHref,
+	publicMetadataByKey?: PublicPageMetadataByKey,
 ) {
 	return [
 		organizationNode(locale, href),
 		websiteNode(href),
-		...pageKeys.flatMap((key) => topicNodes(getAgentTopic(locale, key), href)),
+		...pageKeys.flatMap((key) => topicNodes(getAgentTopic(locale, key), href, publicMetadataByKey?.[key])),
 	];
 }
 

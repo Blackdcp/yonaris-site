@@ -130,6 +130,35 @@ describe("canonical public content contract", () => {
 		}
 	});
 
+	it("gives every English answer environment its own reason and evidence projection", () => {
+		expect(GLOBAL_EN_BUYER_QUESTION.channelAnswers.map((answer) => ({
+			environment: answer.environment,
+			reasonIds: answer.reasonIds,
+			evidenceIds: answer.evidenceIds,
+		}))).toEqual([
+			{
+				environment: "AI answers",
+				reasonIds: ["reason.alternative-a.included", "reason.your-company.excluded"],
+				evidenceIds: ["evidence.alternative-a.relationship", "evidence.your-company.capability"],
+			},
+			{
+				environment: "Search",
+				reasonIds: ["reason.search.alternative-a.source", "reason.search.your-company.context-missing"],
+				evidenceIds: ["evidence.search.alternative-a.source", "evidence.search.your-company.result"],
+			},
+			{
+				environment: "Editorial & reviews",
+				reasonIds: ["reason.editorial.alternative-a.context", "reason.editorial.your-company.broad"],
+				evidenceIds: ["evidence.editorial.alternative-a.context", "evidence.editorial.your-company.description"],
+			},
+			{
+				environment: "Company-owned content",
+				reasonIds: ["reason.company-owned.your-company.context-missing"],
+				evidenceIds: ["evidence.company-owned.your-company.capability"],
+			},
+		]);
+	});
+
 	it("separates baseline evidence from evidence observed during the later review", () => {
 		for (const record of records) {
 			const phases = new Map(

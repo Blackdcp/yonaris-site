@@ -16,16 +16,58 @@ export function ProductRecordPreview({ copy, disclosure }: { readonly copy: Home
 	const [enhanced, setEnhanced] = useState(false);
 	useEffect(() => setEnhanced(true), []);
 	const tabs = useRovingTabs({ items: VIEW_IDS, active, onChange: setActive, idPrefix: "home-product-record" });
-	const content = [
-		[record.question],
-		[record.channelAnswers[0]?.answer ?? ""],
-		[record.comparisonReasons[0]?.reason ?? "", record.gaps[0]?.description ?? ""],
-		[record.proposedActions[0]?.description ?? ""],
-		[
-			record.review.changed[0]?.statement ?? "",
-			record.review.unchanged[0]?.statement ?? "",
-			record.review.attribution.boundary,
-		],
+	const initialAnswer = record.channelAnswers[0];
+	const initialReasons = initialAnswer?.reasonIds
+		.map((reasonId) => record.comparisonReasons.find((reason) => reason.id === reasonId))
+		.filter((reason) => reason !== undefined) ?? [];
+	const views = [
+		<div className="site-v1-record-geometry site-v1-record-geometry--question" key="question">
+			<blockquote>{record.question}</blockquote>
+			<dl>
+				<div><dt>Audience</dt><dd>{record.audience}</dd></div>
+				<div><dt>Market</dt><dd>{record.market}</dd></div>
+				<div><dt>Language</dt><dd>{record.language}</dd></div>
+			</dl>
+		</div>,
+		<div className="site-v1-record-geometry site-v1-record-geometry--answers" key="answers">
+			<p className="site-v1-record-geometry__active-answer">{initialAnswer?.answer}</p>
+			<ol>
+				{record.channelAnswers.map((answer, answerIndex) => (
+					<li data-answer-environment={answer.id} key={answer.id}>
+						<span>{String(answerIndex + 1).padStart(2, "0")}</span>
+						<strong>{answer.environment}</strong>
+					</li>
+				))}
+			</ol>
+		</div>,
+		<div className="site-v1-record-geometry site-v1-record-geometry--evidence" key="evidence">
+			<ol>
+				{initialReasons.map((reason) => (
+					<li data-comparison-node={reason.id} key={reason.id}>
+						<span>{reason.disposition}</span>
+						<strong>{reason.subject}</strong>
+						<p>{reason.reason}</p>
+					</li>
+				))}
+			</ol>
+			<aside data-evidence-gap={record.gaps[0]?.id}>
+				<span>Evidence gap</span>
+				<p>{record.gaps[0]?.description}</p>
+			</aside>
+		</div>,
+		<div className="site-v1-record-geometry site-v1-record-geometry--action" key="action">
+			<div className="site-v1-record-geometry__review-gate" aria-hidden="true"><i /><i /><i /></div>
+			<section data-reviewed-action={record.proposedActions[0]?.id}>
+				<span>Reviewed action</span>
+				<p>{record.proposedActions[0]?.description}</p>
+				<strong data-human-reviewer={record.proposedActions[0]?.reviewedBy}>Human reviewed · {record.proposedActions[0]?.status}</strong>
+			</section>
+		</div>,
+		<div className="site-v1-record-geometry site-v1-record-geometry--review" key="review">
+			<section data-review-result="changed"><span>Changed</span><p>{record.review.changed[0]?.statement}</p></section>
+			<section data-review-result="unchanged"><span>Unchanged</span><p>{record.review.unchanged[0]?.statement}</p></section>
+			<footer data-review-result="cannot-attribute"><span>Cannot attribute</span><p>{record.review.attribution.boundary}</p></footer>
+		</div>,
 	] as const;
 
 	return (
@@ -59,9 +101,11 @@ export function ProductRecordPreview({ copy, disclosure }: { readonly copy: Home
 							data-active-record-view={selected ? "true" : undefined}
 							data-geometry={GEOMETRIES[index]}
 						>
-							<span>{String(index + 1).padStart(2, "0")}</span>
-							<h3>{copy.workingViews[index]}</h3>
-							{content[index]?.map((line) => <p key={line}>{line}</p>)}
+							<header>
+								<span>{String(index + 1).padStart(2, "0")}</span>
+								<h3>{copy.workingViews[index]}</h3>
+							</header>
+							{views[index]}
 						</article>
 					);
 				})}
