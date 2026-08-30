@@ -1,4 +1,6 @@
 import { describe, expect, test } from "vitest";
+import { PUBLIC_REDIRECTS } from "@/site/redirects";
+import { getRedirect } from "./site-manifest";
 
 type PermanentRedirectModule = typeof import("./permanent-redirect");
 
@@ -65,5 +67,23 @@ describe("permanent redirects", () => {
 			"/product#how-it-works",
 		);
 		expect(response.headers.get("location")).toBe("/product?utm=x#how-it-works");
+	});
+
+	test("executes every legacy alias with GET and HEAD as one final 308", async () => {
+		const redirects = requireSubject();
+		if (!redirects) return;
+
+		for (const redirect of PUBLIC_REDIRECTS) {
+			for (const method of ["GET", "HEAD"] as const) {
+				const response = redirects.permanentRedirectResponse(
+					new Request(`https://yonaris.test${redirect.from}?utm=legacy`, { method }),
+					redirect.to,
+				);
+				expect(response.status, `${method} ${redirect.from}`).toBe(308);
+				expect(response.headers.get("location"), `${method} ${redirect.from}`).toBe(redirect.resolve("?utm=legacy"));
+				expect(getRedirect(redirect.to), `${method} ${redirect.from}`).toBeUndefined();
+				expect(await response.text(), `${method} ${redirect.from}`).toBe("");
+			}
+		}
 	});
 });

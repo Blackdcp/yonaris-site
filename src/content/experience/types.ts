@@ -10,9 +10,9 @@ export type ExperienceLocale = "en" | "zh";
 export const HUMAN_PAGE_TO_PUBLIC_PAGE = {
 	home: "home",
 	product: "product",
-	approach: "casework",
+	approach: "product",
 	geo: "product",
-	company: "human-agent",
+	company: "company",
 	diagnostic: "contact",
 	privacy: "privacy",
 } as const satisfies Readonly<Record<HumanPageKey, PublicPageKey>>;

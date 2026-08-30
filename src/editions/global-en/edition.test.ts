@@ -58,4 +58,9 @@ describe("global English SEO", () => {
 			);
 		}
 	});
+
+	it("does not emit a new public canonical from a legacy handler", () => {
+		expect(globalEnglishPageHead("approach").links).toContainEqual({ rel: "canonical", href: siteHref("/approach") });
+		expect(globalEnglishPageHead("company").links).toContainEqual({ rel: "canonical", href: siteHref("/company") });
+	});
 });

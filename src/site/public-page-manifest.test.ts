@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import { PUBLIC_PAGE_KEYS, PUBLIC_PAGE_MANIFEST } from "./public-page-manifest";
 import { getLocaleSwitchPath, getPublicPagePath, resolveNavigationTarget } from "./route-selectors";
 import { PUBLIC_REDIRECTS } from "./redirects";
+import { HUMAN_PAGE_TO_PUBLIC_PAGE } from "@/content/experience/types";
 
 const paths = {
 	home: { "global-en": "/", "zh-cn": "/zh" },
@@ -44,6 +45,24 @@ describe("public page manifest", () => {
 		expect(approach?.resolve("?utm=x")).toBe("/product?utm=x#how-it-works");
 		for (const redirect of PUBLIC_REDIRECTS) {
 			expect(PUBLIC_REDIRECTS.some((candidate) => candidate.from === redirect.to)).toBe(false);
+		}
+	});
+
+	test("keeps legacy semantic adapters aligned with Product and Company", () => {
+		expect(HUMAN_PAGE_TO_PUBLIC_PAGE.approach).toBe("product");
+		expect(HUMAN_PAGE_TO_PUBLIC_PAGE.company).toBe("company");
+	});
+
+	test("declares every approved alias for human, Agent, Chinese Agent, and Markdown surfaces", () => {
+		const aliases = ["platform", "features", "approach", "methodology", "results", "geo", "off-site-aeo", "diagnostic", "pricing", "vision"];
+		const paths = new Set(PUBLIC_REDIRECTS.map((redirect) => redirect.from));
+		for (const alias of aliases) {
+			expect(paths).toContain(`/${alias}`);
+			expect(paths).toContain(`/zh/${alias}`);
+			expect(paths).toContain(`/agent/${alias}`);
+			expect(paths).toContain(`/zh/agent/${alias}`);
+			expect(paths).toContain(`/llms.mdx/agent/${alias}`);
+			expect(paths).toContain(`/llms.mdx/zh-agent/${alias}`);
 		}
 	});
 });

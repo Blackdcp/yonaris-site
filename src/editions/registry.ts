@@ -9,6 +9,10 @@ function ref(edition: SiteEdition, page: PublicPageKey): EditionPageRef {
 }
 
 function pagesFor(edition: SiteEdition): readonly EditionPage[] {
+	const record = edition === "global-en" ? GLOBAL_EN_NAVIGATION : ZH_CN_NAVIGATION;
+	const primaryPages = new Set<PublicPageKey>(record.header.filter((target) => target.kind === "page").map((target) => target.page));
+	const utilityPages = new Set<PublicPageKey>(record.contactCta.kind === "page" ? [record.contactCta.page] : []);
+	const footerPages = new Set<PublicPageKey>(record.footer.filter((target) => target.kind === "page").map((target) => target.page));
 	return PUBLIC_PAGE_MANIFEST.map((page) => ({
 		ref: ref(edition, page.key),
 		editionId: edition,
@@ -16,7 +20,11 @@ function pagesFor(edition: SiteEdition): readonly EditionPage[] {
 		pathname: page.paths[edition],
 		intentId: page.key,
 		publication: "published",
-		navigation: page.key === "contact" ? ["utility", "footer"] : page.key === "home" || page.key === "privacy" ? ["footer"] : ["primary", "footer"],
+		navigation: [
+			...(primaryPages.has(page.key) ? ["primary" as const] : []),
+			...(utilityPages.has(page.key) ? ["utility" as const] : []),
+			...(footerPages.has(page.key) ? ["footer" as const] : []),
+		],
 		seo: { indexable: true, ...(edition === "global-en" ? { xDefault: true } : {}) },
 	}));
 }

@@ -2,6 +2,8 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { SITE_MANIFEST, SITE_REDIRECTS, findSiteRoute } from "../src/lib/site-manifest";
+import { PUBLIC_PAGE_MANIFEST } from "../src/site/public-page-manifest";
+import { getMarkdownPath } from "../src/site/route-selectors";
 
 const DEFAULT_ROUTES_ROOT = fileURLToPath(new URL("../src/routes/", import.meta.url));
 const FILE_ROUTE_PATTERN = /createFileRoute\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
@@ -37,21 +39,17 @@ export async function discoverRoutePatterns(routesRoot = DEFAULT_ROUTES_ROOT): P
 function declaredManifestPaths(): `/${string}`[] {
 	return [
 		...SITE_MANIFEST.flatMap((route) => Object.values(route.canonicals)),
+		...PUBLIC_PAGE_MANIFEST.flatMap((page) => Object.values(page.agentPaths)),
+		...PUBLIC_PAGE_MANIFEST.flatMap((page) => [getMarkdownPath("global-en", page.key), getMarkdownPath("zh-cn", page.key)]),
 		...SITE_REDIRECTS.flatMap((redirect) => [redirect.from, redirect.to.split("#", 1)[0] as `/${string}`]),
 	];
-}
-
-function patternHandles(pathname: string, pattern: string): boolean {
-	if (!pattern.endsWith("/*")) return pathname === pattern;
-	const base = pattern.slice(0, -2);
-	return pathname === base || pathname.startsWith(`${base}/`);
 }
 
 export async function auditSiteManifest(routesRoot = DEFAULT_ROUTES_ROOT): Promise<SiteManifestAudit> {
 	const patterns = await discoverRoutePatterns(routesRoot);
 	return {
 		unclassifiedRoutes: patterns.filter((pattern) => !findSiteRoute(pattern)),
-		unrealizedManifestPaths: [...new Set(declaredManifestPaths().filter((pathname) => !patterns.some((pattern) => patternHandles(pathname, pattern))))].sort(),
+		unrealizedManifestPaths: [...new Set(declaredManifestPaths().filter((pathname) => !patterns.includes(pathname)))].sort(),
 	};
 }
 

@@ -22,4 +22,14 @@ describe("regional edition registry", () => {
 		for (const pathname of chinaPaths) expect(findPublishedEditionPage(pathname)?.editionId).toBe("zh-cn");
 		expect(findPublishedEditionPage("/zh/research")).toBeUndefined();
 	});
+
+	it("derives page navigation membership from typed edition navigation targets", () => {
+		for (const editionId of ["global-en", "zh-cn"] as const) {
+			const pages = getEdition(editionId).pages;
+			const navigationFor = (key: string) => pages.find((page) => page.ref === `${editionId}:${key}`)?.navigation;
+			expect(navigationFor("human-agent")).toEqual(["footer"]);
+			expect(navigationFor("contact")).toEqual(["utility", "footer"]);
+			expect(navigationFor("contact")).not.toContain("primary");
+		}
+	});
 });
