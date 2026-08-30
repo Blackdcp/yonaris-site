@@ -18,6 +18,24 @@ function ruleFor(source: string, selector: string): string {
 }
 
 describe("zero-to-one stylesheet boundary", () => {
+	it("imports the Human / Agent lens and gives its spatial controls responsive reduced-motion behavior", () => {
+		const stylesheet = read("styles.css");
+		const humanAgentPath = join(sourceRoot, "styles/site-v1/human-agent.css");
+		expect(stylesheet).toContain('@import "./styles/site-v1/human-agent.css";');
+		expect(existsSync(humanAgentPath)).toBe(true);
+		if (!existsSync(humanAgentPath)) return;
+		const css = read("styles/site-v1/human-agent.css");
+		expect(ruleFor(css, ".site-v1-evidence-lens__ring--outer")).toContain("transform: scale(var(--lens-outer-scale))");
+		expect(ruleFor(css, ".site-v1-evidence-lens__ring--middle")).toContain("transform: scale(var(--lens-middle-scale))");
+		expect(ruleFor(css, ".site-v1-evidence-lens__ring--inner")).toContain("transform: scale(var(--lens-inner-scale))");
+		expect(ruleFor(css, ".site-v1-evidence-lens__focal-mask")).toContain("mask-image: radial-gradient");
+		expect(ruleFor(css, ".site-v1-evidence-lens__ring button")).toContain("min-height: var(--site-v1-target)");
+		expect(css).toContain("@media (max-width: 44rem)");
+		const reduced = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
+		expect(reduced).toContain("animation: none !important");
+		expect(reduced).toContain("transition: none !important");
+	});
+
 	it("loads shared styles once and lets each regional route own its stylesheet", () => {
 		const stylesheet = read("styles.css");
 		const expected = [
@@ -32,7 +50,9 @@ describe("zero-to-one stylesheet boundary", () => {
 		for (const retired of ["site-core", "styles/pages", "global-en/core", "zh-cn/core", "global-agent/core"]) {
 			expect(stylesheet).not.toContain(retired);
 		}
-		for (const regional of ["global.css", "china.css", "agent.css"]) expect(stylesheet).not.toContain(regional);
+		for (const regional of ["global.css", "china.css", "agent.css"]) {
+			expect(stylesheet).not.toContain(`./styles/experience/${regional}`);
+		}
 		expect(read("components/experience/global/global-pages.tsx")).not.toContain("global.css");
 		expect(read("components/experience/china/china-pages.tsx")).not.toContain("china.css");
 		expect(existsSync(join(sourceRoot, "styles/experience/china.css"))).toBe(false);

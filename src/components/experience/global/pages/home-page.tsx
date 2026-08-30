@@ -49,7 +49,7 @@ function HeroPicture() {
 function HumanAgentSignature() {
 	const fact = PRODUCT_FACTS.category;
 	return (
-		<section className="site-v1-human-agent-signature" data-home-section="human-agent" data-fact-id={fact.id}>
+		<section className="site-v1-human-agent-signature" data-home-section="human-agent" data-human-agent-bridge="home" data-fact-id={fact.id}>
 			<header>
 				<span>{fact.id}</span>
 				<h2>{copy.humanAgent.headline}</h2>
@@ -57,10 +57,10 @@ function HumanAgentSignature() {
 			</header>
 			<div className="site-v1-human-agent-signature__lens" aria-label={copy.humanAgent.headline}>
 				{copy.humanAgent.layers.map((layer, index) => (
-					<article key={layer} data-lens-layer={index + 1}>
+					<article key={layer} data-lens-layer={index + 1} data-bridge-layer={(["human", "evidence", "agent"] as const)[index]}>
 						<span>{layer}</span>
 						{index === 0 ? <strong>{fact.value["global-en"]}</strong> : null}
-						{index === 1 ? <p>{fact.source.label["global-en"]} · {fact.scope["global-en"]}</p> : null}
+						{index === 1 ? <p><code>{fact.source.id}</code> · {fact.source.label["global-en"]} · {fact.scope["global-en"]}</p> : null}
 						{index === 2 ? <code>{fact.id} · {fact.lastReviewed}</code> : null}
 					</article>
 				))}
@@ -68,7 +68,7 @@ function HumanAgentSignature() {
 			<p className="site-v1-human-agent-signature__boundary">{fact.boundary["global-en"]}</p>
 			<div className="site-v1-home-actions">
 				<a className="site-v1-home-action" href={getPublicPagePath("global-en", "human-agent")}>{copy.humanAgent.actions[0].label}</a>
-				<a className="site-v1-home-action site-v1-home-action--quiet" href={getAgentPath("global-en", "home")}>{copy.humanAgent.actions[1].label}</a>
+				<a className="site-v1-home-action site-v1-home-action--quiet" href={`${getAgentPath("global-en", "home")}#${fact.id}`}>{copy.humanAgent.actions[1].label}</a>
 			</div>
 		</section>
 	);

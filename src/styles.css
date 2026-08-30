@@ -12,6 +12,7 @@
 @import "./styles/site-v1/workspace.css";
 @import "./styles/site-v1/casework.css";
 @import "./styles/site-v1/company.css";
+@import "./styles/site-v1/human-agent.css";
 
 @source "../src";
 @source "../../../packages/ui/src";

@@ -16,6 +16,7 @@ import { Route as CompanyRouteImport } from './routes/company'
 import { Route as DiagnosticRouteImport } from './routes/diagnostic'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as GeoRouteImport } from './routes/geo'
+import { Route as HumanAgentRouteImport } from './routes/human-agent'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as MethodologyRouteImport } from './routes/methodology'
@@ -98,6 +99,11 @@ const FeaturesRoute = FeaturesRouteImport.update({
 const GeoRoute = GeoRouteImport.update({
   id: '/geo',
   path: '/geo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HumanAgentRoute = HumanAgentRouteImport.update({
+  id: '/human-agent',
+  path: '/human-agent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
@@ -350,6 +356,7 @@ export interface FileRoutesByFullPath {
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
+  '/human-agent': typeof HumanAgentRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
@@ -407,6 +414,7 @@ export interface FileRoutesByTo {
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
+  '/human-agent': typeof HumanAgentRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
@@ -465,6 +473,7 @@ export interface FileRoutesById {
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
+  '/human-agent': typeof HumanAgentRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/methodology': typeof MethodologyRoute
@@ -524,6 +533,7 @@ export interface FileRouteTypes {
     | '/diagnostic'
     | '/features'
     | '/geo'
+    | '/human-agent'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/methodology'
@@ -581,6 +591,7 @@ export interface FileRouteTypes {
     | '/diagnostic'
     | '/features'
     | '/geo'
+    | '/human-agent'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/methodology'
@@ -638,6 +649,7 @@ export interface FileRouteTypes {
     | '/diagnostic'
     | '/features'
     | '/geo'
+    | '/human-agent'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/methodology'
@@ -696,6 +708,7 @@ export interface RootRouteChildren {
   DiagnosticRoute: typeof DiagnosticRoute
   FeaturesRoute: typeof FeaturesRoute
   GeoRoute: typeof GeoRoute
+  HumanAgentRoute: typeof HumanAgentRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   MethodologyRoute: typeof MethodologyRoute
@@ -795,6 +808,13 @@ declare module '@tanstack/react-router' {
       path: '/geo'
       fullPath: '/geo'
       preLoaderRoute: typeof GeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/human-agent': {
+      id: '/human-agent'
+      path: '/human-agent'
+      fullPath: '/human-agent'
+      preLoaderRoute: typeof HumanAgentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/llms-full.txt': {
@@ -1144,6 +1164,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiagnosticRoute: DiagnosticRoute,
   FeaturesRoute: FeaturesRoute,
   GeoRoute: GeoRoute,
+  HumanAgentRoute: HumanAgentRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   MethodologyRoute: MethodologyRoute,

@@ -61,22 +61,48 @@ export function organizationJsonLd() {
 	});
 }
 
-export function publicEntityGraph(options: { locale: ExperienceLocale; pageKey: HumanPageKey; publicMetadata?: PageMetadata }): {
+export function publicEntityGraph(options: {
+	locale: ExperienceLocale;
+	pageKey: HumanPageKey;
+	publicMetadata?: PageMetadata;
+	canonicalPath?: string;
+	factIds?: readonly string[];
+}): {
 	type: "application/ld+json";
 	children: string;
 } {
+	const topic = getAgentTopic(options.locale, options.pageKey);
+	const href = options.canonicalPath
+		? (path: string) => siteHref(path === topic.humanPath ? options.canonicalPath ?? path : path)
+		: siteHref;
+	const graph = buildAgentEntityGraph(
+		options.locale,
+		[options.pageKey],
+		href,
+		options.publicMetadata ? { [options.pageKey]: options.publicMetadata } : undefined,
+	);
+	const filteredGraph = options.factIds
+		? graph.map((node) => {
+			if (!("itemListElement" in node)) return node;
+			const itemListElement = node.itemListElement.filter((item) => options.factIds?.includes(item.identifier));
+			return { ...node, numberOfItems: itemListElement.length, itemListElement };
+		})
+		: graph;
 	return {
 		type: "application/ld+json",
 		children: JSON.stringify({
 			"@context": "https://schema.org",
-			"@graph": buildAgentEntityGraph(
-				options.locale,
-				[options.pageKey],
-				siteHref,
-				options.publicMetadata ? { [options.pageKey]: options.publicMetadata } : undefined,
-			),
+			"@graph": filteredGraph,
 		}),
 	};
+}
+
+export function publicFactDiscoveryLinks(locale: ExperienceLocale, factId: string) {
+	const topic = getAgentTopic(locale, "home");
+	return [
+		{ rel: "alternate", type: "text/html", href: siteHref(`${topic.agentPath}#${factId}`) },
+		...machineDiscoveryLinks(locale, "home"),
+	] as const;
 }
 
 export function machineDiscoveryLinks(locale: ExperienceLocale, pageKey: HumanPageKey) {

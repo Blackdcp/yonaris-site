@@ -68,8 +68,13 @@ describe("English Site 1.0 Product route", () => {
 		for (const value of [GLOBAL_EN_BUYER_QUESTION.market, GLOBAL_EN_BUYER_QUESTION.language, ...GLOBAL_EN_BUYER_QUESTION.observationConditions.channels]) {
 			expect(markets?.textContent).toContain(value);
 		}
-		expect(document.querySelector("[data-product-human-agent]")?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.humanAgent.headline);
-		expect(document.querySelector('[data-product-human-agent] a[href="/human-agent"]')).not.toBeNull();
+		const bridge = document.querySelector<HTMLElement>("[data-human-agent-bridge='product']");
+		expect(bridge?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.humanAgent.headline);
+		expect(bridge?.dataset.factId).toBe("yonaris.category.ai-native-martech");
+		expect(bridge?.querySelectorAll("[data-bridge-layer]")).toHaveLength(3);
+		expect(bridge?.querySelector('a[href="/human-agent"]')).not.toBeNull();
+		expect(bridge?.querySelector('a[href="/agent#yonaris.category.ai-native-martech"]')).not.toBeNull();
+		expect(bridge?.querySelector("[data-human-agent-lens], button")).toBeNull();
 		expect(document.querySelector('[data-product-closing] a[href="/casework"]')).not.toBeNull();
 		expect(document.querySelector('[data-product-closing] a[href="/contact"]')).not.toBeNull();
 	});

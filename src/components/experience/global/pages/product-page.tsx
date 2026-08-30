@@ -3,7 +3,8 @@ import { getSiteV1Asset } from "@/content/public-site/assets";
 import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
 import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
 import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
-import { resolveNavigationTarget } from "@/site/route-selectors";
+import { GLOBAL_EN_HUMAN_AGENT_PAGE } from "@/content/public-site/global-en/pages/human-agent";
+import { getAgentPath, resolveNavigationTarget } from "@/site/route-selectors";
 import type { NavigationTarget } from "@/site/route-types";
 import { BuyerQuestionProvider } from "../../shared/buyer-question/buyer-question-provider";
 import { ProductQuestionWorkspace } from "../../shared/product/product-question-workspace";
@@ -90,15 +91,17 @@ function MarketsLanguages() {
 
 function HumanAgentBridge() {
 	return (
-		<section className="site-v1-product-human-agent" data-product-human-agent data-fact-id={categoryFact.id}>
+		<section className="site-v1-product-human-agent" data-product-human-agent data-human-agent-bridge="product" data-fact-id={categoryFact.id}>
 			<div><span>{categoryFact.id}</span><h2>{copy.humanAgent.headline}</h2><p>{copy.humanAgent.body}</p></div>
-			<article>
-				<strong>{categoryFact.value["global-en"]}</strong>
-				<p>{categoryFact.source.label["global-en"]}</p>
-				<code>{categoryFact.id} · {categoryFact.lastReviewed}</code>
-				<small>{categoryFact.boundary["global-en"]}</small>
-			</article>
-			<ActionLink target={copy.humanAgent.action.target}>{copy.humanAgent.action.label}</ActionLink>
+			<div className="site-v1-product-human-agent__projection" aria-label={copy.humanAgent.headline}>
+				<article data-bridge-layer="human"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[0]}</span><strong>{categoryFact.value["global-en"]}</strong><small>{categoryFact.scope["global-en"]}</small></article>
+				<article data-bridge-layer="evidence"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[1]}</span><code>{categoryFact.source.id}</code><p>{categoryFact.source.label["global-en"]}</p></article>
+				<article data-bridge-layer="agent"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[2]}</span><code>{categoryFact.id} · {categoryFact.lastReviewed}</code><small>{categoryFact.boundary["global-en"]}</small></article>
+			</div>
+			<div className="site-v1-product-actions">
+				<ActionLink target={copy.humanAgent.action.target}>{copy.humanAgent.action.label}</ActionLink>
+				<a className="site-v1-product-action site-v1-product-action--quiet" href={`${getAgentPath("global-en", "home")}#${categoryFact.id}`}>{GLOBAL_EN_HUMAN_AGENT_PAGE.actions[0].label}</a>
+			</div>
 		</section>
 	);
 }
