@@ -10,7 +10,8 @@
 	transition: transform var(--site-v1-duration-fast) var(--site-v1-ease-standard);
 }
 
-.site-v1-skip-link:focus {
+.site-v1-skip-link:focus,
+.site-v1-skip-link:focus-visible {
 	transform: translateY(0);
 }
 

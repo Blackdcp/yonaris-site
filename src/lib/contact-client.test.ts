@@ -6,7 +6,7 @@ import {
 	resolveContactRequestIdentity,
 	submitContactRequest,
 } from "./contact-client";
-import type { ContactLead } from "./contact-schema";
+import type { ContactFormResult, ContactLead } from "./contact-schema";
 
 const lead: ContactLead = {
 	locale: "en",
@@ -38,6 +38,29 @@ describe("contact client", () => {
 		new Response("not json", { status: 202 }),
 	])("keeps any response without an explicit accepted confirmation unconfirmed", async (response) => {
 		await expect(submitContactRequest(lead, submissionId, { fetchImpl: async () => response.clone() })).resolves.toEqual({ status: "unconfirmed" });
+	});
+
+	it("preserves the authoritative values and field errors from a 422 invalid result", async () => {
+		const invalid = {
+			status: "invalid",
+			values: {
+				locale: "en",
+				workEmail: "server-retained@example.com",
+				name: "Server retained name",
+				companyOrWebsite: "rejected.example",
+				curiosity: "Server retained question",
+				marketQuestion: "",
+				marketOrLanguage: "",
+				buyerOrCommercialContext: "",
+				requestType: "conversation",
+				botField: "",
+			},
+			fieldErrors: { companyOrWebsite: "This value was rejected by the server." },
+		} satisfies ContactFormResult;
+
+		await expect(submitContactRequest(lead, submissionId, {
+			fetchImpl: async () => Response.json(invalid, { status: 422 }),
+		})).resolves.toEqual(invalid);
 	});
 
 	it("times out through the injected network path without throwing or sending another request", async () => {

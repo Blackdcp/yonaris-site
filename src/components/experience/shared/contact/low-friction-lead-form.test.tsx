@@ -147,6 +147,74 @@ describe("low-friction contact aperture", () => {
 		expect(mounted.textContent).not.toContain(GLOBAL_EN_CONTACT_PAGE.success);
 	});
 
+	it("includes the actual enhanced-form honeypot value and cannot confirm a trapped submission", async () => {
+		let payload: Record<string, unknown> = {};
+		const fetchImpl = vi.fn<typeof fetch>(async (_request, init) => {
+			payload = JSON.parse(String(init?.body)) as Record<string, unknown>;
+			if (payload.botField) {
+				return Response.json({
+					status: "invalid",
+					values: {
+						locale: "en",
+						workEmail: "ava@acme.example",
+						name: "",
+						companyOrWebsite: "",
+						curiosity: "",
+						marketQuestion: "",
+						marketOrLanguage: "",
+						buyerOrCommercialContext: "",
+						requestType: "conversation",
+						botField: "",
+					},
+					fieldErrors: { form: "Check the form and try again." },
+				}, { status: 422 });
+			}
+			return Response.json({ status: "confirmed" }, { status: 202 });
+		});
+		vi.stubGlobal("fetch", fetchImpl);
+		const mounted = await mount();
+		await setValue(mounted, "workEmail", "ava@acme.example");
+		await setValue(mounted, "botField", "automated answer");
+		await submit(mounted);
+
+		expect(payload.botField).toBe("automated answer");
+		expect(fetchImpl).toHaveBeenCalledTimes(1);
+		expect(aperture(mounted).dataset.v1State).toBe("invalid");
+		expect(mounted.querySelector('[data-contact-status="confirmed"]')).toBeNull();
+		expect(document.activeElement).toBe(mounted.querySelector('[data-contact-status="invalid"]'));
+	});
+
+	it("renders an authoritative server 422 as invalid, retains its values, and focuses its first rejected field", async () => {
+		const invalid = {
+			status: "invalid" as const,
+			values: {
+				locale: "en" as const,
+				workEmail: "server-retained@example.com",
+				name: "Server retained name",
+				companyOrWebsite: "rejected.example",
+				curiosity: "Server retained question",
+				marketQuestion: "",
+				marketOrLanguage: "",
+				buyerOrCommercialContext: "",
+				requestType: "conversation" as const,
+				botField: "",
+			},
+			fieldErrors: { companyOrWebsite: "This value was rejected by the server." },
+		};
+		vi.stubGlobal("fetch", vi.fn(async () => Response.json(invalid, { status: 422 })));
+		const mounted = await mount();
+		await setValue(mounted, "workEmail", "ava@acme.example");
+		await submit(mounted);
+
+		expect(aperture(mounted).dataset.v1State).toBe("invalid");
+		expect(input(mounted, "workEmail").value).toBe("server-retained@example.com");
+		expect(input(mounted, "name").value).toBe("Server retained name");
+		expect(input(mounted, "companyOrWebsite").value).toBe("rejected.example");
+		expect(input(mounted, "curiosity").value).toBe("Server retained question");
+		expect(input(mounted, "companyOrWebsite").getAttribute("aria-invalid")).toBe("true");
+		expect(document.activeElement).toBe(input(mounted, "companyOrWebsite"));
+	});
+
 	it("resolves only explicit server confirmation into a focused personal follow-up state", async () => {
 		vi.stubGlobal("fetch", vi.fn(async () => Response.json({ status: "confirmed" }, { status: 202 })));
 		const mounted = await mount();

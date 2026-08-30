@@ -8,11 +8,12 @@ interface HighIntentFieldsProps {
 	readonly errors: ContactFieldErrors;
 	readonly refs: ContactFieldRefs;
 	readonly expanded: boolean;
+	readonly autoFocusField: ContactFieldName | null;
 	readonly onExpandedChange: (expanded: boolean) => void;
 	readonly onUpdate: (field: ContactFieldName, value: string) => void;
 }
 
-export function HighIntentFields({ copy, values, errors, refs, expanded, onExpandedChange, onUpdate }: HighIntentFieldsProps) {
+export function HighIntentFields({ copy, values, errors, refs, expanded, autoFocusField, onExpandedChange, onUpdate }: HighIntentFieldsProps) {
 	return (
 		<details
 			className="site-v1-contact-form__high-intent"
@@ -31,6 +32,7 @@ export function HighIntentFields({ copy, values, errors, refs, expanded, onExpan
 						rows={4}
 						value={values.marketQuestion}
 						maxLength={1_500}
+						autoFocus={autoFocusField === "marketQuestion"}
 						aria-invalid={errors.marketQuestion ? true : undefined}
 						aria-describedby={errors.marketQuestion ? "contact-market-question-error" : undefined}
 						onChange={(event) => onUpdate("marketQuestion", event.currentTarget.value)}
@@ -45,6 +47,7 @@ export function HighIntentFields({ copy, values, errors, refs, expanded, onExpan
 						name="marketOrLanguage"
 						value={values.marketOrLanguage}
 						maxLength={240}
+						autoFocus={autoFocusField === "marketOrLanguage"}
 						aria-invalid={errors.marketOrLanguage ? true : undefined}
 						aria-describedby={errors.marketOrLanguage ? "contact-market-language-error" : undefined}
 						onChange={(event) => onUpdate("marketOrLanguage", event.currentTarget.value)}
@@ -60,6 +63,7 @@ export function HighIntentFields({ copy, values, errors, refs, expanded, onExpan
 						rows={4}
 						value={values.buyerOrCommercialContext}
 						maxLength={1_500}
+						autoFocus={autoFocusField === "buyerOrCommercialContext"}
 						aria-invalid={errors.buyerOrCommercialContext ? true : undefined}
 						aria-describedby={errors.buyerOrCommercialContext ? "contact-buyer-context-error" : undefined}
 						onChange={(event) => onUpdate("buyerOrCommercialContext", event.currentTarget.value)}

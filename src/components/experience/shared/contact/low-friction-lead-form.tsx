@@ -5,7 +5,7 @@ import type { ContactFormUiCopy } from "@/content/public-site/contracts/contact-
 import type { ContactPageCopy } from "@/content/public-site/contracts/pages/contact";
 import type { ContactFormResult, ContactLocale, ContactRequestType } from "@/lib/contact-schema";
 import { useMotionPreference } from "../motion/use-motion-preference";
-import { ContactFields, type ContactFieldName, type ContactFieldRefs } from "./contact-fields";
+import { ContactFields, firstContactInvalidField, type ContactFieldName, type ContactFieldRefs } from "./contact-fields";
 import { HighIntentFields } from "./high-intent-fields";
 import { useContactForm, type ContactApertureState } from "./use-contact-form";
 
@@ -45,6 +45,8 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 	useEffect(() => setEnhanced(true), []);
 	const signature = geometry[form.state];
 	const privacy = requestType === "privacy";
+	const initialInvalidField = initialResult?.status === "invalid" ? firstContactInvalidField(initialResult.fieldErrors) : null;
+	const initialFormErrorFocus = initialResult?.status === "invalid" && !initialInvalidField && Boolean(initialResult.fieldErrors.form);
 
 	return (
 		<section
@@ -68,6 +70,7 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 					role="status"
 					aria-live="polite"
 					tabIndex={-1}
+					autoFocus={initialResult?.status === "confirmed"}
 				>
 					<p>{copy.success}</p>
 				</div>
@@ -97,7 +100,7 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 					values={form.values}
 					errors={form.errors}
 					refs={fieldRefs}
-					invalidAutoFocus={Boolean(initialResult?.status === "invalid")}
+					autoFocusField={initialInvalidField}
 					onUpdate={form.update}
 				/>
 				<HighIntentFields
@@ -106,6 +109,7 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 					errors={form.errors}
 					refs={fieldRefs}
 					expanded={form.expanded}
+					autoFocusField={initialInvalidField}
 					onExpandedChange={form.setHighIntentExpanded}
 					onUpdate={form.update}
 				/>
@@ -114,7 +118,18 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 						{uiCopy.privacyBoundary}
 					</p>
 				) : null}
-				{form.errors.form ? <p className="site-v1-contact-form__message" role="alert">{form.errors.form}</p> : null}
+				{form.errors.form ? (
+					<p
+						ref={statusRef as React.RefObject<HTMLParagraphElement>}
+						className="site-v1-contact-form__message"
+						data-contact-status="invalid"
+						role="alert"
+						tabIndex={-1}
+						autoFocus={initialFormErrorFocus}
+					>
+						{form.errors.form}
+					</p>
+				) : null}
 				{form.state === "unconfirmed" ? (
 					<p
 						ref={statusRef as React.RefObject<HTMLParagraphElement>}
@@ -122,6 +137,7 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 						data-contact-status="unconfirmed"
 						role="alert"
 						tabIndex={-1}
+						autoFocus={initialResult?.status === "unconfirmed"}
 					>
 						{uiCopy.unconfirmedMessage}
 					</p>

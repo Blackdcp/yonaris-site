@@ -6,6 +6,7 @@ import { GLOBAL_EN_CONTACT_PAGE } from "@/content/public-site/global-en/pages/co
 import { buildPageHead } from "@/editions/page-head";
 import type { ContactFormResult } from "@/lib/contact-schema";
 import { Route } from "@/routes/contact";
+import { renderContactNativeDocument } from "./contact-native-document.server";
 import { ContactPage } from "./contact-page";
 
 const submissionId = "0198ef3d-34e1-7f14-a74d-e09b66d14b11";
@@ -75,5 +76,47 @@ describe("English Site 1.0 Contact route", () => {
 		expect(document.querySelector<HTMLInputElement>('[name="name"]')?.value).toBe("Ava");
 		expect(document.body.textContent).toContain("Kept");
 		expect(document.querySelector("form")?.getAttribute("method")).toBe("post");
+	});
+
+	it("makes the native skip link keyboard-revealable and declaratively focuses each server result", () => {
+		const values = {
+			locale: "en" as const,
+			workEmail: "ava@acme.example",
+			name: "Ava",
+			companyOrWebsite: "",
+			curiosity: "Kept",
+			marketQuestion: "Server-retained market question",
+			marketOrLanguage: "",
+			buyerOrCommercialContext: "",
+			requestType: "conversation" as const,
+			botField: "",
+		};
+		const native = (result: ContactFormResult) => renderContactNativeDocument(
+			result,
+			submissionId,
+			{ locale: "en", requestType: "conversation" },
+		);
+		const invalidHtml = native({
+			status: "invalid",
+			values,
+			fieldErrors: { marketQuestion: "This value was rejected by the server." },
+		});
+		const invalidDocument = new DOMParser().parseFromString(invalidHtml, "text/html");
+		const style = invalidDocument.querySelector("style")?.textContent ?? "";
+
+		expect(style).toContain(".site-v1-skip-link:focus");
+		expect(style).toContain(".site-v1-skip-link:focus-visible");
+		expect(invalidDocument.querySelector('[name="marketQuestion"][autofocus]')).not.toBeNull();
+		expect(invalidDocument.querySelector("details[data-contact-high-intent]")?.hasAttribute("open")).toBe(true);
+
+		const unconfirmedDocument = new DOMParser().parseFromString(native({
+			status: "unconfirmed",
+			values,
+			message: "Delivery was not confirmed.",
+		}), "text/html");
+		expect(unconfirmedDocument.querySelector('[data-contact-status="unconfirmed"][tabindex="-1"][autofocus]')).not.toBeNull();
+
+		const confirmedDocument = new DOMParser().parseFromString(native({ status: "confirmed" }), "text/html");
+		expect(confirmedDocument.querySelector('[data-contact-status="confirmed"][tabindex="-1"][autofocus]')).not.toBeNull();
 	});
 });
