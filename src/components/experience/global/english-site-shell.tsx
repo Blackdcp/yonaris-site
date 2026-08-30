@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { PublicPageKey } from "@/site/route-types";
 import { SiteShell, type SiteShellCopy } from "../shared/shell/site-shell";
 
 export const GLOBAL_EN_SITE_SHELL_COPY = {
@@ -26,6 +27,6 @@ export const GLOBAL_EN_SITE_SHELL_COPY = {
 	},
 } as const satisfies SiteShellCopy;
 
-export function EnglishSiteShell({ children }: { readonly children: ReactNode }) {
-	return <SiteShell edition="global-en" pageKey="home" copy={GLOBAL_EN_SITE_SHELL_COPY}>{children}</SiteShell>;
+export function EnglishSiteShell({ pageKey = "home", children }: { readonly pageKey?: PublicPageKey; readonly children: ReactNode }) {
+	return <SiteShell edition="global-en" pageKey={pageKey} copy={GLOBAL_EN_SITE_SHELL_COPY}>{children}</SiteShell>;
 }

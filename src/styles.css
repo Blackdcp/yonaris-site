@@ -8,6 +8,8 @@
 @import "./styles/site-v1/motion.css";
 @import "./styles/site-v1/home.css";
 @import "./styles/site-v1/answer-field.css";
+@import "./styles/site-v1/product.css";
+@import "./styles/site-v1/workspace.css";
 
 @source "../src";
 @source "../../../packages/ui/src";

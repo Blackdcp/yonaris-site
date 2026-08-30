@@ -1,0 +1,65 @@
+// @vitest-environment happy-dom
+
+import type { ComponentType } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
+import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
+import { Route } from "@/routes/product";
+
+const ProductRouteComponent = Route.options.component as ComponentType;
+
+describe("English Site 1.0 Product route", () => {
+	it("uses the approved Product shell, copy record and central route metadata", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		expect(document.querySelector('[data-generation="site-v1"][data-page="product"]')).not.toBeNull();
+		expect(document.querySelector('a[href="/product"][aria-current="page"]')).not.toBeNull();
+		expect(document.querySelector("h1")?.textContent).toBe(GLOBAL_EN_PRODUCT_PAGE.hero.headline);
+		expect(html).toContain(GLOBAL_EN_PRODUCT_PAGE.hero.body);
+		expect(Route.options.head).toBeTypeOf("function");
+	});
+
+	it("answers input, system work, team use and later review before interaction", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		const firstViewport = document.querySelector<HTMLElement>("[data-product-first-viewport]");
+		expect(firstViewport).not.toBeNull();
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.input.headline);
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[0]);
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[3]);
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.teamOutput.headline);
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[5]);
+		expect(firstViewport?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.statement);
+	});
+
+	it("uses the original responsive Product image and exposes the three canonical anchors", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		expect(html).toContain("/assets/site-v1/product-observation-room-640.avif");
+		expect(html).toContain("/assets/site-v1/product-observation-room-1600.webp");
+		expect(html).toMatch(/src="\/assets\/site-v1\/product-observation-room\.png"[^>]+width="1672" height="941"/);
+		for (const anchor of ["product-theatre", "how-it-works", "markets-languages"]) expect(html).toContain(`id="${anchor}"`);
+	});
+
+	it("treats markets and language as attributes of the same record and closes with concise bridges", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		const markets = document.querySelector<HTMLElement>("#markets-languages");
+		expect(markets?.dataset.recordId).toBe(GLOBAL_EN_BUYER_QUESTION.id);
+		for (const value of [GLOBAL_EN_BUYER_QUESTION.market, GLOBAL_EN_BUYER_QUESTION.language, ...GLOBAL_EN_BUYER_QUESTION.observationConditions.channels]) {
+			expect(markets?.textContent).toContain(value);
+		}
+		expect(document.querySelector("[data-product-human-agent]")?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.humanAgent.headline);
+		expect(document.querySelector('[data-product-human-agent] a[href="/human-agent"]')).not.toBeNull();
+		expect(document.querySelector('[data-product-closing] a[href="/casework"]')).not.toBeNull();
+		expect(document.querySelector('[data-product-closing] a[href="/contact"]')).not.toBeNull();
+	});
+
+	it("places a readable representative disclosure next to the workspace in SSR", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		const theatre = document.querySelector<HTMLElement>("#product-theatre");
+		expect(theatre?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.disclosure.boundary);
+		expect(theatre?.querySelector(".site-v1-representative-disclosure")).not.toBeNull();
+	});
+});
