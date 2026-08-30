@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApproachRouteImport } from './routes/approach'
+import { Route as CaseworkRouteImport } from './routes/casework'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as DiagnosticRouteImport } from './routes/diagnostic'
 import { Route as FeaturesRouteImport } from './routes/features'
@@ -72,6 +73,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApproachRoute = ApproachRouteImport.update({
   id: '/approach',
   path: '/approach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseworkRoute = CaseworkRouteImport.update({
+  id: '/casework',
+  path: '/casework',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompanyRoute = CompanyRouteImport.update({
@@ -339,6 +345,7 @@ const ApiPlausibleJsScriptIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
+  '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
@@ -395,6 +402,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
+  '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
@@ -452,6 +460,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
+  '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
@@ -510,6 +519,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/approach'
+    | '/casework'
     | '/company'
     | '/diagnostic'
     | '/features'
@@ -566,6 +576,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/approach'
+    | '/casework'
     | '/company'
     | '/diagnostic'
     | '/features'
@@ -622,6 +633,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/approach'
+    | '/casework'
     | '/company'
     | '/diagnostic'
     | '/features'
@@ -679,6 +691,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApproachRoute: typeof ApproachRoute
+  CaseworkRoute: typeof CaseworkRoute
   CompanyRoute: typeof CompanyRoute
   DiagnosticRoute: typeof DiagnosticRoute
   FeaturesRoute: typeof FeaturesRoute
@@ -747,6 +760,13 @@ declare module '@tanstack/react-router' {
       path: '/approach'
       fullPath: '/approach'
       preLoaderRoute: typeof ApproachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/casework': {
+      id: '/casework'
+      path: '/casework'
+      fullPath: '/casework'
+      preLoaderRoute: typeof CaseworkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/company': {
@@ -1119,6 +1139,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApproachRoute: ApproachRoute,
+  CaseworkRoute: CaseworkRoute,
   CompanyRoute: CompanyRoute,
   DiagnosticRoute: DiagnosticRoute,
   FeaturesRoute: FeaturesRoute,
