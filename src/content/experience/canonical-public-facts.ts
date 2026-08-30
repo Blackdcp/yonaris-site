@@ -28,9 +28,10 @@ export interface CanonicalPageFact {
 
 function categoryEvidence(locale: "en" | "zh"): string {
 	const { source, lastReviewed } = PRODUCT_FACTS.category;
+	const edition = locale === "en" ? "global-en" : "zh-cn";
 	return locale === "en"
-		? `${source.label} · reviewed ${lastReviewed}`
-		: `${source.label} · ${lastReviewed} 核对`;
+		? `${source.label[edition]} · reviewed ${lastReviewed}`
+		: `${source.label[edition]} · ${lastReviewed} 核对`;
 }
 
 export const EN_READING_RECORDS = [
@@ -41,11 +42,11 @@ export const EN_READING_RECORDS = [
 		meaning: "This category connects marketing evidence to decisions made by teams and the agents that shape them.",
 		fact: EN_CATEGORY,
 		evidence: categoryEvidence("en"),
-		boundary: PRODUCT_FACTS.category.boundary,
+		boundary: PRODUCT_FACTS.category.boundary["global-en"],
 		stableId: PRODUCT_FACTS.category.id,
 		sourceId: PRODUCT_FACTS.category.source.id,
-		source: PRODUCT_FACTS.category.source.label,
-		scope: PRODUCT_FACTS.category.scope,
+		source: PRODUCT_FACTS.category.source.label["global-en"],
+		scope: PRODUCT_FACTS.category.scope["global-en"],
 		lastReviewed: PRODUCT_FACTS.category.lastReviewed,
 	},
 	{
@@ -80,11 +81,11 @@ export const ZH_READING_RECORDS = [
 		meaning: "这一品类把营销证据接到团队的业务决策，以及影响这些决策的 Agent 上。",
 		fact: ZH_CATEGORY,
 		evidence: categoryEvidence("zh"),
-		boundary: PRODUCT_FACTS.category.boundary,
+		boundary: PRODUCT_FACTS.category.boundary["zh-cn"],
 		stableId: PRODUCT_FACTS.category.id,
 		sourceId: PRODUCT_FACTS.category.source.id,
-		source: PRODUCT_FACTS.category.source.label,
-		scope: PRODUCT_FACTS.category.scope,
+		source: PRODUCT_FACTS.category.source.label["zh-cn"],
+		scope: PRODUCT_FACTS.category.scope["zh-cn"],
 		lastReviewed: PRODUCT_FACTS.category.lastReviewed,
 	},
 	{

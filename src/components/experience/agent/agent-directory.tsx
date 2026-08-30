@@ -14,6 +14,9 @@ const directoryCopy = {
 		evidence: "Evidence",
 		boundary: "Boundary",
 		stableId: "Stable ID",
+		sourceId: "Source ID",
+		scope: "Scope",
+		lastReviewed: "Last reviewed",
 		facts: "Public fact directory",
 		factDirectoryLabel: "Fact directory",
 		humanAnchor: "Open the Human evidence",
@@ -32,6 +35,9 @@ const directoryCopy = {
 		evidence: "证据",
 		boundary: "边界",
 		stableId: "稳定 ID",
+		sourceId: "来源 ID",
+		scope: "适用范围",
+		lastReviewed: "最近核对",
 		facts: "公开事实目录",
 		factDirectoryLabel: "事实目录",
 		humanAnchor: "打开人类阅读依据",
@@ -108,6 +114,26 @@ export function AgentReadingPreview({ topic, locale }: { topic: AgentTopic; loca
 						<dt>{copy.evidence}</dt>
 						<dd>{fact.source}</dd>
 					</div>
+					{fact.sourceId ? (
+						<div>
+							<dt>{copy.sourceId}</dt>
+							<dd>
+								<code>{fact.sourceId}</code>
+							</dd>
+						</div>
+					) : null}
+					{fact.scope ? (
+						<div>
+							<dt>{copy.scope}</dt>
+							<dd>{fact.scope}</dd>
+						</div>
+					) : null}
+					{fact.lastReviewed ? (
+						<div>
+							<dt>{copy.lastReviewed}</dt>
+							<dd>{fact.lastReviewed}</dd>
+						</div>
+					) : null}
 					<div>
 						<dt>{copy.boundary}</dt>
 						<dd>{fact.boundary}</dd>
@@ -207,6 +233,26 @@ export function AgentDirectory({ topic, locale }: { topic: AgentTopic; locale: E
 							<dt>{copy.evidence}</dt>
 							<dd>{selectedFact.source}</dd>
 						</div>
+						{selectedFact.sourceId ? (
+							<div>
+								<dt>{copy.sourceId}</dt>
+								<dd>
+									<code>{selectedFact.sourceId}</code>
+								</dd>
+							</div>
+						) : null}
+						{selectedFact.scope ? (
+							<div>
+								<dt>{copy.scope}</dt>
+								<dd>{selectedFact.scope}</dd>
+							</div>
+						) : null}
+						{selectedFact.lastReviewed ? (
+							<div>
+								<dt>{copy.lastReviewed}</dt>
+								<dd>{selectedFact.lastReviewed}</dd>
+							</div>
+						) : null}
 						<div>
 							<dt>{copy.boundary}</dt>
 							<dd>{selectedFact.boundary}</dd>
@@ -245,6 +291,26 @@ export function AgentDirectory({ topic, locale }: { topic: AgentTopic; locale: E
 										<dt>{copy.evidence}</dt>
 										<dd>{fact.source}</dd>
 									</div>
+									{fact.sourceId ? (
+										<div>
+											<dt>{copy.sourceId}</dt>
+											<dd>
+												<code>{fact.sourceId}</code>
+											</dd>
+										</div>
+									) : null}
+									{fact.scope ? (
+										<div>
+											<dt>{copy.scope}</dt>
+											<dd>{fact.scope}</dd>
+										</div>
+									) : null}
+									{fact.lastReviewed ? (
+										<div>
+											<dt>{copy.lastReviewed}</dt>
+											<dd>{fact.lastReviewed}</dd>
+										</div>
+									) : null}
 									<div>
 										<dt>{copy.boundary}</dt>
 										<dd>{fact.boundary}</dd>

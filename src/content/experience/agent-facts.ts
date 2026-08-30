@@ -54,6 +54,9 @@ function fromReadingFact(record: CanonicalReadingFact, path: string): AgentFact 
 		evidenceUrl: `${path}#${record.stableId}`,
 		source: record.evidence,
 		boundary: record.boundary,
+		sourceId: record.sourceId,
+		scope: record.scope,
+		lastReviewed: record.lastReviewed,
 	};
 }
 

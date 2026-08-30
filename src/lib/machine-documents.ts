@@ -63,6 +63,9 @@ const documentLabels = {
 		reviewedBy: "Reviewed by",
 		scope: "Scope",
 		stableId: "Stable ID",
+		sourceId: "Source ID",
+		factScope: "Fact scope",
+		factLastReviewed: "Fact last reviewed",
 		fact: "Fact",
 		evidence: "Evidence",
 		boundary: "Boundary",
@@ -83,6 +86,9 @@ const documentLabels = {
 		reviewedBy: "核对方",
 		scope: "范围",
 		stableId: "稳定 ID",
+		sourceId: "来源 ID",
+		factScope: "事实适用范围",
+		factLastReviewed: "事实核对日期",
 		fact: "事实",
 		evidence: "证据",
 		boundary: "边界",
@@ -106,7 +112,7 @@ ${group.facts
 ${labels.stableId}${labels.separator}${fact.id}
 ${labels.fact}${labels.separator}${fact.value}
 ${labels.evidence}${labels.separator}${fact.source}
-${labels.boundary}${labels.separator}${fact.boundary}
+${fact.sourceId ? `${labels.sourceId}${labels.separator}${fact.sourceId}\n` : ""}${fact.scope ? `${labels.factScope}${labels.separator}${fact.scope}\n` : ""}${fact.lastReviewed ? `${labels.factLastReviewed}${labels.separator}${fact.lastReviewed}\n` : ""}${labels.boundary}${labels.separator}${fact.boundary}
 ${labels.humanAnchor}${labels.separator}${siteHref(fact.evidenceUrl)}`,
 	)
 	.join("\n\n")}`,
@@ -292,6 +298,24 @@ function topicNodes(topic: AgentTopic, href: HrefBuilder) {
 				identifier: fact.id,
 				name: fact.value,
 				description: chinese ? `${fact.source} 边界：${fact.boundary}` : `${fact.source} Boundary: ${fact.boundary}`,
+				dateModified: fact.lastReviewed,
+				additionalProperty: [
+					...(fact.sourceId
+						? [{ "@type": "PropertyValue", name: chinese ? "来源 ID" : "Source ID", value: fact.sourceId }]
+						: []),
+					...(fact.scope
+						? [{ "@type": "PropertyValue", name: chinese ? "事实适用范围" : "Fact scope", value: fact.scope }]
+						: []),
+					...(fact.lastReviewed
+						? [
+								{
+									"@type": "PropertyValue",
+									name: chinese ? "事实核对日期" : "Fact last reviewed",
+									value: fact.lastReviewed,
+								},
+							]
+						: []),
+				],
 				url: `${humanPage}#${fact.id}`,
 			})),
 		},

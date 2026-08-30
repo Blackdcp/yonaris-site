@@ -55,7 +55,7 @@ const retiredMarkers = [
 
 const internalEnglish =
 	/\b(denominator|managed delivery|configured scope|evidence boundary|interface demonstration|no customer data)\b/i;
-const internalChinese = /证据边界|有效分母|人工审核点|配置化观察|责任边界|当前软件|当前演示|因果证明/;
+const internalChinese = /证据边界|有效分母|人工审核点|配置化观察|责任边界|当前软件|当前演示/;
 const roleSegmentation = /for (CMOs|marketers|founders|sales teams)|市场总监|品牌负责人|创始人|销售团队/i;
 
 function expectSharedHumanContract(

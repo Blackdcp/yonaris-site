@@ -1,4 +1,4 @@
-import type { BilingualPublicFact, SharedPublicFact } from "../contracts/public-fact";
+import type { SharedMetadataBilingualPublicFact, SharedPublicFact } from "../contracts/public-fact";
 
 const COMPANY_STATEMENT_SOURCE = {
 	id: "yonaris.source.company-statement.2026-08-30",
@@ -42,6 +42,6 @@ export const COMPANY_FACTS = {
 } as const satisfies {
 	readonly publicName: SharedPublicFact;
 	readonly officialDomain: SharedPublicFact;
-	readonly contactLabel: BilingualPublicFact;
-	readonly privacyLabel: BilingualPublicFact;
+	readonly contactLabel: SharedMetadataBilingualPublicFact;
+	readonly privacyLabel: SharedMetadataBilingualPublicFact;
 };

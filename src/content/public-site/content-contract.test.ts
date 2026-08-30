@@ -20,6 +20,10 @@ import { ZH_CN_PRIVACY_PAGE } from "./zh-cn/pages/privacy";
 import { ZH_CN_PRODUCT_PAGE } from "./zh-cn/pages/product";
 
 const records = [GLOBAL_EN_BUYER_QUESTION, ZH_CN_BUYER_QUESTION] as const satisfies readonly BuyerQuestionRecord[];
+const EXPECTED_CHANNELS = {
+	"global-en": ["AI answers", "Search", "Editorial & reviews", "Company-owned content"],
+	"zh-cn": ["AI 答案", "搜索结果", "行业内容与评测", "品牌公开信息"],
+} as const;
 const pages = [
 	GLOBAL_EN_HOME_PAGE, GLOBAL_EN_PRODUCT_PAGE, GLOBAL_EN_CASEWORK_PAGE, GLOBAL_EN_COMPANY_PAGE,
 	GLOBAL_EN_HUMAN_AGENT_PAGE, GLOBAL_EN_CONTACT_PAGE, GLOBAL_EN_PRIVACY_PAGE,
@@ -82,9 +86,9 @@ describe("canonical public content contract", () => {
 
 	it("covers every declared channel with a uniquely identified, resolvable answer trace", () => {
 		for (const record of records) {
-			const declaredChannels = [...record.observationConditions.channels].sort();
-			const answeredChannels = record.channelAnswers.map((answer) => answer.environment).sort();
-			expect(answeredChannels).toEqual(declaredChannels);
+			const expectedChannels = EXPECTED_CHANNELS[record.edition];
+			expect(record.observationConditions.channels).toEqual(expectedChannels);
+			expect(record.channelAnswers.map((answer) => answer.environment)).toEqual(expectedChannels);
 
 			const allNodeIds = [
 				record.id,
@@ -98,6 +102,9 @@ describe("canonical public content contract", () => {
 
 			const reasonIds = new Set<string>(record.comparisonReasons.map((reason) => reason.id));
 			const evidenceIds = new Set<string>(record.evidence.map((item) => item.id));
+			const evidencePhaseById = new Map<string, "baseline" | "later-review">(
+				record.evidence.map((item) => [item.id, item.phase]),
+			);
 			const gapIds = new Set<string>(record.gaps.map((gap) => gap.id));
 			for (const answer of record.channelAnswers) {
 				const trace = answer as typeof answer & {
@@ -108,6 +115,7 @@ describe("canonical public content contract", () => {
 				expect(trace.evidenceIds?.length ?? 0).toBeGreaterThan(0);
 				expect(trace.reasonIds?.every((id) => reasonIds.has(id))).toBe(true);
 				expect(trace.evidenceIds?.every((id) => evidenceIds.has(id))).toBe(true);
+				expect(trace.evidenceIds?.every((id) => evidencePhaseById.get(id) === "baseline")).toBe(true);
 			}
 			for (const reason of record.comparisonReasons) {
 				expect(reason.evidenceIds.length).toBeGreaterThan(0);

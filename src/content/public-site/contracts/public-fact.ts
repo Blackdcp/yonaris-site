@@ -6,7 +6,22 @@ export interface PublicFactSource {
 	readonly kind: "company-authored" | "official-domain";
 }
 
+export interface BilingualPublicFactSource {
+	readonly id: string;
+	readonly label: Readonly<Record<SiteEdition, string>>;
+	readonly kind: "company-authored" | "official-domain";
+}
+
 export interface BilingualPublicFact {
+	readonly id: string;
+	readonly value: Readonly<Record<SiteEdition, string>>;
+	readonly source: BilingualPublicFactSource;
+	readonly scope: Readonly<Record<SiteEdition, string>>;
+	readonly lastReviewed: `${number}-${number}-${number}`;
+	readonly boundary: Readonly<Record<SiteEdition, string>>;
+}
+
+export interface SharedMetadataBilingualPublicFact {
 	readonly id: string;
 	readonly value: Readonly<Record<SiteEdition, string>>;
 	readonly source: PublicFactSource;

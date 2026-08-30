@@ -43,6 +43,7 @@ const COPY = {
 		agent: "Agent reading",
 		range: "Reveal the record structure",
 		publicBasis: "Public basis",
+		scope: "Scope",
 		boundary: "Boundary",
 		stableIdentity: "Stable identity",
 		reviewDate: "Review date",
@@ -69,6 +70,7 @@ const COPY = {
 		agent: "Agent 阅读",
 		range: "展开记录结构",
 		publicBasis: "公开依据",
+		scope: "适用范围",
 		boundary: "边界",
 		stableIdentity: "稳定标识",
 		reviewDate: "核对日期",
@@ -90,10 +92,12 @@ const COPY = {
 	},
 } as const;
 
-function categoryRecord(locale: ExperienceLocale): CanonicalReadingFact & { readonly lastReviewed: string } {
+function categoryRecord(
+	locale: ExperienceLocale,
+): CanonicalReadingFact & { readonly lastReviewed: string; readonly scope: string } {
 	const records = locale === "zh" ? ZH_READING_RECORDS : EN_READING_RECORDS;
 	const record = records.find((item) => item.id === "category");
-	if (!record?.lastReviewed) throw new Error("Canonical category record is unavailable");
+	if (!record?.lastReviewed || !record.scope) throw new Error("Canonical category record is unavailable");
 	return record;
 }
 
@@ -170,6 +174,10 @@ export function CanonicalRecordTransform({ locale, compact = false }: { locale: 
 				<div hidden={!reveal.publicBasis}>
 					<dt>{copy.publicBasis}</dt>
 					<dd>{record.evidence}</dd>
+				</div>
+				<div hidden={!reveal.boundary}>
+					<dt>{copy.scope}</dt>
+					<dd>{record.scope}</dd>
 				</div>
 				<div hidden={!reveal.boundary}>
 					<dt>{copy.boundary}</dt>
