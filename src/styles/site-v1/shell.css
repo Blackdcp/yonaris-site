@@ -258,3 +258,9 @@
 		grid-column: auto;
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.site-v1-skip-link {
+		transition: none;
+	}
+}

@@ -13,6 +13,7 @@
 		"build": "vite build",
 		"start": "node .output/server/index.mjs",
 		"test": "vitest run --config vitest.config.ts",
+		"test:e2e": "playwright test --config playwright.config.ts",
 		"test:scripts": "node --test scripts/*.test.mjs",
 		"audit:legacy-marketing": "node scripts/audit-legacy-consumers.mjs",
 		"audit:site-manifest": "tsx scripts/audit-site-manifest.ts",
@@ -20,6 +21,7 @@
 		"generate-icons": "tsx scripts/generate-brand-icons.tsx",
 		"smoke:site": "node scripts/smoke-marketing.mjs",
 		"visual:matrix": "node scripts/site-06-visual-matrix.mjs",
+		"visual:english": "node scripts/site-v1-english-matrix.mjs",
 		"visual:privacy": "node scripts/site-06-privacy-hydration.mjs"
 	},
 	"dependencies": {

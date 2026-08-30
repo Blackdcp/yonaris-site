@@ -530,6 +530,9 @@
 	.site-v1-evidence-lens__ring--middle button { top: 42%; right: -18%; }
 	.site-v1-evidence-lens__ring--inner button { bottom: -30%; left: 15%; }
 	.site-v1-evidence-lens__ring button { max-width: 10rem; padding-inline: 0.45rem; white-space: normal; }
+	.site-v1-evidence-lens__ring--outer button { transform: scale(calc(1 / var(--lens-outer-scale))); }
+	.site-v1-evidence-lens__ring--middle button { transform: scale(calc(1 / var(--lens-middle-scale))); }
+	.site-v1-evidence-lens__ring--inner button { transform: scale(calc(1 / var(--lens-inner-scale))); }
 	.site-v1-evidence-lens__ring button strong { font-size: 0.68rem; }
 	.site-v1-evidence-lens__particles i { transform: rotate(calc(var(--particle-index) * 30deg)) translateY(calc(0rem - min(var(--lens-particle-radius), 9.5rem))); }
 	.site-v1-evidence-lens__core { width: 5.5rem; }
