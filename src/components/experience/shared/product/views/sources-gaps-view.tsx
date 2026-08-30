@@ -14,7 +14,7 @@ export function SourcesGapsView({ record, copy }: { readonly record: BuyerQuesti
 				{baselineEvidence.map((evidence, index) => (
 					<li data-evidence-id={evidence.id} key={evidence.id}>
 						<i aria-hidden="true">{String(index + 1).padStart(2, "0")}</i>
-						<div><strong>{evidence.sourceLabel}</strong><p>{evidence.trace}</p><small>{evidence.scope}</small></div>
+						<div><strong>{evidence.sourceLabel}</strong><code>{evidence.id}</code><code>{evidence.sourceId}</code><p>{evidence.trace}</p><small>{evidence.scope}</small></div>
 					</li>
 				))}
 			</ol>

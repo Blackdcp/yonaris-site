@@ -5,7 +5,7 @@ import type { ProductPageCopy } from "@/content/public-site/contracts/pages/prod
 import { useBuyerQuestionRecord } from "../buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../buyer-question/representative-disclosure";
 import { useMotionPreference } from "../motion/use-motion-preference";
-import { useResponsiveRovingTabOrientation, useRovingTabs } from "../use-roving-tabs";
+import { useRovingTabs } from "../use-roving-tabs";
 import { WorkspaceStage } from "./workspace-stage";
 import { initialWorkspaceState, workspaceStateReducer, WORKSPACE_VIEW_IDS, type WorkspaceViewId } from "./workspace-state";
 
@@ -14,7 +14,7 @@ export function ProductQuestionWorkspace({ copy }: { readonly copy: ProductPageC
 	const [state, dispatch] = useReducer(workspaceStateReducer, initialWorkspaceState);
 	const [enhanced, setEnhanced] = useState(false);
 	const motionPreference = useMotionPreference();
-	const orientation = useResponsiveRovingTabOrientation();
+	const orientation = "horizontal" as const;
 	useEffect(() => setEnhanced(true), []);
 	const select = (view: WorkspaceViewId) => dispatch({ type: "select", view });
 	const tabs = useRovingTabs({ items: WORKSPACE_VIEW_IDS, active: state.activeView, onChange: select, idPrefix: "product-workspace", orientation });

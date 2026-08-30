@@ -10,6 +10,13 @@ export function CurrentAnswersView({ record, copy }: { readonly record: BuyerQue
 					<article data-answer-sheet={answer.id} key={answer.id} style={{ "--answer-index": index } as React.CSSProperties}>
 						<header><span>{String(index + 1).padStart(2, "0")}</span><h4>{answer.environment}</h4></header>
 						<p>{answer.answer}</p>
+						<ul>
+							{answer.reasonIds.map((reasonId) => {
+								const reason = record.comparisonReasons.find((candidate) => candidate.id === reasonId);
+								if (!reason) return null;
+								return <li key={reason.id}><code>{reason.id}</code><span>{reason.disposition}</span><p>{reason.reason}</p><small>{reason.evidenceIds.join(" · ")}</small></li>;
+							})}
+						</ul>
 						<footer>{answer.evidenceIds.map((id) => <code key={id}>{id}</code>)}</footer>
 					</article>
 				))}

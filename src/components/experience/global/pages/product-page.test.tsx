@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
 import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
+import { buildPageHead } from "@/editions/page-head";
 import { Route } from "@/routes/product";
 
 const ProductRouteComponent = Route.options.component as ComponentType;
@@ -17,7 +18,13 @@ describe("English Site 1.0 Product route", () => {
 		expect(document.querySelector('a[href="/product"][aria-current="page"]')).not.toBeNull();
 		expect(document.querySelector("h1")?.textContent).toBe(GLOBAL_EN_PRODUCT_PAGE.hero.headline);
 		expect(html).toContain(GLOBAL_EN_PRODUCT_PAGE.hero.body);
-		expect(Route.options.head).toBeTypeOf("function");
+		const head = (Route.options.head as () => ReturnType<typeof buildPageHead>)();
+		expect(head.meta).toContainEqual({ title: GLOBAL_EN_PRODUCT_PAGE.metadata.title });
+		expect(head.meta).toContainEqual({ name: "description", content: GLOBAL_EN_PRODUCT_PAGE.metadata.description });
+		const graph = JSON.parse(head.scripts[0].children)["@graph"] as Array<Record<string, unknown>>;
+		const webPage = graph.find((node) => node["@type"] === "WebPage");
+		expect(webPage?.name).toBe(GLOBAL_EN_PRODUCT_PAGE.metadata.title);
+		expect(webPage?.description).toBe(GLOBAL_EN_PRODUCT_PAGE.metadata.description);
 	});
 
 	it("answers input, system work, team use and later review before interaction", () => {

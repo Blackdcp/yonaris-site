@@ -79,6 +79,71 @@ describe("ProductQuestionWorkspace progressive record", () => {
 		expect(persistentEvidence()).toEqual(initialEvidence);
 	});
 
+	it("keeps its horizontal state rail semantically aligned at narrow widths", () => {
+		const controls = host.querySelector<HTMLElement>('[role="tablist"]');
+		expect(controls?.getAttribute("aria-orientation")).toBe("horizontal");
+	});
+
+	it("projects answer reasons and their evidence relationships inside the visible answer panel", async () => {
+		await act(async () => findButton("Current answers").click());
+		const panel = activePanel();
+		for (const answer of GLOBAL_EN_BUYER_QUESTION.channelAnswers) {
+			const sheet = panel.querySelector<HTMLElement>(`[data-answer-sheet="${answer.id}"]`);
+			expect(sheet, answer.id).not.toBeNull();
+			for (const reasonId of answer.reasonIds) {
+				const reason = GLOBAL_EN_BUYER_QUESTION.comparisonReasons.find((candidate) => candidate.id === reasonId);
+				expect(sheet?.textContent).toContain(reasonId);
+				expect(sheet?.textContent).toContain(reason?.reason);
+				for (const evidenceId of reason?.evidenceIds ?? []) expect(sheet?.textContent).toContain(evidenceId);
+			}
+		}
+	});
+
+	it("projects source identity and evidence identity inside the visible sources panel", async () => {
+		await act(async () => findButton("Sources and gaps").click());
+		const panel = activePanel();
+		const projected = [...panel.querySelectorAll<HTMLElement>("ol > li")];
+		expect(projected.length).toBeGreaterThan(0);
+		for (const item of projected) {
+			const evidence = GLOBAL_EN_BUYER_QUESTION.evidence.find((candidate) => candidate.id === item.dataset.evidenceId);
+			expect(evidence).toBeDefined();
+			expect(item.textContent).toContain(evidence?.id);
+			expect(item.textContent).toContain(evidence?.sourceId);
+			expect(item.textContent).toContain(evidence?.sourceLabel);
+		}
+	});
+
+	it("shows the approved action status, reviewer and evidence gaps without a conflicting pending label", async () => {
+		await act(async () => findButton("Actions under review").click());
+		const panel = activePanel();
+		const action = GLOBAL_EN_BUYER_QUESTION.proposedActions[0];
+		const actionNode = panel.querySelector<HTMLElement>(`[data-reviewed-action="${action?.id}"]`);
+		expect(actionNode?.textContent).toContain("Approved by the team");
+		expect(actionNode?.textContent).toContain(action?.reviewedBy);
+		for (const gapId of action?.evidenceGapIds ?? []) expect(actionNode?.textContent).toContain(gapId);
+		expect(actionNode?.textContent).not.toContain("Needs human review");
+		expect(panel.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[3]);
+	});
+
+	it("keeps a canonical relationship spine across input, system, evidence, human boundary, output and review", () => {
+		const spine = host.querySelector<HTMLElement>("[data-persistent-record-spine]");
+		expect(spine).not.toBeNull();
+		const text = spine?.textContent ?? "";
+		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.id);
+		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.question);
+		for (const answer of GLOBAL_EN_BUYER_QUESTION.channelAnswers) expect(text).toContain(answer.id);
+		for (const reason of GLOBAL_EN_BUYER_QUESTION.comparisonReasons) expect(text).toContain(reason.id);
+		for (const evidence of GLOBAL_EN_BUYER_QUESTION.evidence) expect(text).toContain(evidence.id);
+		for (const action of GLOBAL_EN_BUYER_QUESTION.proposedActions) {
+			expect(text).toContain(action.id);
+			expect(text).toContain(action.reviewedBy);
+			for (const gapId of action.evidenceGapIds) expect(text).toContain(gapId);
+		}
+		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.changed[0]?.evidenceIds[0]);
+		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.evidenceIds[0]);
+		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.attribution.status);
+	});
+
 	it("accepts touch, Enter, Space and roving arrow input as independent direct controls", async () => {
 		await act(async () => findButton("Current answers").dispatchEvent(new TouchEvent("touchend", { bubbles: true })));
 		expect(activePanel().querySelectorAll("[data-answer-sheet]")).toHaveLength(4);
@@ -130,15 +195,21 @@ describe("ProductQuestionWorkspace progressive record", () => {
 		}
 	});
 
-	it("keeps proposed work behind a human approval boundary and preserves honest review limits", () => {
-		const text = host.textContent ?? "";
-		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.proposedActions[0]?.description);
-		expect(text).toContain("Needs human review");
-		expect(text).toContain("Approved by the team");
-		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.changed[0]?.statement);
-		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.statement);
-		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.attribution.boundary);
-		expect(text).toContain("does not promise exhaustive coverage");
-		expect(text).not.toMatch(/autonomously executed|we guarantee|guarantees (?:an? )?(?:uplift|improvement|result)|\b\d+(?:\.\d+)?%\b|customer revenue|live score/i);
+	it("keeps proposed work behind a human approval boundary and preserves honest review limits", async () => {
+		await act(async () => findButton("Actions under review").click());
+		let panelText = activePanel().textContent ?? "";
+		expect(panelText).toContain(GLOBAL_EN_BUYER_QUESTION.proposedActions[0]?.description);
+		expect(panelText).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[3]);
+		expect(panelText).toContain("Approved by the team");
+		expect(panelText).not.toMatch(/autonomously executed|we guarantee|guarantees (?:an? )?(?:uplift|improvement|result)|\b\d+(?:\.\d+)?%\b|customer revenue|live score/i);
+
+		await act(async () => findButton("Outcome review").click());
+		panelText = activePanel().textContent ?? "";
+		expect(panelText).toContain(GLOBAL_EN_BUYER_QUESTION.review.changed[0]?.statement);
+		expect(panelText).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.statement);
+		expect(panelText).toContain(GLOBAL_EN_BUYER_QUESTION.review.attribution.boundary);
+		expect(panelText).not.toMatch(/autonomously executed|we guarantee|guarantees (?:an? )?(?:uplift|improvement|result)|\b\d+(?:\.\d+)?%\b|customer revenue|live score/i);
+		const disclosure = host.querySelector<HTMLElement>(".site-v1-representative-disclosure");
+		expect(disclosure?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.disclosure.boundary);
 	});
 });
