@@ -3,6 +3,30 @@ import type { CompanyPageCopy } from "../../contracts/pages/company";
 export const GLOBAL_EN_COMPANY_PAGE = {
 	edition: "global-en",
 	page: "company",
+	siteV1: {
+		aperture: {
+			ariaLabel: "Yonaris operating principles",
+			instruction: "Choose a principle to change the aperture and inspect its attached evidence and boundary.",
+			evidenceLabel: "Attached evidence",
+			boundaryLabel: "Boundary",
+			principles: [
+				{ id: "why", label: "Why Yonaris exists" },
+				{ id: "audience", label: "Who it is for" },
+				{ id: "markets", label: "Across markets" },
+				{ id: "human-judgement", label: "Human judgement" },
+				{ id: "non-promises", label: "What Yonaris does not promise" },
+			],
+		},
+		verifiedFacts: {
+			heading: "Verified public facts",
+			labels: ["Category", "Public name", "Domain", "Contact", "Privacy"],
+			sourceLabel: "Source",
+			scopeLabel: "Scope",
+			reviewedLabel: "Last reviewed",
+			boundaryLabel: "Boundary",
+		},
+		closingLabel: "Continue with Yonaris",
+	},
 	metadata: {
 		title: "Company — Yonaris",
 		description: "Why Yonaris builds AI-Native MarTech Infrastructure to show teams what buyers are being told and what to change.",

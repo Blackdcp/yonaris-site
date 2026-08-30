@@ -3,6 +3,7 @@ import type { CompanyPageCopy } from "../../contracts/pages/company";
 export const ZH_CN_COMPANY_PAGE = {
 	edition: "zh-cn",
 	page: "company",
+	siteV1: null,
 	metadata: {
 		title: "关于 Yonaris",
 		description: "了解 Yonaris 为何构建 AI 原生营销科技基础设施，帮助团队应对由人作出、同时受 Agent 影响的市场决策。",
