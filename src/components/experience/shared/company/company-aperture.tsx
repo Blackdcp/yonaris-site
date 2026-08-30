@@ -205,9 +205,10 @@ export function CompanyAperture({ copy, labels, asset }: {
 							data-company-module={principle.id}
 							hidden={enhanced && activeIndex !== index}
 						>
-							<header><h2>{principle.label}</h2><p>{bodies[principle.id]}</p></header>
+							<header><h2>{principle.label}</h2></header>
 							<div data-company-attached-evidence="true">
 								<span>{labels.aperture.evidenceLabel}</span>
+								<p data-company-principle-condition="true">{bodies[principle.id]}</p>
 								<strong>{attachment.value}</strong>
 								<code>{attachment.id}</code>
 								<small>{attachment.source} · {attachment.scope} · {attachment.reviewed}</small>

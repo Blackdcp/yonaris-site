@@ -19,6 +19,13 @@
 - The close stays limited to the typed Product and Contact actions.
 - Added `scripts/company-aperture-layout.mjs` as the reproducible 1440x1000 / 390x844 production probe.
 
+## Review fix
+
+- Review RED reproduced the P1: the focused suite failed because the five principle articles exposed only two distinct canonical evidence payloads while the principle-specific approved copy remained in the heading area.
+- Tightened the regression test to inspect only `[data-company-attached-evidence]` and `[data-company-attached-boundary]`; whole-article headings can no longer create a false uniqueness result.
+- Moved each exact approved principle body into its typed attached-evidence composition and removed that body from the header. The canonical fact ID, source, scope, review date and accurate boundary remain attached as applicable, while all five evidence payloads are now materially distinct without new claims or fabricated identifiers.
+- The change only re-composes existing text inside the same responsive principle panel; no new visual probe or deployment was performed.
+
 ## Production visual evidence
 
 - Artifacts: `.superpowers/sdd/2026-08-30-yonaris-site-1-0-production/visual-task-6b/final/`.

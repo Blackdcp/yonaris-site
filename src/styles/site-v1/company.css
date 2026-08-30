@@ -181,8 +181,8 @@
 }
 
 .site-v1-company-principle h2 { max-width: 16ch; font-size: clamp(1.8rem, 3vw, 3.2rem); }
-.site-v1-company-principle header p { color: var(--site-v1-optical-300); font-size: 0.9rem; }
 .site-v1-company-principle [data-company-attached-evidence] { display: grid; gap: 0.4rem; align-content: start; min-width: 0; }
+.site-v1-company-principle [data-company-principle-condition] { color: var(--site-v1-optical-300); font-size: 0.9rem; line-height: 1.55; }
 .site-v1-company-principle [data-company-attached-evidence] strong { font-size: clamp(1.05rem, 1.5vw, 1.35rem); line-height: 1.15; }
 .site-v1-company-principle [data-company-attached-evidence] code,
 .site-v1-company-principle [data-company-attached-evidence] small { overflow-wrap: anywhere; color: var(--site-v1-optical-300); font-size: 0.63rem; line-height: 1.45; }

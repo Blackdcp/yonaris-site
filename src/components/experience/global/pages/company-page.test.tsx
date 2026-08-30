@@ -22,6 +22,13 @@ const principleLabels = [
 	"Human judgement",
 	"What Yonaris does not promise",
 ] as const;
+const principleBodies = [
+	GLOBAL_EN_COMPANY_PAGE.why,
+	GLOBAL_EN_COMPANY_PAGE.audience,
+	GLOBAL_EN_COMPANY_PAGE.markets,
+	GLOBAL_EN_COMPANY_PAGE.humanJudgement,
+	GLOBAL_EN_COMPANY_PAGE.nonPromises,
+] as const;
 
 let activeRoot: Root | undefined;
 let activeHost: HTMLDivElement | undefined;
@@ -169,10 +176,13 @@ describe("English Site 1.0 Company route", () => {
 			await act(async () => principleButton(host, index).click());
 			geometries.add(geometry(host));
 			const visible = activePrinciple(host);
-			evidence.add(visible.textContent ?? "");
+			const attachedEvidence = visible.querySelector<HTMLElement>("[data-company-attached-evidence]");
+			const attachedBoundary = visible.querySelector<HTMLElement>("[data-company-attached-boundary]");
+			evidence.add(`${attachedEvidence?.textContent ?? ""}|${attachedBoundary?.textContent ?? ""}`);
 			expect(visible.dataset.companyPrinciple).toBe(String(index));
-			expect(visible.querySelector("[data-company-attached-evidence]")).not.toBeNull();
-			expect(visible.querySelector("[data-company-attached-boundary]")).not.toBeNull();
+			expect(attachedEvidence?.textContent).toContain(principleBodies[index]);
+			expect(attachedBoundary?.textContent?.trim()).not.toBe("");
+			expect(visible.querySelector("header")?.textContent).not.toContain(principleBodies[index]);
 			expect(host.querySelectorAll("[data-company-principle]:not([hidden])")).toHaveLength(1);
 		}
 
