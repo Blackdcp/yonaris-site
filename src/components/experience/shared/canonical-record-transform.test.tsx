@@ -9,7 +9,7 @@ import {
 describe("CanonicalRecordTransform", () => {
 	it("renders the canonical fact once and attaches source, boundary, identity and review metadata", () => {
 		const html = renderToStaticMarkup(<CanonicalRecordTransform locale="en" />);
-		const fact = "AI-native MarTech infrastructure built for decisions made by people and shaped by agents.";
+		const fact = "AI-Native MarTech Infrastructure";
 		expect(html.split(fact)).toHaveLength(2);
 		expect(html).toContain('id="yonaris.category.ai-native-martech"');
 		expect(html).toContain('data-stable-id="yonaris.category.ai-native-martech"');
@@ -32,7 +32,7 @@ describe("CanonicalRecordTransform", () => {
 
 	it("localizes the canonical anchor, representations and retrieval boundary", () => {
 		const html = renderToStaticMarkup(<CanonicalRecordTransform locale="zh" />);
-		const fact = "面向人类决策、由 Agent 共同塑造的 AI 原生营销科技基础设施。";
+		const fact = "AI 原生营销科技基础设施";
 		expect(html.split(fact)).toHaveLength(2);
 		expect(html).toContain('href="/zh/company#yonaris.category.ai-native-martech"');
 		expect(html).toContain('href="/zh/agent/company#yonaris.category.ai-native-martech"');

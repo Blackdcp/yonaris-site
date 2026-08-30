@@ -60,9 +60,7 @@ describe("Site 06 English experience", () => {
 
 	it("publishes the canonical category fact without category drift", () => {
 		const category = scenes?.EN_READING_RECORDS?.find((record) => record.id === "category");
-		expect(category?.fact).toBe(
-			"AI-native MarTech infrastructure built for decisions made by people and shaped by agents.",
-		);
+		expect(category?.fact).toBe("AI-Native MarTech Infrastructure");
 	});
 
 	it("presents across-market value without internal origin framing", () => {

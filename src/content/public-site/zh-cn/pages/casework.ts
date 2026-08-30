@@ -1,0 +1,33 @@
+import type { CaseworkPageCopy } from "../../contracts/pages/casework";
+import { ZH_CN_BUYER_QUESTION } from "../buyer-question";
+
+export const ZH_CN_CASEWORK_PAGE = {
+	edition: "zh-cn",
+	page: "casework",
+	metadata: {
+		title: "Yonaris 案例拆解｜看一次完整判断过程",
+		description: "从最初答案、证据缺口到团队行动和后续复核，看清一个市场问题如何被拆解。",
+	},
+	hero: {
+		eyebrow: "代表性案例演示",
+		headline: "看一次完整拆解：为什么竞品先进入了备选？",
+		body: "从最初答案、证据缺口到团队行动和后续复核，一次看清判断是怎么形成的，也看清哪些结论仍然不能下。",
+		disclosure: "代表性案例演示，不构成客户效果声明。",
+	},
+	representativeLabels: ["你的公司", "竞品 A", "竞品 B"],
+	walkthrough: [
+		{ heading: "发生了什么", body: "营销团队发现，你的公司在选定的 AI 与数字渠道中偶尔被提及，却很少带着明确理由进入下一轮比较。" },
+		{ heading: "先把问题说清楚", body: ZH_CN_BUYER_QUESTION.question },
+		{ heading: "潜在客户当时看到了什么", body: "竞品因清楚说明适用场景并附有公开依据而进入备选；你的公司虽被提到，却只有宽泛介绍。" },
+		{ heading: "答案为什么会这样", body: "竞品的能力、适用场景和公开依据连在一起；我们的优势缺少条件、范围和可核对来源。" },
+		{ heading: "真正的缺口", body: "问题不是没被提到，而是客户找不到继续比较我们的理由。" },
+		{ heading: "团队先改什么", body: "团队审阅并补齐一项关键证据关系：明确适用范围和支持市场，并关联潜在客户可以核对的公开来源。" },
+		{ heading: "复核后变了什么", body: "复核时，品牌的选择理由已经出现；但推荐顺序没有变化。" },
+		{ heading: "还有什么不能下结论", body: "单次复核不能证明变化由某一项内容造成，也不能据此声称已经带来商业结果。" },
+	],
+	closing: {
+		headline: "不确定是不是同类问题？",
+		body: "先说说你现在最想弄清楚什么，我们再一起判断值不值得继续查。",
+		action: { label: "先聊聊", target: { kind: "page", page: "contact" } },
+	},
+} as const satisfies CaseworkPageCopy;

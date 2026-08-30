@@ -167,7 +167,7 @@ describe("machine documents", () => {
 		const catalogue = renderAgentCatalog("zh");
 		const parsed = JSON.parse(catalogue) as { "@graph": Array<Record<string, unknown>> };
 		const organization = parsed["@graph"].find((node) => node["@type"] === "Organization");
-		expect(organization?.description).toBe("面向人类决策、由 Agent 共同塑造的 AI 原生营销科技基础设施。");
+		expect(organization?.description).toBe("AI 原生营销科技基础设施");
 		expect(catalogue).toContain("公开事实");
 		expect(catalogue).not.toContain("public facts");
 		expect(catalogue).not.toContain("Boundary:");

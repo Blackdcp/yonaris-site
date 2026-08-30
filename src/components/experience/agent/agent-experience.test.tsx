@@ -119,8 +119,8 @@ describe("zero-to-one Agent experience", () => {
 		for (const topic of [...Object.values(AGENT_FACTS.global), ...Object.values(AGENT_FACTS.zh)]) {
 			expect(topic.reviewedBy).toBe("Yonaris");
 		}
-		expect(en).toContain("AI-native MarTech infrastructure built for decisions made by people and shaped by agents.");
-		expect(zh).toContain("面向人类决策、由 Agent 共同塑造的 AI 原生营销科技基础设施。");
+		expect(en).toContain("AI-Native MarTech Infrastructure");
+		expect(zh).toContain("AI 原生营销科技基础设施");
 		for (const phrase of [
 			"buyer questions",
 			"company facts",
@@ -375,7 +375,7 @@ describe("zero-to-one Agent experience", () => {
 	it("renders stable facts without template rails", () => {
 		const html = renderToStaticMarkup(<AgentPage locale="en" pageKey="company" />);
 		expect(html).toContain('id="yonaris.category.ai-native-martech"');
-		expect(html).toContain("AI-native MarTech infrastructure built for decisions made by people and shaped by agents.");
+		expect(html).toContain("AI-Native MarTech Infrastructure");
 		expect(html).toContain('aria-label="Fact directory"');
 		expect(html).not.toMatch(/[↗→↳←]/);
 		expect(html).not.toMatch(/>0[1-9]</);

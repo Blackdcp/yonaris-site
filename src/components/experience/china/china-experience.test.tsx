@@ -79,7 +79,7 @@ describe("Site 06 中国站", () => {
 
 	it("starts from Chinese business anxiety instead of roles", () => {
 		const home = render("home");
-		expect(home).toContain("面向人类决策、由 Agent 共同塑造的 AI 原生营销科技基础设施。");
+		expect(home).toContain("AI 原生营销科技基础设施");
 		expect(home).toContain("AI 正在替客户认识你、比较你，也可能误解你。");
 		for (const phrase of ["没进备选", "核心优势被说偏", "竞品先被推荐", "预算不知道该投哪里", "结论失效"])
 			expect(home).toContain(phrase);

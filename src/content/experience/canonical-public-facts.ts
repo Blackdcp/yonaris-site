@@ -1,4 +1,8 @@
 import type { HumanPageKey } from "./types";
+import { EN_CATEGORY, PRODUCT_FACTS, ZH_CATEGORY } from "../public-site/canonical/product-facts";
+
+export { COMPANY_FACTS } from "../public-site/canonical/company-facts";
+export { EN_CATEGORY, PRODUCT_FACTS, ZH_CATEGORY } from "../public-site/canonical/product-facts";
 
 export interface CanonicalReadingFact {
 	readonly id: string;
@@ -17,9 +21,6 @@ export interface CanonicalPageFact {
 	readonly source: string;
 	readonly boundary: string;
 }
-
-export const EN_CATEGORY = "AI-native MarTech infrastructure built for decisions made by people and shaped by agents.";
-export const ZH_CATEGORY = "面向人类决策、由 Agent 共同塑造的 AI 原生营销科技基础设施。";
 
 export const EN_READING_RECORDS = [
 	{
