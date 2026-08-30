@@ -1,19 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GlobalDiagnosticPage } from "@/components/experience/global/global-pages";
-import { globalEnglishPageHead } from "@/editions/global-en/edition";
-import {
-	useDiagnosticRequestType,
-	validateDiagnosticRouteSearch,
-} from "@/lib/diagnostic-request-intent";
+import { permanentRedirectHandlers } from "@/lib/permanent-redirect";
+import { getRedirect } from "@/lib/site-manifest";
 
-function DiagnosticRoutePage() {
-	const search = Route.useSearch();
-	const requestType = useDiagnosticRequestType(search);
-	return <GlobalDiagnosticPage requestType={requestType} />;
-}
+const redirect = getRedirect("/diagnostic");
+if (!redirect) throw new Error("Missing manifest redirect for /diagnostic");
 
 export const Route = createFileRoute("/diagnostic")({
-	validateSearch: validateDiagnosticRouteSearch,
-	head: () => globalEnglishPageHead("diagnostic"),
-	component: DiagnosticRoutePage,
+	server: { handlers: permanentRedirectHandlers(redirect.to) },
 });

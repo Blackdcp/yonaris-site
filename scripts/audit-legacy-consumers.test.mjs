@@ -180,3 +180,36 @@ test("skips cached paths that have already been deleted from the working tree", 
 	assert.equal(result.status, 0, result.output);
 	assert.match(result.output, /no retired marketing consumers/i);
 });
+
+test("rejects direct and transitive legacy Site 06 imports from the seven English canonical route graphs", async (t) => {
+	const root = await fixtureRepository(t);
+	await writeFixture(root, "src/routes/index.tsx", 'import "@/components/experience/global/global-pages";\n');
+	await writeFixture(root, "src/routes/product.tsx", 'import { ProductPage } from "@/pages/product-page";\n');
+	await writeFixture(root, "src/pages/product-page.tsx", 'import "@/components/experience/shared/site-06-shell";\n');
+	for (const route of ["casework", "company", "human-agent", "contact", "privacy"]) {
+		await writeFixture(root, `src/routes/${route}.tsx`, "export const current = true;\n");
+	}
+	await writeFixture(root, "src/components/experience/global/global-pages.tsx", "export const legacy = true;\n");
+	await writeFixture(root, "src/components/experience/shared/site-06-shell.tsx", "export const legacy = true;\n");
+
+	const result = runScanner(root);
+
+	assert.equal(result.status, 1);
+	assert.match(result.output, /src\/routes\/index\.tsx:1 \[english-site-v1-import\].*global-pages\.tsx/);
+	assert.match(result.output, /src\/pages\/product-page\.tsx:1 \[english-site-v1-import\].*site-06-shell\.tsx/);
+});
+
+test("scopes the Site 1.0 legacy graph rule away from Chinese and machine assemblers", async (t) => {
+	const root = await fixtureRepository(t);
+	for (const route of ["index", "product", "casework", "company", "human-agent", "contact", "privacy"]) {
+		await writeFixture(root, `src/routes/${route}.tsx`, "export const current = true;\n");
+	}
+	await writeFixture(root, "src/routes/zh/privacy.tsx", 'import "@/components/experience/global/global-pages";\n');
+	await writeFixture(root, "src/components/experience/agent/agent-pages.tsx", 'import "@/components/experience/shared/site-06-shell";\n');
+	await writeFixture(root, "src/components/experience/global/global-pages.tsx", "export const legacy = true;\n");
+	await writeFixture(root, "src/components/experience/shared/site-06-shell.tsx", "export const legacy = true;\n");
+
+	const result = runScanner(root);
+
+	assert.equal(result.status, 0, result.output);
+});

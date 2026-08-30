@@ -6,6 +6,22 @@ import path from "node:path";
 
 const SOURCE_ROOT = "src";
 
+const ENGLISH_CANONICAL_ROUTE_ROOTS = [
+	"src/routes/index.tsx",
+	"src/routes/product.tsx",
+	"src/routes/casework.tsx",
+	"src/routes/company.tsx",
+	"src/routes/human-agent.tsx",
+	"src/routes/contact.tsx",
+	"src/routes/privacy.tsx",
+];
+
+const ENGLISH_SITE_V1_BANNED_IMPORTS = new Set([
+	"src/components/experience/global/global-pages.tsx",
+	"src/components/experience/global/global-scenes.tsx",
+	"src/components/experience/shared/site-06-shell.tsx",
+]);
+
 const RETIRED_SOURCE_PATHS = new Set([
 	"src/components/community.tsx",
 	"src/components/contact-form.tsx",
@@ -140,6 +156,70 @@ function collectMatches(source, expression) {
 	return [...source.matchAll(expression)];
 }
 
+function sourceImportMatches(source) {
+	const matches = [];
+	for (const expression of [
+		/\bfrom\s*["'`]([^"'`]+)["'`]/g,
+		/\bimport\s*["'`]([^"'`]+)["'`]/g,
+		/\bimport\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+		/\brequire\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+	]) {
+		for (const match of collectMatches(source, expression)) {
+			matches.push({ index: match.index, specifier: match[1] });
+		}
+	}
+	return matches.sort((left, right) => left.index - right.index);
+}
+
+function resolveProductionImport(importer, specifier, sourcePaths) {
+	let resolved;
+	if (specifier.startsWith("@/")) {
+		resolved = `${SOURCE_ROOT}/${specifier.slice(2)}`;
+	} else if (specifier.startsWith(".")) {
+		resolved = path.posix.normalize(path.posix.join(path.posix.dirname(importer), specifier));
+	} else {
+		return undefined;
+	}
+
+	const normalized = normalizePath(resolved).replace(/\.(?:js|jsx)$/i, "");
+	const candidates = /\.tsx?$/i.test(normalized)
+		? [normalized]
+		: [`${normalized}.ts`, `${normalized}.tsx`, `${normalized}/index.ts`, `${normalized}/index.tsx`];
+	return candidates.find((candidate) => sourcePaths.has(candidate));
+}
+
+function auditEnglishSiteV1Graph(sources) {
+	const violations = [];
+	const visited = new Set();
+	const pending = ENGLISH_CANONICAL_ROUTE_ROOTS.filter((root) => sources.has(root));
+	const sourcePaths = new Set(sources.keys());
+
+	while (pending.length > 0) {
+		const importer = pending.pop();
+		if (!importer || visited.has(importer)) continue;
+		visited.add(importer);
+		const source = sources.get(importer);
+		if (source === undefined) continue;
+
+		for (const match of sourceImportMatches(source)) {
+			const target = resolveProductionImport(importer, match.specifier, sourcePaths);
+			if (!target) continue;
+			if (ENGLISH_SITE_V1_BANNED_IMPORTS.has(target)) {
+				violations.push({
+					path: importer,
+					line: lineAt(source, match.index),
+					rule: "english-site-v1-import",
+					message: `English canonical graph imports legacy ${target}`,
+				});
+				continue;
+			}
+			if (!visited.has(target)) pending.push(target);
+		}
+	}
+
+	return violations;
+}
+
 function auditSource(relativePath, source) {
 	const violations = [];
 	const add = (line, rule, message) => violations.push({ path: relativePath, line, rule, message });
@@ -191,12 +271,16 @@ function compareViolations(left, right) {
 export function auditLegacyConsumers(cwd = process.cwd()) {
 	const repoRoot = repositoryRoot(cwd);
 	const violations = [];
+	const productionSources = new Map();
 	for (const relativePath of candidatePaths(repoRoot)) {
 		if (!isProductionSource(relativePath)) continue;
 		const absolutePath = path.join(repoRoot, ...relativePath.split("/"));
 		if (!existsSync(absolutePath)) continue;
-		violations.push(...auditSource(relativePath, readFileSync(absolutePath, "utf8")));
+		const source = readFileSync(absolutePath, "utf8");
+		productionSources.set(relativePath, source);
+		violations.push(...auditSource(relativePath, source));
 	}
+	violations.push(...auditEnglishSiteV1Graph(productionSources));
 
 	const unique = new Map();
 	for (const violation of violations) {

@@ -7,5 +7,11 @@ export interface PrivacyPageCopy extends PublicPageCopy {
 	readonly delivered: string;
 	readonly used: string;
 	readonly retention: string;
+	readonly sectionLabels: Readonly<{
+		submitted: string;
+		delivered: string;
+		used: string;
+		retention: string;
+	}>;
 	readonly action: PageAction;
 }

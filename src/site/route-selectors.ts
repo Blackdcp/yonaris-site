@@ -33,5 +33,6 @@ export function getMarkdownPath(edition: SiteEdition, page: PublicPageKey): `/${
 export function resolveNavigationTarget(edition: SiteEdition, target: NavigationTarget): string {
 	if (target.kind === "machine") return getAgentPath(edition, "home");
 	const path = getPublicPagePath(edition, target.page);
-	return target.hash ? `${path}#${target.hash}` : path;
+	const search = target.page === "contact" && target.search?.intent === "privacy" ? "?intent=privacy" : "";
+	return `${path}${search}${target.hash ? `#${target.hash}` : ""}`;
 }

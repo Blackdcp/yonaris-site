@@ -15,5 +15,11 @@ export const ZH_CN_PRIVACY_PAGE = {
 	delivered: "请求通过 Cloudflare Email Service 处理，并只发送到 Yonaris 已验证的收件邮箱。",
 	used: "Yonaris 使用这些信息来理解、回复并继续你申请的沟通。表单内容不会显示在公开页面。",
 	retention: "信息仅在后续沟通和合理记录所需的时间内保存。隐私请求通过同一联系入口提交，由 Yonaris 人工处理；表单不会自动删除记录。",
+	sectionLabels: {
+		submitted: "你提交了什么",
+		delivered: "信息如何送达",
+		used: "信息怎么使用",
+		retention: "保存与删除",
+	},
 	action: { label: "提交隐私请求", target: { kind: "page", page: "contact" } },
 } as const satisfies PrivacyPageCopy;

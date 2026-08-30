@@ -37,6 +37,11 @@ describe("public page manifest", () => {
 		);
 		expect(resolveNavigationTarget("zh-cn", { kind: "machine", route: "agent-index" })).toBe("/zh/agent");
 		expect(getPublicPagePath("global-en", "casework")).toBe("/casework");
+		expect(resolveNavigationTarget("global-en", {
+			kind: "page",
+			page: "contact",
+			search: { intent: "privacy" },
+		})).toBe("/contact?intent=privacy");
 	});
 
 	test("redirects are direct and retain queries before fragments", () => {

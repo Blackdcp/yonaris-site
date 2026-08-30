@@ -18,6 +18,22 @@ function ruleFor(source: string, selector: string): string {
 }
 
 describe("zero-to-one stylesheet boundary", () => {
+	it("imports the Privacy editorial document with mobile containment and reduced-motion behavior", () => {
+		const stylesheet = read("styles.css");
+		const privacyPath = join(sourceRoot, "styles/site-v1/privacy.css");
+		expect(stylesheet).toContain('@import "./styles/site-v1/privacy.css";');
+		expect(existsSync(privacyPath)).toBe(true);
+		if (!existsSync(privacyPath)) return;
+		const css = read("styles/site-v1/privacy.css");
+		expect(ruleFor(css, ".site-v1-privacy")).toContain("overflow-x: clip");
+		expect(ruleFor(css, ".site-v1-privacy__document")).toContain("display: grid");
+		expect(css).toContain("[data-privacy-section]");
+		expect(css).toContain("@media (max-width: 44rem)");
+		const reduced = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
+		expect(reduced).toContain("animation: none !important");
+		expect(reduced).toContain("transition: none !important");
+	});
+
 	it("imports the Contact aperture with state geometry, mobile containment, and reduced-motion fallbacks", () => {
 		const stylesheet = read("styles.css");
 		const contactPath = join(sourceRoot, "styles/site-v1/contact.css");

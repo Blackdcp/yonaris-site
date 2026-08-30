@@ -6,3 +6,8 @@ export function permanentRedirectResponse(request: Request, destinationPath: `/$
 		headers: { Location: `${pathname}${query}${fragment ? `#${fragment}` : ""}` },
 	});
 }
+
+export function permanentRedirectHandlers(destinationPath: `/${string}`) {
+	const redirect = ({ request }: { readonly request: Request }) => permanentRedirectResponse(request, destinationPath);
+	return { GET: redirect, HEAD: redirect } as const;
+}

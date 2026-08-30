@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { GlobalGeoPage } from "@/components/experience/global/global-pages";
-import { globalEnglishPageHead } from "@/editions/global-en/edition";
+import { permanentRedirectHandlers } from "@/lib/permanent-redirect";
+import { getRedirect } from "@/lib/site-manifest";
 
-export const Route = createFileRoute("/geo")({ head: () => globalEnglishPageHead("geo"), component: GlobalGeoPage });
+const redirect = getRedirect("/geo");
+if (!redirect) throw new Error("Missing manifest redirect for /geo");
+
+export const Route = createFileRoute("/geo")({
+	server: { handlers: permanentRedirectHandlers(redirect.to) },
+});

@@ -210,6 +210,11 @@ describe("canonical public content contract", () => {
 		expect(GLOBAL_EN_CONTACT_PAGE.form.submitLabel).toBe("Start a conversation");
 		expect(ZH_CN_CONTACT_PAGE.form.submitLabel).toBe("开始聊聊");
 		expect(GLOBAL_EN_PRIVACY_PAGE.action.label).toBe("Submit a privacy request");
+		expect(GLOBAL_EN_PRIVACY_PAGE.action.target).toEqual({
+			kind: "page",
+			page: "contact",
+			search: { intent: "privacy" },
+		});
 		expect(ZH_CN_PRIVACY_PAGE.action.label).toBe("提交隐私请求");
 		expect(allStrings(pages).filter((value) => value.startsWith("/"))).toEqual([]);
 	});

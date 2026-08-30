@@ -2,10 +2,9 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import type { ContactRequestType } from "./contact-schema";
+import type { ContactPageSearch } from "@/site/route-types";
 
-export interface ContactRouteSearch {
-	readonly intent?: "privacy";
-}
+export type ContactRouteSearch = ContactPageSearch;
 
 export const CONTACT_INTENT_STATE_KEY = "__yonarisContactIntent";
 export const CONTACT_HYDRATION_INTENT_STATE_KEY = "__yonarisContactHydrationIntent";

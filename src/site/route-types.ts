@@ -9,6 +9,10 @@ export type PublicPageKey =
 
 export type SiteEdition = "global-en" | "zh-cn";
 
+export interface ContactPageSearch {
+	readonly intent?: "privacy";
+}
+
 export interface PublicPageRoute {
 	readonly key: PublicPageKey;
 	readonly paths: Readonly<Record<SiteEdition, `/${string}`>>;
@@ -19,6 +23,15 @@ export interface PublicPageRoute {
 	}>;
 }
 
+type PageNavigationTarget =
+	| { readonly kind: "page"; readonly page: Exclude<PublicPageKey, "contact">; readonly hash?: string }
+	| {
+		readonly kind: "page";
+		readonly page: "contact";
+		readonly search?: ContactPageSearch;
+		readonly hash?: string;
+	};
+
 export type NavigationTarget =
-	| { readonly kind: "page"; readonly page: PublicPageKey; readonly hash?: string }
+	| PageNavigationTarget
 	| { readonly kind: "machine"; readonly route: "agent-index" };

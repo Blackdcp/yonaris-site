@@ -14,6 +14,7 @@
 @import "./styles/site-v1/company.css";
 @import "./styles/site-v1/human-agent.css";
 @import "./styles/site-v1/contact.css";
+@import "./styles/site-v1/privacy.css";
 
 @source "../src";
 @source "../../../packages/ui/src";

@@ -15,5 +15,14 @@ export const GLOBAL_EN_PRIVACY_PAGE = {
 	delivered: "The request is processed through Cloudflare Email Service and delivered only to verified Yonaris recipient mailboxes.",
 	used: "Yonaris uses the information to understand the request, reply, and continue the follow-up you asked for. Form contents are not displayed on public pages.",
 	retention: "Information is retained only as reasonably needed for follow-up and applicable record-keeping duties. Privacy requests use the same contact path and are reviewed manually; the form does not delete records automatically.",
-	action: { label: "Submit a privacy request", target: { kind: "page", page: "contact" } },
+	sectionLabels: {
+		submitted: "What you submit",
+		delivered: "How it is delivered",
+		used: "How it is used",
+		retention: "Retention and deletion",
+	},
+	action: {
+		label: "Submit a privacy request",
+		target: { kind: "page", page: "contact", search: { intent: "privacy" } },
+	},
 } as const satisfies PrivacyPageCopy;
