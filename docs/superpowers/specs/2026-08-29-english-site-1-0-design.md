@@ -1,6 +1,6 @@
 # Yonaris English Website 1.0 — Buyer-Clarity Design
 
-**Status:** Approved direction; written design awaiting final review
+**Status:** Approved for production implementation; interaction standard amended 30 Aug 2026
 
 **Date:** 2026-08-29
 
@@ -50,13 +50,13 @@ The following ideas are removed from the English 1.0 primary experience:
 - abstract `Evidence-to-Action Workbench` language;
 - repeated framework copy such as Product Truth, Evidence Grade, Outcome Spec, and Decision Signals in buyer-facing prose;
 - a high-friction `Bring us one market question` site-wide CTA;
-- generic before/after sliders, fake live scans, invented scores, fake customer results, or decorative agent dashboards.
+- misleading product theatre: invented scores presented as real, fake customer results, fake live state, or capabilities outside the verified Yonaris product boundary.
 
 The following approved Site 09 qualities remain:
 
 - deep navy, warm ivory, restrained orange signal, mature enterprise tone;
 - original cinematic imagery rather than stock-photo attribution;
-- interactions that reveal causality rather than add ambient movement;
+- explanatory motion that reveals causality, supported by authored atmospheric motion and purely visual motifs that create depth, rhythm and brand memory;
 - the three-layer evidence lens as a signature interaction;
 - product theatre may be more composed than Portal, while every capability and causal relationship remains inside the verified product boundary;
 - same-condition review, explicit human judgement, and visible unchanged limitations.
@@ -465,7 +465,17 @@ The site never promises an instant audit, automated score, report, meeting slot,
 
 ## 12. Interaction and Visual System
 
-### 12.1 Interaction Rule
+### 12.1 Three-Layer Experience
+
+The experience has three equally legitimate layers:
+
+1. **Information** — concise copy establishes what Yonaris does and the decision being examined.
+2. **Explanation** — product theatre uses transformation, tracing, reordering, compression, comparison and review states to make the operating mechanism visible.
+3. **Atmosphere** — particles, rings, light, shadow, parallax, masking, depth, image movement, typographic motion and other authored visual devices create tension, rhythm and brand memory.
+
+Not every visual element must perform a product function. Aesthetic quality is itself a valid contribution when it strengthens the composition and does not obscure meaning, accessibility or truth.
+
+### 12.2 Core Interaction Rule
 
 Every major interaction must reveal a causal relationship:
 
@@ -475,31 +485,57 @@ Every major interaction must reveal a causal relationship:
 - selecting a review state reveals both changed and unchanged observations;
 - selecting a layer in the evidence lens changes the representation without changing the underlying fact.
 
-Prohibited interaction patterns:
+Each core page owns one memorable visual event. Supporting motion may be decorative, atmospheric or transitional; it does not need to change information every time.
 
-- motion without information change;
-- carousels that only swap headings;
-- particle fields as a substitute for product behaviour;
-- fake cursors or fake loading scans;
+### 12.3 Product Theatre
+
+Product theatre may be more cinematic, compressed and visually sophisticated than Portal. It may use stylised interfaces, animated evidence flows, dynamic dashboards, particles, masks, spatial transitions and composed data states. It must preserve the real input, system action, human boundary, output and review relationship.
+
+Product theatre must never imply that representative data is live customer data, that a suggested action was executed autonomously, or that an observed change proves commercial causation.
+
+### 12.4 Allowed Visual and Motion Language
+
+The following are explicitly allowed when authored for Yonaris and used with hierarchy:
+
+- particles and data fragments;
+- decorative or interactive rings, including the three-ring evidence lens;
+- controlled glow, light bloom, shadow, grain, blur and depth;
+- scroll reveals, parallax, masking, scene transitions and typographic motion;
+- automatic previews and rotating states that pause on interaction and expose user controls;
+- stylised dashboards and diagrams that are clearly representative product theatre;
+- visual sequences whose primary purpose is atmosphere rather than explanation.
+
+These devices should vary by page and scene. They are not a shared template to repeat unchanged across the site.
+
+### 12.5 Rejected Patterns
+
+The rejection criterion is not the presence of a particular visual device. It is generic execution, repetition, obstruction or misrepresentation:
+
+- off-the-shelf effects that could accept any company logo without redesign;
+- one animation pattern repeated as the dominant idea across every page;
+- fake metrics, fake customer outcomes, fake live states or unsupported capabilities;
+- an automated cursor, scan or loading sequence presented as real product activity;
 - autoplay that cannot be paused;
 - large empty scrollytelling corridors;
 - desktop-only hover dependencies;
 - a generic card grid repeated across pages.
 
-### 12.2 Motion
+### 12.6 Motion Behaviour
 
-A short first-view preview may establish life. Any pointer, keyboard, or touch input immediately transfers control to the user. Reduced-motion mode renders meaningful stable states without losing content.
+A choreographed first-view sequence may establish the full scene, not merely a short utility preview. Any pointer, keyboard or touch input transfers control to the user. Autoplay must be pausable and must not prevent direct inspection. Reduced-motion mode renders the same meaningful states without requiring motion.
 
-### 12.3 Visual Direction
+### 12.7 Visual Direction
 
 The approved world remains editorial, cinematic, and enterprise-grade:
 
 - deep navy and warm ivory fields;
-- orange as a restrained signal, not a glow effect;
+- orange as a controlled signal that may bloom or glow at focal moments without becoming a site-wide neon wash;
 - large, controlled typography;
 - lines, apertures, evidence attachment, and the three-ring lens as Yonaris-specific motifs;
 - original imagery from one coherent fictional evidence environment;
 - interface theatre integrated with the composition rather than floating generic dashboard cards.
+
+The visual benchmark is not restraint for its own sake. It is an authored, cinematic and technically confident experience whose copy, motion and interaction work as one composition.
 
 No Scrunch, Bluefish, or DeepLumen page geometry, copy, imagery, feature sequence, or signature effect may be reproduced pixel-for-pixel.
 
@@ -630,6 +666,10 @@ Human/Agent UI does not claim that a dedicated Agent page guarantees crawling, r
 
 ## 18. English-Then-Chinese Sequence
 
+The approved bilingual public copy is defined in:
+
+`docs/superpowers/specs/2026-08-30-yonaris-site-1-0-bilingual-copy.md`
+
 Work proceeds in this order:
 
 1. lock the English content and interaction system;
@@ -638,6 +678,8 @@ Work proceeds in this order:
 4. implement Chinese using shared infrastructure where appropriate but separate authored content and page logic;
 5. perform bilingual, routing, and hreflang verification;
 6. switch the public 1.0 only when both required editions pass their launch gates.
+
+Chinese is separately authored rather than translated. It uses the same verified product facts and truth boundaries while leading with recognisable business friction, concrete team actions and local CTA language.
 
 ## 19. Acceptance Criteria
 
@@ -654,6 +696,11 @@ Work proceeds in this order:
 - Casework exposes the initial observation, reviewed action, re-observation, unchanged limits, and disclosure.
 - The evidence lens maps one stable fact through human, evidence, and machine-readable representations.
 - All interactions work with keyboard, touch, and reduced motion.
+- Every core page has one authored visual event rather than a repeated generic module pattern.
+- Product capability is explained primarily through cinematic state transformation, not long feature prose.
+- Decorative particles, rings, light, dashboards and scroll motion may be present when they strengthen hierarchy and remain visually authored.
+- The experience includes information, explanatory motion and atmospheric motion; decorative motion is not inherently invalid.
+- Autoplay pauses or transfers control on interaction, and reduced-motion preserves the same meaningful states.
 
 ### 19.3 Conversion
 
