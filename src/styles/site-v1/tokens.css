@@ -1,0 +1,37 @@
+:root {
+	--site-v1-navy-1000: #030912;
+	--site-v1-navy-950: #07131f;
+	--site-v1-navy-900: #0b1b2a;
+	--site-v1-navy-800: #12293c;
+	--site-v1-ivory-100: #f4efe5;
+	--site-v1-ivory-200: #e8dfd0;
+	--site-v1-orange-500: #e86428;
+	--site-v1-orange-400: #f07a3d;
+	--site-v1-optical-400: #8197aa;
+	--site-v1-optical-300: #a9bac8;
+	--site-v1-hairline-dark: rgb(169 186 200 / 22%);
+	--site-v1-hairline-light: rgb(7 19 31 / 16%);
+	--site-v1-grain-opacity: 0.055;
+	--site-v1-grain-size: 128px;
+	--site-v1-mask-horizontal: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+	--site-v1-mask-vertical: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent);
+	--site-v1-text-display: clamp(2.9rem, 6.8vw, 7.25rem);
+	--site-v1-text-title: clamp(2.15rem, 4.2vw, 4.8rem);
+	--site-v1-text-lead: clamp(1.08rem, 1.7vw, 1.42rem);
+	--site-v1-text-body: clamp(1rem, 1.05vw, 1.12rem);
+	--site-v1-text-label: 0.78rem;
+	--site-v1-space-1: clamp(0.35rem, 0.5vw, 0.55rem);
+	--site-v1-space-2: clamp(0.65rem, 0.9vw, 0.95rem);
+	--site-v1-space-3: clamp(1rem, 1.5vw, 1.5rem);
+	--site-v1-space-4: clamp(1.5rem, 2.6vw, 2.75rem);
+	--site-v1-space-5: clamp(2.4rem, 4.5vw, 5rem);
+	--site-v1-space-6: clamp(4rem, 8vw, 9rem);
+	--site-v1-content-max: 90rem;
+	--site-v1-reading-max: 72ch;
+	--site-v1-target: 44px;
+	--site-v1-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+	--site-v1-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+	--site-v1-duration-fast: 160ms;
+	--site-v1-duration-state: 420ms;
+	--site-v1-duration-scene: 900ms;
+}

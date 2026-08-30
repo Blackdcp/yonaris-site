@@ -16,6 +16,7 @@ import {
 	GlobalProductPage,
 } from "./global/global-pages";
 import { CinematicField } from "./shared/cinematic-field";
+import { SITE_V1_ASSETS } from "../../content/public-site/assets";
 
 const originalNames = ["decision-room", "glass-passage", "working-session"] as const;
 const responsiveWidths = [640, 1024, 1440] as const;
@@ -123,5 +124,29 @@ describe("original Site 06 imagery", () => {
 		expect(priorityMarkup).toContain('<picture data-responsive-site-06-image="true">');
 		expect(priorityMarkup).toContain('<source type="image/jpeg"');
 		expect(deferredMarkup).toContain('loading="lazy"');
+	});
+});
+
+describe("original Site 1.0 imagery", () => {
+	it("preserves the Site 06 contract while adding three local generated masters and modern derivatives", () => {
+		for (const asset of Object.values(SITE_V1_ASSETS)) {
+			const master = new URL(`../../../public${asset.master.src}`, import.meta.url);
+			expect(existsSync(master), `${asset.master.src} must exist`).toBe(true);
+			expect(asset.derivatives.length).toBeGreaterThanOrEqual(1);
+			for (const derivative of asset.derivatives) {
+				expect(existsSync(new URL(`../../../public${derivative.webp}`, import.meta.url))).toBe(true);
+				expect(existsSync(new URL(`../../../public${derivative.avif}`, import.meta.url))).toBe(true);
+			}
+		}
+	});
+
+	it("keeps the generated imagery local, original, text-free and attribution-free", () => {
+		const manifest = JSON.stringify(SITE_V1_ASSETS);
+		expect(manifest).not.toMatch(/https?:\/\/|Unsplash|Pexels|Photo:/i);
+		for (const asset of Object.values(SITE_V1_ASSETS)) {
+			expect(asset.provenance.prompt).toMatch(/no (?:words|text)/i);
+			expect(asset.provenance.prompt).toMatch(/no (?:logos|brand marks)/i);
+			expect(asset.provenance.prompt).toMatch(/no (?:people|identifiable people|recognizable people)/i);
+		}
 	});
 });
