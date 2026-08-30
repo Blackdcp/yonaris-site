@@ -1,7 +1,30 @@
 import type { PageAction, PageHero, PublicPageCopy } from "../common";
 
+export interface HomeSiteV1Copy {
+	readonly motionControls: {
+		readonly pauseScene: string;
+		readonly resumeScene: string;
+	};
+	readonly productRecord: {
+		readonly audience: string;
+		readonly market: string;
+		readonly language: string;
+		readonly humanReviewed: string;
+	};
+}
+
+export interface HomeCaseworkStateLabels {
+	readonly initialAnswer: string;
+	readonly evidenceGap: string;
+	readonly reviewedAction: string;
+	readonly changed: string;
+	readonly unchanged: string;
+	readonly cannotAttribute: string;
+}
+
 export interface HomePageCopy extends PublicPageCopy {
 	readonly page: "home";
+	readonly siteV1: HomeSiteV1Copy | null;
 	readonly hero: PageHero & { readonly actions: readonly [PageAction, PageAction] };
 	readonly heroEvent: {
 		readonly question: string;
@@ -16,6 +39,6 @@ export interface HomePageCopy extends PublicPageCopy {
 		readonly layers: readonly string[];
 		readonly actions: readonly [PageAction, PageAction];
 	};
-	readonly casework: { readonly headline: string; readonly stateLabels: readonly string[]; readonly disclosure: string };
+	readonly casework: { readonly headline: string; readonly stateLabels: HomeCaseworkStateLabels; readonly disclosure: string };
 	readonly closing: { readonly headline: string; readonly body: string; readonly action: PageAction };
 }

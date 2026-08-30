@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { HomePageCopy } from "@/content/public-site/contracts/pages/home";
+import type { HomePageCopy, HomeSiteV1Copy } from "@/content/public-site/contracts/pages/home";
 import { useBuyerQuestionRecord } from "../buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../buyer-question/representative-disclosure";
 import { SceneOrchestrator } from "../motion/scene-orchestrator";
@@ -10,7 +10,13 @@ import { AnswerEnvironment } from "./answer-environment";
 
 type HeroEventCopy = HomePageCopy["heroEvent"];
 
-export function HomeAnswerField({ copy, disclosure }: { readonly copy: HeroEventCopy; readonly disclosure: string }) {
+interface HomeAnswerFieldProps {
+	readonly copy: HeroEventCopy;
+	readonly disclosure: string;
+	readonly motionLabels: HomeSiteV1Copy["motionControls"];
+}
+
+export function HomeAnswerField({ copy, disclosure, motionLabels }: HomeAnswerFieldProps) {
 	const record = useBuyerQuestionRecord();
 	const channelIds = record.channelAnswers.map((answer) => answer.id);
 	const [activeId, setActiveId] = useState(channelIds[0] ?? "");
@@ -34,7 +40,7 @@ export function HomeAnswerField({ copy, disclosure }: { readonly copy: HeroEvent
 	const sourceLabel = copy.inspectionLabels[3] ?? "";
 
 	return (
-		<SceneOrchestrator ariaLabel={copy.question} pauseLabel="Pause scene" resumeLabel="Resume scene" controlPlacement="flow">
+		<SceneOrchestrator ariaLabel={copy.question} pauseLabel={motionLabels.pauseScene} resumeLabel={motionLabels.resumeScene} controlPlacement="flow">
 			<section
 				className="site-v1-answer-field"
 				data-home-answer-field="true"

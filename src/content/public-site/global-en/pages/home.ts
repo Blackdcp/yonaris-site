@@ -5,6 +5,15 @@ import { GLOBAL_EN_BUYER_QUESTION } from "../buyer-question";
 export const GLOBAL_EN_HOME_PAGE = {
 	edition: "global-en",
 	page: "home",
+	siteV1: {
+		motionControls: { pauseScene: "Pause scene", resumeScene: "Resume scene" },
+		productRecord: {
+			audience: "Audience",
+			market: "Market",
+			language: "Language",
+			humanReviewed: "Human reviewed",
+		},
+	},
 	metadata: {
 		title: "Yonaris — Know what buyers are being told",
 		description: "See what AI and digital channels are telling buyers, which evidence shapes the shortlist, and what your team can change next.",
@@ -39,7 +48,14 @@ export const GLOBAL_EN_HOME_PAGE = {
 	},
 	casework: {
 		headline: "One question, from first answer to review.",
-		stateLabels: ["Initial answer", "Evidence gap", "Reviewed action", "Changed", "Unchanged", "Cannot attribute"],
+		stateLabels: {
+			initialAnswer: "Initial answer",
+			evidenceGap: "Evidence gap",
+			reviewedAction: "Reviewed action",
+			changed: "Changed",
+			unchanged: "Unchanged",
+			cannotAttribute: "Cannot attribute",
+		},
 		disclosure: "Representative casework — not a customer performance claim.",
 	},
 	closing: {

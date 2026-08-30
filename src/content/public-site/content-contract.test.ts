@@ -214,6 +214,26 @@ describe("canonical public content contract", () => {
 		expect(allStrings(pages).filter((value) => value.startsWith("/"))).toEqual([]);
 	});
 
+	it("stores every Site 1.0 Home control and record label in typed public copy", () => {
+		expect(GLOBAL_EN_HOME_PAGE.siteV1).toEqual({
+			motionControls: { pauseScene: "Pause scene", resumeScene: "Resume scene" },
+			productRecord: {
+				audience: "Audience",
+				market: "Market",
+				language: "Language",
+				humanReviewed: "Human reviewed",
+			},
+		});
+		expect(GLOBAL_EN_HOME_PAGE.casework.stateLabels).toEqual({
+			initialAnswer: "Initial answer",
+			evidenceGap: "Evidence gap",
+			reviewedAction: "Reviewed action",
+			changed: "Changed",
+			unchanged: "Unchanged",
+			cannotAttribute: "Cannot attribute",
+		});
+	});
+
 	it("does not revive the old category or obsolete primary calls to action", () => {
 		const text = allStrings({ records, pages, PRODUCT_FACTS, COMPANY_FACTS }).join("\n");
 		expect(text).not.toMatch(/AI-native MarTech infrastructure built for decisions made by people and shaped by agents/i);

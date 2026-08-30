@@ -14,6 +14,14 @@ import { EnglishSiteShell } from "../english-site-shell";
 const copy = GLOBAL_EN_HOME_PAGE;
 const record = GLOBAL_EN_BUYER_QUESTION;
 const heroAsset = getSiteV1Asset("hero-evidence-field");
+const caseworkStateLabels = [
+	copy.casework.stateLabels.initialAnswer,
+	copy.casework.stateLabels.evidenceGap,
+	copy.casework.stateLabels.reviewedAction,
+	copy.casework.stateLabels.changed,
+	copy.casework.stateLabels.unchanged,
+	copy.casework.stateLabels.cannotAttribute,
+] as const;
 
 function ActionLink({ target, children, quiet = false }: { readonly target: NavigationTarget; readonly children: ReactNode; readonly quiet?: boolean }) {
 	return <a className={quiet ? "site-v1-home-action site-v1-home-action--quiet" : "site-v1-home-action"} href={resolveNavigationTarget("global-en", target)}>{children}</a>;
@@ -84,7 +92,7 @@ function CaseworkPreview() {
 		>
 			<header><span>{record.id}</span><h2>{copy.casework.headline}</h2><p>{record.question}</p></header>
 			<div className="site-v1-casework-preview__trace">
-				{copy.casework.stateLabels.map((label, index) => <article key={label} data-casework-state={index}><span>{String(index + 1).padStart(2, "0")}</span><h3>{label}</h3><p>{content[index]}</p></article>)}
+				{caseworkStateLabels.map((label, index) => <article key={label} data-casework-state={index}><span>{String(index + 1).padStart(2, "0")}</span><h3>{label}</h3><p>{content[index]}</p></article>)}
 			</div>
 			<RepresentativeDisclosure>{copy.casework.disclosure}</RepresentativeDisclosure>
 		</section>
@@ -108,10 +116,17 @@ export function HomePage() {
 								<ActionLink target={copy.hero.actions[1].target} quiet>{copy.hero.actions[1].label}</ActionLink>
 							</div>
 						</header>
-						<div className="site-v1-home-hero__field"><HomeAnswerField copy={copy.heroEvent} disclosure={copy.casework.disclosure} /></div>
+						<div className="site-v1-home-hero__field">
+							<HomeAnswerField copy={copy.heroEvent} disclosure={copy.casework.disclosure} motionLabels={copy.siteV1.motionControls} />
+						</div>
 					</section>
 					<div id="product-preview" className="site-v1-home-product-anchor" tabIndex={-1}>
-						<ProductRecordPreview copy={copy.productPreview} disclosure={copy.casework.disclosure} />
+						<ProductRecordPreview
+							copy={copy.productPreview}
+							disclosure={copy.casework.disclosure}
+							recordLabels={copy.siteV1.productRecord}
+							stateLabels={copy.casework.stateLabels}
+						/>
 					</div>
 					<HumanAgentSignature />
 					<CaseworkPreview />

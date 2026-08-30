@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { HomePageCopy } from "@/content/public-site/contracts/pages/home";
+import type { HomeCaseworkStateLabels, HomePageCopy, HomeSiteV1Copy } from "@/content/public-site/contracts/pages/home";
 import { useBuyerQuestionRecord } from "../buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../buyer-question/representative-disclosure";
 import { useRovingTabs } from "../use-roving-tabs";
@@ -10,7 +10,14 @@ const VIEW_IDS = ["buyer-question", "current-answer", "comparison-evidence", "re
 const GEOMETRIES = ["question-plane", "answer-fan", "evidence-spine", "review-gate", "review-overlay"] as const;
 type ViewId = (typeof VIEW_IDS)[number];
 
-export function ProductRecordPreview({ copy, disclosure }: { readonly copy: HomePageCopy["productPreview"]; readonly disclosure: string }) {
+interface ProductRecordPreviewProps {
+	readonly copy: HomePageCopy["productPreview"];
+	readonly disclosure: string;
+	readonly recordLabels: HomeSiteV1Copy["productRecord"];
+	readonly stateLabels: HomeCaseworkStateLabels;
+}
+
+export function ProductRecordPreview({ copy, disclosure, recordLabels, stateLabels }: ProductRecordPreviewProps) {
 	const record = useBuyerQuestionRecord();
 	const [active, setActive] = useState<ViewId>(VIEW_IDS[0]);
 	const [enhanced, setEnhanced] = useState(false);
@@ -24,9 +31,9 @@ export function ProductRecordPreview({ copy, disclosure }: { readonly copy: Home
 		<div className="site-v1-record-geometry site-v1-record-geometry--question" key="question">
 			<blockquote>{record.question}</blockquote>
 			<dl>
-				<div><dt>Audience</dt><dd>{record.audience}</dd></div>
-				<div><dt>Market</dt><dd>{record.market}</dd></div>
-				<div><dt>Language</dt><dd>{record.language}</dd></div>
+				<div><dt>{recordLabels.audience}</dt><dd>{record.audience}</dd></div>
+				<div><dt>{recordLabels.market}</dt><dd>{record.market}</dd></div>
+				<div><dt>{recordLabels.language}</dt><dd>{record.language}</dd></div>
 			</dl>
 		</div>,
 		<div className="site-v1-record-geometry site-v1-record-geometry--answers" key="answers">
@@ -51,22 +58,22 @@ export function ProductRecordPreview({ copy, disclosure }: { readonly copy: Home
 				))}
 			</ol>
 			<aside data-evidence-gap={record.gaps[0]?.id}>
-				<span>Evidence gap</span>
+				<span>{stateLabels.evidenceGap}</span>
 				<p>{record.gaps[0]?.description}</p>
 			</aside>
 		</div>,
 		<div className="site-v1-record-geometry site-v1-record-geometry--action" key="action">
 			<div className="site-v1-record-geometry__review-gate" aria-hidden="true"><i /><i /><i /></div>
 			<section data-reviewed-action={record.proposedActions[0]?.id}>
-				<span>Reviewed action</span>
+				<span>{stateLabels.reviewedAction}</span>
 				<p>{record.proposedActions[0]?.description}</p>
-				<strong data-human-reviewer={record.proposedActions[0]?.reviewedBy}>Human reviewed · {record.proposedActions[0]?.status}</strong>
+				<strong data-human-reviewer={record.proposedActions[0]?.reviewedBy}>{recordLabels.humanReviewed} · {record.proposedActions[0]?.status}</strong>
 			</section>
 		</div>,
 		<div className="site-v1-record-geometry site-v1-record-geometry--review" key="review">
-			<section data-review-result="changed"><span>Changed</span><p>{record.review.changed[0]?.statement}</p></section>
-			<section data-review-result="unchanged"><span>Unchanged</span><p>{record.review.unchanged[0]?.statement}</p></section>
-			<footer data-review-result="cannot-attribute"><span>Cannot attribute</span><p>{record.review.attribution.boundary}</p></footer>
+			<section data-review-result="changed"><span>{stateLabels.changed}</span><p>{record.review.changed[0]?.statement}</p></section>
+			<section data-review-result="unchanged"><span>{stateLabels.unchanged}</span><p>{record.review.unchanged[0]?.statement}</p></section>
+			<footer data-review-result="cannot-attribute"><span>{stateLabels.cannotAttribute}</span><p>{record.review.attribution.boundary}</p></footer>
 		</div>,
 	] as const;
 

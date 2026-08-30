@@ -1,9 +1,13 @@
 // @vitest-environment happy-dom
 
-import { act, type ComponentType } from "react";
+import { act, type ComponentType, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
+import { GLOBAL_EN_HOME_PAGE } from "@/content/public-site/global-en/pages/home";
 import { Route } from "@/routes/index";
+import { BuyerQuestionProvider } from "../buyer-question/buyer-question-provider";
+import { HomeAnswerField } from "./home-answer-field";
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -35,7 +39,29 @@ function button(label: string): HTMLButtonElement {
 	return match;
 }
 
+async function remount(node: ReactNode) {
+	await act(async () => root.unmount());
+	root = createRoot(host);
+	await act(async () => root.render(node));
+}
+
 describe("mounted Home answer field", () => {
+	it("renders pause and resume controls from injected typed Home copy", async () => {
+		await remount(
+			<BuyerQuestionProvider record={GLOBAL_EN_BUYER_QUESTION}>
+				<HomeAnswerField
+					copy={GLOBAL_EN_HOME_PAGE.heroEvent}
+					disclosure={GLOBAL_EN_HOME_PAGE.casework.disclosure}
+					motionLabels={{ pauseScene: "Freeze field sentinel", resumeScene: "Continue field sentinel" }}
+				/>
+			</BuyerQuestionProvider>,
+		);
+
+		const pause = button("Freeze field sentinel");
+		await act(async () => pause.click());
+		expect(button("Continue field sentinel")).toBeTruthy();
+	});
+
 	it("keeps the motion control in flow after the disclosure", () => {
 		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
 		const disclosure = field?.querySelector<HTMLElement>(".site-v1-representative-disclosure");
@@ -49,36 +75,25 @@ describe("mounted Home answer field", () => {
 		expect(disclosure.compareDocumentPosition(flow) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
 	});
 
-	it("lets touch, Enter, Space and pointer input take control of the scene", async () => {
+	it.each([
+		{ input: "touch", createEvent: () => new TouchEvent("touchstart", { bubbles: true }) },
+		{ input: "pointer", createEvent: () => new PointerEvent("pointerdown", { bubbles: true }) },
+		{ input: "Enter", createEvent: () => new KeyboardEvent("keydown", { key: "Enter", bubbles: true }) },
+		{ input: "Space", createEvent: () => new KeyboardEvent("keydown", { key: " ", code: "Space", bubbles: true }) },
+	])("lets $input input independently take control of a playing scene", async ({ createEvent }) => {
 		const field = host.querySelector<HTMLElement>("[data-home-answer-field]");
 		const orchestrator = field?.closest<HTMLElement>(".site-v1-scene-orchestrator");
 		if (!field || !orchestrator) throw new Error("Home answer field not mounted");
+		expect(orchestrator.dataset.motionState).toBe("playing");
+		expect(orchestrator.dataset.motionPaused).toBe("false");
+		expect(field.dataset.v1State).toBe("answer.ai");
 
 		const search = button("Search");
-		await act(async () => {
-			search.dispatchEvent(new Event("touchstart", { bubbles: true }));
-			search.click();
-		});
-		expect(field.dataset.v1State).toBe("answer.search");
+		await act(async () => search.dispatchEvent(createEvent()));
+
+		expect(field.dataset.v1State).toBe("answer.ai");
 		expect(orchestrator.dataset.motionState).toBe("controlled");
 		expect(orchestrator.dataset.motionPaused).toBe("true");
-
-		const editorial = button("Editorial & reviews");
-		await act(async () => {
-			editorial.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
-			editorial.click();
-		});
-		expect(field.dataset.v1State).toBe("answer.editorial");
-
-		const company = button("Company-owned content");
-		await act(async () => {
-			company.dispatchEvent(new KeyboardEvent("keydown", { key: " ", code: "Space", bubbles: true }));
-			company.click();
-		});
-		expect(field.dataset.v1State).toBe("answer.company-owned");
-
-		await act(async () => company.dispatchEvent(new Event("pointerdown", { bubbles: true })));
-		expect(orchestrator.dataset.motionState).toBe("controlled");
 	});
 
 	it("honors reduced motion while keeping direct channel controls usable", async () => {
@@ -167,14 +182,18 @@ describe("mounted Home answer field", () => {
 		expect(field.querySelector<HTMLElement>('[data-comparison-reason][data-active="true"]')?.textContent).toContain("Your company");
 	});
 
-	it("uses roving channel focus and opens the evidence trace attached to the selected answer", async () => {
+	it("activates the next channel from a real ArrowRight keyboard event", async () => {
 		const first = button("AI answers");
 		first.focus();
 		await act(async () => first.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true })));
 		const search = button("Search");
 		expect(document.activeElement).toBe(search);
 		expect(search.getAttribute("aria-selected")).toBe("true");
+		expect(host.querySelector<HTMLElement>("[data-home-answer-field]")?.dataset.v1State).toBe("answer.search");
+	});
 
+	it("opens the evidence trace attached to the selected answer", async () => {
+		await act(async () => button("Search").click());
 		const trace = button("Trace the reason");
 		expect(trace.getAttribute("aria-expanded")).toBe("false");
 		await act(async () => trace.click());

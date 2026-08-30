@@ -3,7 +3,11 @@
 import type { ComponentType } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
+import { GLOBAL_EN_HOME_PAGE } from "@/content/public-site/global-en/pages/home";
 import { Route } from "@/routes/index";
+import { BuyerQuestionProvider } from "../../shared/buyer-question/buyer-question-provider";
+import { ProductRecordPreview } from "../../shared/home/product-record-preview";
 import { HomePage } from "./home-page";
 
 const HomeRouteComponent = Route.options.component as ComponentType;
@@ -83,6 +87,44 @@ describe("English Site 1.0 Home route", () => {
 		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="changed"]')).not.toBeNull();
 		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="unchanged"]')).not.toBeNull();
 		expect(document.querySelector('[data-record-view="later-review"] [data-review-result="cannot-attribute"]')).not.toBeNull();
+	});
+
+	it("renders every shared record label from injected typed Home copy", () => {
+		const recordLabels = {
+			audience: "Audience copy sentinel",
+			market: "Market copy sentinel",
+			language: "Language copy sentinel",
+			humanReviewed: "Human review copy sentinel",
+		};
+		const stateLabels = {
+			initialAnswer: "Initial copy sentinel",
+			evidenceGap: "Gap copy sentinel",
+			reviewedAction: "Action copy sentinel",
+			changed: "Changed copy sentinel",
+			unchanged: "Unchanged copy sentinel",
+			cannotAttribute: "Attribution copy sentinel",
+		};
+		const html = renderToStaticMarkup(
+			<BuyerQuestionProvider record={GLOBAL_EN_BUYER_QUESTION}>
+				<ProductRecordPreview
+					copy={GLOBAL_EN_HOME_PAGE.productPreview}
+					disclosure={GLOBAL_EN_HOME_PAGE.casework.disclosure}
+					recordLabels={recordLabels}
+					stateLabels={stateLabels}
+				/>
+			</BuyerQuestionProvider>,
+		);
+
+		for (const label of [
+			...Object.values(recordLabels),
+			stateLabels.evidenceGap,
+			stateLabels.reviewedAction,
+			stateLabels.changed,
+			stateLabels.unchanged,
+			stateLabels.cannotAttribute,
+		]) {
+			expect(html).toContain(label);
+		}
 	});
 
 	it("uses the local responsive hero asset and canonical Human / Agent fact routes", () => {

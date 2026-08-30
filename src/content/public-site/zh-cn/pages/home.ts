@@ -5,6 +5,7 @@ import { ZH_CN_BUYER_QUESTION } from "../buyer-question";
 export const ZH_CN_HOME_PAGE = {
 	edition: "zh-cn",
 	page: "home",
+	siteV1: null,
 	metadata: {
 		title: "Yonaris｜看清客户听到了什么",
 		description: "看清 AI 和数字渠道如何呈现与比较品牌，找到影响客户选择的证据与下一步行动。",
@@ -39,7 +40,14 @@ export const ZH_CN_HOME_PAGE = {
 	},
 	casework: {
 		headline: "看一个市场问题如何被完整拆解。",
-		stateLabels: ["最初的答案", "证据缺口", "经团队审阅的行动", "已变化", "未变化", "无法归因"],
+		stateLabels: {
+			initialAnswer: "最初的答案",
+			evidenceGap: "证据缺口",
+			reviewedAction: "经团队审阅的行动",
+			changed: "已变化",
+			unchanged: "未变化",
+			cannotAttribute: "无法归因",
+		},
 		disclosure: "代表性案例演示，不构成客户效果声明。",
 	},
 	closing: {
