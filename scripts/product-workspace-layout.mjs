@@ -79,7 +79,9 @@ try {
 				const unchanged = box(document.querySelector('[data-workspace-view="outcome-review"] [data-review-comparison="unchanged"]'));
 				const cannotAttribute = box(document.querySelector('[data-workspace-view="outcome-review"] [data-review-comparison="cannot-attribute"]'));
 				const method = document.querySelector("#how-it-works");
-				const methodItems = [...(method?.querySelectorAll(".site-v1-product-method__field > p") ?? [])];
+				const methodField = method?.querySelector(".site-v1-product-method__field");
+				const methodItems = [...(methodField?.querySelectorAll(":scope > p") ?? [])];
+				const methodBox = box(method);
 				return {
 					documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
 					workspace: { clientWidth: workspace?.clientWidth, scrollWidth: workspace?.scrollWidth, scrollLeft: workspace?.scrollLeft, box: workspaceBox },
@@ -96,8 +98,15 @@ try {
 					orderedRecordSpine: document.querySelectorAll("[data-persistent-record-spine]").length,
 					method: {
 						orderedStructures: method?.querySelectorAll("ol, li, [role='list']").length,
+						sharedAxisDisplay: methodField ? getComputedStyle(methodField, "::before").display : null,
 						itemWidths: methodItems.map((item) => Math.round(item.getBoundingClientRect().width)),
+						itemFontSizes: methodItems.map((item) => getComputedStyle(item).fontSize),
 						itemBorders: methodItems.map((item) => getComputedStyle(item).borderWidth),
+						itemNodeDisplays: methodItems.map((item) => getComputedStyle(item, "::before").display),
+						itemsInside: methodItems.every((item) => {
+							const itemBox = item.getBoundingClientRect();
+							return Boolean(methodBox && itemBox.width > 0 && itemBox.height > 0 && itemBox.left >= methodBox.left - 1 && itemBox.right <= methodBox.right + 1);
+						}),
 					},
 					panelBox,
 					disclosureBox,
@@ -122,6 +131,10 @@ try {
 			if (metrics.recordAnchors !== 3 || metrics.orderedRecordSpine !== 0) failures.push(`record anchors/spine ${metrics.recordAnchors}/${metrics.orderedRecordSpine}`);
 			if (metrics.method.orderedStructures !== 0 || metrics.method.itemWidths.length !== 6) failures.push(`method structure ${JSON.stringify(metrics.method)}`);
 			if (viewport.name === "desktop" && new Set(metrics.method.itemWidths).size < 3) failures.push(`method remains equal-width: ${metrics.method.itemWidths.join(",")}`);
+			if (viewport.name === "mobile" && metrics.method.sharedAxisDisplay !== "none") failures.push(`mobile method shared axis remains ${metrics.method.sharedAxisDisplay}`);
+			if (viewport.name === "mobile" && metrics.method.itemNodeDisplays.some((display) => display !== "none")) failures.push(`mobile method nodes remain ${metrics.method.itemNodeDisplays.join(",")}`);
+			if (viewport.name === "mobile" && new Set(metrics.method.itemWidths).size < 3 && new Set(metrics.method.itemFontSizes).size < 3) failures.push(`mobile method geometry remains uniform ${JSON.stringify(metrics.method)}`);
+			if (!metrics.method.itemsInside) failures.push("method phrase outside section bounds");
 			if (metrics.method.itemBorders.some((width) => width !== "0px")) failures.push(`method retains item borders: ${metrics.method.itemBorders.join(",")}`);
 			if (slug === "current-answers" && metrics.answerOverlap) failures.push("answer sheets overlap observation boundary");
 			if (slug === "outcome-review" && metrics.outcomeOverlap) failures.push("unchanged overlaps cannot-attribute");
