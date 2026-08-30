@@ -143,6 +143,19 @@ describe("Human / Agent evidence lens", () => {
 		expect(agent?.querySelector("code")?.textContent).toContain(fact.id);
 	});
 
+	it("projects canonical bilingual category values without turning language into a market claim", () => {
+		const document = staticDocument();
+		const evidenceFields = [...document.querySelectorAll<HTMLElement>("[data-human-agent-projection='evidence'] [data-evidence-field]")];
+		const scopePayload = evidenceFields[1]?.querySelector("dd")?.textContent?.trim();
+		const languagePayload = evidenceFields[2]?.querySelector("dd")?.textContent?.trim();
+
+		expect(scopePayload).toBe(fact.scope["global-en"]);
+		expect(languagePayload).not.toBe(scopePayload);
+		expect(evidenceFields[2]?.querySelector('[lang="en"]')?.textContent).toBe(fact.value["global-en"]);
+		expect(evidenceFields[2]?.querySelector('[lang="zh-CN"]')?.textContent).toBe(fact.value["zh-cn"]);
+		expect(languagePayload).not.toMatch(/\b(?:market|global)\b/i);
+	});
+
 	it("changes geometry, depth, focal mask, attachment and density for every selected layer", async () => {
 		const host = await mount();
 		const signatures = new Set<string>();

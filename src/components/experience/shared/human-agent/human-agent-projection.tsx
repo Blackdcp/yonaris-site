@@ -50,7 +50,7 @@ function EvidenceFields({ copy, edition, fact }: {
 	const fields = [
 		<><code key="source-id">{fact.source.id}</code><span>{fact.source.label[edition]}</span></>,
 		fact.scope[edition],
-		fact.scope[edition],
+		<><span lang="en">{fact.value["global-en"]}</span><span lang="zh-CN">{fact.value["zh-cn"]}</span></>,
 		<time key="reviewed" dateTime={fact.lastReviewed}>{fact.lastReviewed}</time>,
 		fact.boundary[edition],
 	] as const;

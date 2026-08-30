@@ -20,6 +20,14 @@
 - Imported `src/styles/site-v1/human-agent.css`; build regeneration added the route tree entry. Legacy Human/Agent component APIs, Chinese routes, machine-document implementation, `site-06.css`, Contact, and deploy files were not changed.
 - Added `scripts/human-agent-lens-layout.mjs` as a reproducible 1440x1000 / 390x844 three-state, reduced-motion, and no-JS production probe.
 
+## Review P2 fix round 1
+
+- Review RED reproduced the semantic duplication: Evidence `Scope` and `Market & language` both rendered the same canonical scope string.
+- Added an independent regression test that requires the two payloads to differ, requires the third field to contain both canonical category values with `lang="en"` and `lang="zh-CN"`, and rejects invented `market` or `global` payload copy.
+- Replaced only the duplicate third payload with that structured bilingual canonical projection. Scope remains the exact edition scope, `Observed at` remains `fact.lastReviewed`, and no market or observation fact was added.
+- This changes evidence text semantics only, not geometry or layout structure, so the browser matrix was not rerun.
+- Review verification: focused 2 files / 15 tests, affected 10 files / 90 tests, and full 55 files / 398 tests passed; type-check, production build, and diff-check exited 0.
+
 ## Initial production visual observations
 
 - A fresh local production build was inspected with the in-app browser before the bounded review was stopped.
