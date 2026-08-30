@@ -78,9 +78,19 @@ async function toggleMenu() {
 describe("mounted progressive header", () => {
 	it("keeps SSR primary navigation readable, then marks the mounted header as enhanced", () => {
 		const ssr = renderToStaticMarkup(<SiteHeader edition="global-en" pageKey="product" copy={copy} />);
+		const ssrHost = document.createElement("div");
+		ssrHost.innerHTML = ssr;
+		const utilities = ssrHost.querySelector<HTMLElement>(".site-v1-header__utilities");
+		if (!utilities) throw new Error("SSR utility row missing");
+		const utilityLinks = [...utilities.querySelectorAll<HTMLAnchorElement>("a")].map((link) => ({
+			href: link.getAttribute("href"),
+			label: link.textContent,
+		}));
 		expect(ssr).toContain("data-site-v1-primary-navigation");
-		expect(ssr).toContain('class="site-v1-header__utilities"');
-		expect(ssr).toContain('href="/zh/product"');
+		expect(utilityLinks).toEqual([
+			{ href: "/human-agent", label: "Human / Agent" },
+			{ href: "/zh/product", label: "中文" },
+		]);
 		expect(ssr).not.toContain("data-site-v1-enhanced");
 		expect(header().getAttribute("data-site-v1-enhanced")).toBe("true");
 	});
