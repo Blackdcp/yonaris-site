@@ -168,7 +168,7 @@ describe("canonical public content contract", () => {
 	});
 
 	it("stores typed navigation targets and the approved primary CTA labels", () => {
-		expect(GLOBAL_EN_HOME_PAGE.hero.actions[0]).toEqual({ label: "See Yonaris in action", target: { kind: "page", page: "product" } });
+		expect(GLOBAL_EN_HOME_PAGE.hero.actions[0]).toEqual({ label: "See Yonaris in action", target: { kind: "page", page: "home", hash: "product-preview" } });
 		expect(ZH_CN_HOME_PAGE.hero.actions[0]).toEqual({ label: "看看 Yonaris 怎么工作", target: { kind: "page", page: "product" } });
 		expect(GLOBAL_EN_PRODUCT_PAGE.hero.actions[0].label).toBe("Explore the product");
 		expect(ZH_CN_PRODUCT_PAGE.hero.actions[0].label).toBe("看一次完整过程");

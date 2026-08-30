@@ -14,7 +14,7 @@ export const GLOBAL_EN_HOME_PAGE = {
 		headline: "Know what buyers are being told—and what to change.",
 		body: "Yonaris shows marketing teams what AI and digital channels are telling buyers, which evidence is shaping the shortlist, what action can change it, and what actually changed afterwards.",
 		actions: [
-			{ label: "See Yonaris in action", target: { kind: "page", page: "product" } },
+			{ label: "See Yonaris in action", target: { kind: "page", page: "home", hash: "product-preview" } },
 			{ label: "Talk to Yonaris", target: { kind: "page", page: "contact" } },
 		],
 	},
