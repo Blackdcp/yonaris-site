@@ -79,6 +79,8 @@ describe("mounted progressive header", () => {
 	it("keeps SSR primary navigation readable, then marks the mounted header as enhanced", () => {
 		const ssr = renderToStaticMarkup(<SiteHeader edition="global-en" pageKey="product" copy={copy} />);
 		expect(ssr).toContain("data-site-v1-primary-navigation");
+		expect(ssr).toContain('class="site-v1-header__utilities"');
+		expect(ssr).toContain('href="/zh/product"');
 		expect(ssr).not.toContain("data-site-v1-enhanced");
 		expect(header().getAttribute("data-site-v1-enhanced")).toBe("true");
 	});
@@ -131,8 +133,11 @@ describe("mounted progressive header", () => {
 		const css = readFileSync(resolve(process.cwd(), "src/styles/site-v1/shell.css"), "utf8");
 		expect(css).toMatch(/\.site-v1-header__menu-button\s*\{[^}]*display:\s*none;/s);
 		const mobile = css.slice(css.indexOf("@media (max-width: 44rem)"));
+		expect(mobile).toMatch(/\.site-v1-header__utilities\s*\{[^}]*grid-column:\s*1 \/ -1;[^}]*grid-row:\s*3;[^}]*display:\s*flex;/s);
 		expect(mobile).toMatch(/\.site-v1-header\[data-site-v1-enhanced="true"\] \.site-v1-header__primary\s*\{[^}]*display:\s*none;/s);
 		expect(mobile).toMatch(/\.site-v1-header\[data-site-v1-enhanced="true"\] \.site-v1-header__menu-button\s*\{[^}]*display:\s*inline-flex;/s);
+		expect(mobile).toMatch(/\.site-v1-header\[data-site-v1-enhanced="true"\] \.site-v1-header__utilities\s*\{[^}]*display:\s*none;/s);
 		expect(mobile).not.toMatch(/\n\s*\.site-v1-header__menu-button\s*\{[^}]*display:\s*inline-flex;/s);
+		expect(mobile).not.toMatch(/\n\s*\.site-v1-header__utilities\s*\{[^}]*display:\s*none;/s);
 	});
 });

@@ -227,7 +227,13 @@
 	}
 
 	.site-v1-header__utilities {
-		display: none;
+		grid-column: 1 / -1;
+		grid-row: 3;
+		display: flex;
+		justify-self: stretch;
+		justify-content: space-between;
+		padding-bottom: 0.5rem;
+		border-top: 1px solid var(--site-v1-hairline-dark);
 	}
 
 	.site-v1-header[data-site-v1-enhanced="true"] .site-v1-header__primary {
@@ -236,6 +242,10 @@
 
 	.site-v1-header[data-site-v1-enhanced="true"] .site-v1-header__menu-button {
 		display: inline-flex;
+	}
+
+	.site-v1-header[data-site-v1-enhanced="true"] .site-v1-header__utilities {
+		display: none;
 	}
 
 	.site-v1-footer__inner {
