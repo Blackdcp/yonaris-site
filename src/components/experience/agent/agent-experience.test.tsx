@@ -36,7 +36,7 @@ const agentPath = (locale: "en" | "zh", pageKey: HumanPageKey): string => {
 
 const retiredRoutes = /href="\/(?:zh\/)?(?:research|resources)(?:[/#"])/i;
 const internalNarration =
-	/managed delivery|configured scope|evidence boundary|interface demonstration|no customer data|causal proof|supply chain|implementation detail|upstream AI surface|配置化观察|证据边界|当前演示|非客户数据|内部策略|实现细节|供应链/i;
+	/managed delivery|configured scope|evidence boundary|interface demonstration|no customer data|supply chain|implementation detail|upstream AI surface|配置化观察|证据边界|当前演示|非客户数据|内部策略|实现细节|供应链/i;
 const retiredVisuals = /global-cinematic|zh-decision|editorial-stage|decision-canvas|global-en__|zh-site__/i;
 const publicImplementationNarration =
 	/provider acceptance|provider accepts?|delivery service|服务商|投递服务|交付通道|接收机制|without reducing [^.]+ to (?:a )?[^.]+|single AI-search tactic|planned capabilit|规划中的能力|缩成一个 AI 搜索技巧/iu;

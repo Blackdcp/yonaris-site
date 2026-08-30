@@ -80,6 +80,76 @@ describe("canonical public content contract", () => {
 		}
 	});
 
+	it("covers every declared channel with a uniquely identified, resolvable answer trace", () => {
+		for (const record of records) {
+			const declaredChannels = [...record.observationConditions.channels].sort();
+			const answeredChannels = record.channelAnswers.map((answer) => answer.environment).sort();
+			expect(answeredChannels).toEqual(declaredChannels);
+
+			const allNodeIds = [
+				record.id,
+				...record.channelAnswers.map((answer) => answer.id),
+				...record.comparisonReasons.map((reason) => reason.id),
+				...record.evidence.map((item) => item.id),
+				...record.gaps.map((gap) => gap.id),
+				...record.proposedActions.map((action) => action.id),
+			];
+			expect(new Set(allNodeIds).size).toBe(allNodeIds.length);
+
+			const reasonIds = new Set<string>(record.comparisonReasons.map((reason) => reason.id));
+			const evidenceIds = new Set<string>(record.evidence.map((item) => item.id));
+			const gapIds = new Set<string>(record.gaps.map((gap) => gap.id));
+			for (const answer of record.channelAnswers) {
+				const trace = answer as typeof answer & {
+					readonly reasonIds?: readonly string[];
+					readonly evidenceIds?: readonly string[];
+				};
+				expect(trace.reasonIds?.length ?? 0).toBeGreaterThan(0);
+				expect(trace.evidenceIds?.length ?? 0).toBeGreaterThan(0);
+				expect(trace.reasonIds?.every((id) => reasonIds.has(id))).toBe(true);
+				expect(trace.evidenceIds?.every((id) => evidenceIds.has(id))).toBe(true);
+			}
+			for (const reason of record.comparisonReasons) {
+				expect(reason.evidenceIds.length).toBeGreaterThan(0);
+				expect(reason.evidenceIds.every((id) => evidenceIds.has(id))).toBe(true);
+			}
+			for (const gap of record.gaps) {
+				expect(gap.affectedReasonIds.every((id) => reasonIds.has(id))).toBe(true);
+			}
+			for (const action of record.proposedActions) {
+				expect(action.evidenceGapIds.every((id) => gapIds.has(id))).toBe(true);
+			}
+		}
+	});
+
+	it("separates baseline evidence from evidence observed during the later review", () => {
+		for (const record of records) {
+			const phases = new Map(
+				record.evidence.map((item) => [
+					item.id,
+					(item as typeof item & { readonly phase?: "baseline" | "later-review" }).phase,
+				]),
+			);
+
+			const baselineIds = new Set(
+				[...phases].filter(([, phase]) => phase === "baseline").map(([id]) => id),
+			);
+			const reviewIds = new Set(
+				[...phases].filter(([, phase]) => phase === "later-review").map(([id]) => id),
+			);
+			expect(baselineIds.size).toBeGreaterThan(0);
+			expect(reviewIds.size).toBeGreaterThan(0);
+
+			for (const reason of record.comparisonReasons) {
+				expect(reason.evidenceIds.every((id) => baselineIds.has(id))).toBe(true);
+			}
+			for (const observation of [...record.review.changed, ...record.review.unchanged]) {
+				expect(observation.evidenceIds.length).toBeGreaterThan(0);
+				expect(observation.evidenceIds.every((id) => reviewIds.has(id))).toBe(true);
+			}
+		}
+	});
+
 	it("uses honest local representative sources and publishes no invented results", () => {
 		const text = allStrings(records).join("\n");
 		expect(records.every((record) => record.disclosure.sourceId.startsWith("yonaris.local.representative."))).toBe(true);

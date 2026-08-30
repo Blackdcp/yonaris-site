@@ -13,6 +13,10 @@ export interface CanonicalReadingFact {
 	readonly evidence: string;
 	readonly boundary: string;
 	readonly stableId: string;
+	readonly sourceId?: string;
+	readonly source?: string;
+	readonly scope?: string;
+	readonly lastReviewed?: string;
 }
 
 export interface CanonicalPageFact {
@@ -22,6 +26,13 @@ export interface CanonicalPageFact {
 	readonly boundary: string;
 }
 
+function categoryEvidence(locale: "en" | "zh"): string {
+	const { source, lastReviewed } = PRODUCT_FACTS.category;
+	return locale === "en"
+		? `${source.label} · reviewed ${lastReviewed}`
+		: `${source.label} · ${lastReviewed} 核对`;
+}
+
 export const EN_READING_RECORDS = [
 	{
 		id: "category",
@@ -29,9 +40,13 @@ export const EN_READING_RECORDS = [
 		human: `Yonaris is ${EN_CATEGORY}`,
 		meaning: "This category connects marketing evidence to decisions made by teams and the agents that shape them.",
 		fact: EN_CATEGORY,
-		evidence: "Yonaris public company description · company statement · reviewed 27 Aug 2026",
-		boundary: "The category covers Yonaris public system for buyer questions, evidence, market observation and review.",
-		stableId: "yonaris.category.ai-native-martech",
+		evidence: categoryEvidence("en"),
+		boundary: PRODUCT_FACTS.category.boundary,
+		stableId: PRODUCT_FACTS.category.id,
+		sourceId: PRODUCT_FACTS.category.source.id,
+		source: PRODUCT_FACTS.category.source.label,
+		scope: PRODUCT_FACTS.category.scope,
+		lastReviewed: PRODUCT_FACTS.category.lastReviewed,
 	},
 	{
 		id: "purpose",
@@ -64,9 +79,13 @@ export const ZH_READING_RECORDS = [
 		human: `Yonaris 是${ZH_CATEGORY}`,
 		meaning: "这一品类把营销证据接到团队的业务决策，以及影响这些决策的 Agent 上。",
 		fact: ZH_CATEGORY,
-		evidence: "Yonaris 公司公开描述 · 公司声明 · 2026 年 8 月 27 日核对",
-		boundary: "该品类覆盖 Yonaris 围绕市场问题、公开证据、市场观测与行动复核提供的系统。",
-		stableId: "yonaris.category.ai-native-martech",
+		evidence: categoryEvidence("zh"),
+		boundary: PRODUCT_FACTS.category.boundary,
+		stableId: PRODUCT_FACTS.category.id,
+		sourceId: PRODUCT_FACTS.category.source.id,
+		source: PRODUCT_FACTS.category.source.label,
+		scope: PRODUCT_FACTS.category.scope,
+		lastReviewed: PRODUCT_FACTS.category.lastReviewed,
 	},
 	{
 		id: "purpose",

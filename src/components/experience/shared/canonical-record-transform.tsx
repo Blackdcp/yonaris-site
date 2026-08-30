@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EN_READING_RECORDS, ZH_READING_RECORDS } from "@/content/experience/canonical-public-facts";
+import {
+	type CanonicalReadingFact,
+	EN_READING_RECORDS,
+	ZH_READING_RECORDS,
+} from "@/content/experience/canonical-public-facts";
 import type { ExperienceLocale } from "@/content/experience/types";
 
 const MAX_PROGRESS = 100;
@@ -42,7 +46,6 @@ const COPY = {
 		boundary: "Boundary",
 		stableIdentity: "Stable identity",
 		reviewDate: "Review date",
-		reviewed: "27 Aug 2026",
 		representations: "Canonical representations",
 		humanText: "Human text",
 		agentText: "Agent text",
@@ -69,7 +72,6 @@ const COPY = {
 		boundary: "边界",
 		stableIdentity: "稳定标识",
 		reviewDate: "核对日期",
-		reviewed: "2026 年 8 月 27 日",
 		representations: "规范表示形式",
 		humanText: "人类文本",
 		agentText: "Agent 文本",
@@ -88,10 +90,10 @@ const COPY = {
 	},
 } as const;
 
-function categoryRecord(locale: ExperienceLocale) {
+function categoryRecord(locale: ExperienceLocale): CanonicalReadingFact & { readonly lastReviewed: string } {
 	const records = locale === "zh" ? ZH_READING_RECORDS : EN_READING_RECORDS;
 	const record = records.find((item) => item.id === "category");
-	if (!record) throw new Error("Canonical category record is unavailable");
+	if (!record?.lastReviewed) throw new Error("Canonical category record is unavailable");
 	return record;
 }
 
@@ -194,7 +196,7 @@ export function CanonicalRecordTransform({ locale, compact = false }: { locale: 
 				</div>
 				<div hidden={!reveal.reviewDate}>
 					<dt>{copy.reviewDate}</dt>
-					<dd>{copy.reviewed}</dd>
+					<dd>{record.lastReviewed}</dd>
 				</div>
 			</dl>
 		</article>

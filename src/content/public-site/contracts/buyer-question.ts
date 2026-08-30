@@ -13,6 +13,8 @@ export interface ChannelAnswer {
 	readonly id: string;
 	readonly environment: string;
 	readonly answer: string;
+	readonly reasonIds: readonly string[];
+	readonly evidenceIds: readonly string[];
 }
 
 export interface ComparisonReason {
@@ -25,6 +27,7 @@ export interface ComparisonReason {
 
 export interface EvidenceItem {
 	readonly id: string;
+	readonly phase: "baseline" | "later-review";
 	readonly sourceId: string;
 	readonly sourceLabel: string;
 	readonly trace: string;

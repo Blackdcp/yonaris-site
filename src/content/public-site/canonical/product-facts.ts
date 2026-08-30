@@ -8,7 +8,7 @@ const COMPANY_STATEMENT_SOURCE = {
 
 export const PRODUCT_FACTS = {
 	category: {
-		id: "yonaris.category.ai-native-martech-infrastructure",
+		id: "yonaris.category.ai-native-martech",
 		value: {
 			"global-en": "AI-Native MarTech Infrastructure",
 			"zh-cn": "AI 原生营销科技基础设施",
