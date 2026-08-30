@@ -2,6 +2,10 @@ import {
 	DIAGNOSTIC_HYDRATION_INTENT_STATE_KEY,
 	DIAGNOSTIC_INTENT_STATE_KEY,
 } from "./diagnostic-request-intent";
+import {
+	CONTACT_HYDRATION_INTENT_STATE_KEY,
+	CONTACT_INTENT_STATE_KEY,
+} from "./contact-request-intent";
 
 const SENSITIVE_PROPERTY_KEYS = new Set([
 	"website",
@@ -13,6 +17,14 @@ const SENSITIVE_PROPERTY_KEYS = new Set([
 	"email",
 	"phone",
 	"company",
+	"workemail",
+	"companyorwebsite",
+	"curiosity",
+	"marketquestion",
+	"marketorlanguage",
+	"buyerorcommercialcontext",
+	"botfield",
+	"submissionid",
 	"consent",
 	"companyurl",
 	"domain",
@@ -25,13 +37,17 @@ const SENSITIVE_PROPERTY_KEYS = new Set([
 	"requesttype",
 	"yonarisdiagnosticintent",
 	"yonarisdiagnostichydrationintent",
+	"yonariscontactintent",
+	"yonariscontacthydrationintent",
 ]);
 const URL_PROPERTY_KEYS = new Set(["$current_url", "$referrer", "$initial_referrer", "$initial_current_url"]);
 
 export function buildDiagnosticAnalyticsBootstrapScript(): string {
-	const stateKey = JSON.stringify(DIAGNOSTIC_INTENT_STATE_KEY);
-	const hydrationStateKey = JSON.stringify(DIAGNOSTIC_HYDRATION_INTENT_STATE_KEY);
-	return `(()=>{const p=location.pathname;if((p==="/diagnostic"||p==="/zh/diagnostic")&&location.search){const v=new URLSearchParams(location.search).getAll("intent");const s=Object.assign({},history.state);const i=${stateKey};const h=${hydrationStateKey};delete s[i];delete s[h];if(v.length===1&&v[0]==="privacy"){s[i]="privacy";s[h]="privacy";if(!s.__TSR_key&&!s.key){const k=(Math.random()+1).toString(36).substring(7);s.__TSR_index=0;s.key=k;s.__TSR_key=k}}history.replaceState(s,"",location.pathname+location.hash)}})();`;
+	const diagnosticStateKey = JSON.stringify(DIAGNOSTIC_INTENT_STATE_KEY);
+	const diagnosticHydrationKey = JSON.stringify(DIAGNOSTIC_HYDRATION_INTENT_STATE_KEY);
+	const contactStateKey = JSON.stringify(CONTACT_INTENT_STATE_KEY);
+	const contactHydrationKey = JSON.stringify(CONTACT_HYDRATION_INTENT_STATE_KEY);
+	return `(()=>{const p=location.pathname;const c=p==="/contact"||p==="/zh/contact";const d=p==="/diagnostic"||p==="/zh/diagnostic";if((c||d)&&location.search){const v=new URLSearchParams(location.search).getAll("intent");const s=Object.assign({},history.state);const di=${diagnosticStateKey};const dh=${diagnosticHydrationKey};const ci=${contactStateKey};const ch=${contactHydrationKey};delete s[di];delete s[dh];delete s[ci];delete s[ch];const i=c?ci:di;const h=c?ch:dh;if(v.length===1&&v[0]==="privacy"){s[i]="privacy";s[h]="privacy";if(!s.__TSR_key&&!s.key){const k=(Math.random()+1).toString(36).substring(7);s.__TSR_index=0;s.key=k;s.__TSR_key=k}}history.replaceState(s,"",location.pathname+location.hash)}})();`;
 }
 
 function sanitizeUrlLike(value: string): string {

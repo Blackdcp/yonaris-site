@@ -13,6 +13,7 @@
 @import "./styles/site-v1/casework.css";
 @import "./styles/site-v1/company.css";
 @import "./styles/site-v1/human-agent.css";
+@import "./styles/site-v1/contact.css";
 
 @source "../src";
 @source "../../../packages/ui/src";

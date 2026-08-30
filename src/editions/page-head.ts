@@ -36,7 +36,7 @@ export function buildPageHead(edition: SiteEdition, page: PublicPageKey, legacyC
 			locale: isGlobal ? "en" : "zh",
 			pageKey: humanPage,
 			publicMetadata,
-			canonicalPath: isCanonicalHumanAgent ? canonicalPath : undefined,
+			canonicalPath: publicMetadata || isCanonicalHumanAgent ? canonicalPath : undefined,
 			factIds: isCanonicalHumanAgent ? [PRODUCT_FACTS.category.id] : undefined,
 		})],
 	};

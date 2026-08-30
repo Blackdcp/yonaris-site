@@ -8,7 +8,7 @@ const env = {
 	CLOUDFLARE_ACCOUNT_ID: "account_test",
 	CLOUDFLARE_EMAIL_API_TOKEN: "cf_test",
 	CLOUDFLARE_EMAIL_FROM: "leads@yonaris.com",
-	MARKETING_LEAD_RECIPIENT: "team@yonaris.com",
+	MARKETING_LEAD_RECIPIENT: "team@gmail.com",
 };
 const globalLead: DiagnosticLead = {
 	locale: "en",
@@ -43,6 +43,12 @@ function request(body: unknown, headers: Record<string, string> = {}): Request {
 }
 
 describe("regional lead handler", () => {
+	it("keeps the legacy module as a thin compatibility re-export of the canonical contact core", () => {
+		const adapter = readFileSync(new URL("./diagnostic-delivery.server.ts", import.meta.url), "utf8");
+		expect(adapter).toContain('from "./contact-delivery.server"');
+		expect(adapter).not.toMatch(/fetch\(|getReader\(|RATE_LIMIT_WINDOW_MS/);
+	});
+
 	it("accepts a strict lead only after provider delivery resolves", async () => {
 		const deliver = vi.fn(async () => undefined);
 		const handler = createDiagnosticLeadHandler({ getEnv: () => env, deliver, now: () => 1_700_000_000_000 });
@@ -76,6 +82,23 @@ describe("regional lead handler", () => {
 		const handler = createDiagnosticLeadHandler({ getEnv: () => ({}), deliver: vi.fn(), now: () => 1_700_000_000_000 });
 		expect((await handler(request(chinaLead))).status).toBe(503);
 	});
+
+	it("replays identical confirmed submissions, shares pending work, and rejects key reuse with changed payload", async () => {
+		let release: (() => void) | undefined;
+		const pending = new Promise<void>((resolve) => { release = resolve; });
+		const deliver = vi.fn(async () => pending);
+		const handler = createDiagnosticLeadHandler({ getEnv: () => env, deliver, now: () => 1_700_000_000_000 });
+		const first = handler(request(globalLead));
+		const concurrent = handler(request(globalLead));
+		release?.();
+		expect((await first).status).toBe(202);
+		expect((await concurrent).status).toBe(202);
+		expect((await handler(request(globalLead))).status).toBe(202);
+		expect(deliver).toHaveBeenCalledTimes(1);
+		const conflict = await handler(request({ ...globalLead, company: "Changed" }));
+		expect(conflict.status).toBe(409);
+		expect(await conflict.json()).toEqual({ ok: false, code: "idempotency_conflict" });
+	});
 });
 
 describe("Cloudflare regional delivery", () => {
@@ -92,7 +115,7 @@ describe("Cloudflare regional delivery", () => {
 				errors: [],
 				messages: [],
 				result: {
-					delivered: ["owner@yonaris.com", "partner@yonaris.com"],
+					delivered: ["owner@gmail.com", "partner@gmail.com"],
 					permanent_bounces: [],
 					queued: [],
 				},
@@ -102,14 +125,14 @@ describe("Cloudflare regional delivery", () => {
 			lead: globalLead,
 			env: {
 				...env,
-				MARKETING_LEAD_RECIPIENT: "owner@yonaris.com, partner@yonaris.com",
+				MARKETING_LEAD_RECIPIENT: "owner@gmail.com, partner@gmail.com",
 			},
 			idempotencyKey,
 		}, fetchImpl);
 		expect(endpoint).toBe("https://api.cloudflare.com/client/v4/accounts/account_test/email/sending/send");
 		expect(authorization).toBe("Bearer cf_test");
 		expect(payload).toMatchObject({
-			to: ["owner@yonaris.com", "partner@yonaris.com"],
+			to: ["owner@gmail.com", "partner@gmail.com"],
 			from: { address: "leads@yonaris.com", name: "Yonaris" },
 			headers: { "X-Yonaris-Submission-ID": idempotencyKey },
 		});
@@ -121,7 +144,7 @@ describe("Cloudflare regional delivery", () => {
 			errors: [],
 			messages: [],
 			result: {
-				delivered: ["owner@yonaris.com"],
+				delivered: ["owner@gmail.com"],
 				permanent_bounces: [],
 				queued: [],
 			},
@@ -130,7 +153,7 @@ describe("Cloudflare regional delivery", () => {
 			lead: globalLead,
 			env: {
 				...env,
-				MARKETING_LEAD_RECIPIENT: "owner@yonaris.com,partner@yonaris.com",
+				MARKETING_LEAD_RECIPIENT: "owner@gmail.com,partner@gmail.com",
 			},
 			idempotencyKey,
 		}, fetchImpl)).rejects.toMatchObject({ code: "delivery_unconfirmed" });
@@ -144,12 +167,12 @@ describe("Cloudflare regional delivery", () => {
 				success: true,
 				errors: [],
 				messages: [],
-				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+				result: { delivered: ["team@gmail.com"], permanent_bounces: [], queued: [] },
 			});
 		};
 		await sendLeadWithCloudflare({ lead: globalLead, env, idempotencyKey }, fetchImpl);
 		expect(payload).toMatchObject({
-			to: ["team@yonaris.com"],
+			to: ["team@gmail.com"],
 			reply_to: "ava@acme.example",
 			subject: "Yonaris global website lead / Acme",
 		});
@@ -166,7 +189,7 @@ describe("Cloudflare regional delivery", () => {
 				success: true,
 				errors: [],
 				messages: [],
-				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+				result: { delivered: ["team@gmail.com"], permanent_bounces: [], queued: [] },
 			});
 		};
 		await sendLeadWithCloudflare({ lead: chinaLead, env, idempotencyKey }, fetchImpl);
@@ -183,7 +206,7 @@ describe("Cloudflare regional delivery", () => {
 				success: true,
 				errors: [],
 				messages: [],
-				result: { delivered: ["team@yonaris.com"], permanent_bounces: [], queued: [] },
+				result: { delivered: ["team@gmail.com"], permanent_bounces: [], queued: [] },
 			});
 		};
 		await sendLeadWithCloudflare({ lead: { ...globalLead, requestType: "consultation" }, env, idempotencyKey }, fetchImpl);

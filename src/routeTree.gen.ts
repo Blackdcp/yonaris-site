@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApproachRouteImport } from './routes/approach'
 import { Route as CaseworkRouteImport } from './routes/casework'
 import { Route as CompanyRouteImport } from './routes/company'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DiagnosticRouteImport } from './routes/diagnostic'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as GeoRouteImport } from './routes/geo'
@@ -41,6 +42,7 @@ import { Route as AgentPlatformRouteImport } from './routes/agent/platform'
 import { Route as AgentPrivacyRouteImport } from './routes/agent/privacy'
 import { Route as AgentProductRouteImport } from './routes/agent/product'
 import { Route as AgentResultsRouteImport } from './routes/agent/results'
+import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiDiagnosticRouteImport } from './routes/api/diagnostic'
 import { Route as ZhIndexRouteImport } from './routes/zh/index'
 import { Route as ZhApproachRouteImport } from './routes/zh/approach'
@@ -84,6 +86,11 @@ const CaseworkRoute = CaseworkRouteImport.update({
 const CompanyRoute = CompanyRouteImport.update({
   id: '/company',
   path: '/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiagnosticRoute = DiagnosticRouteImport.update({
@@ -226,6 +233,11 @@ const AgentResultsRoute = AgentResultsRouteImport.update({
   path: '/agent/results',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiContactRoute = ApiContactRouteImport.update({
+  id: '/api/contact',
+  path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiDiagnosticRoute = ApiDiagnosticRouteImport.update({
   id: '/api/diagnostic',
   path: '/api/diagnostic',
@@ -353,6 +365,7 @@ export interface FileRoutesByFullPath {
   '/approach': typeof ApproachRoute
   '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
@@ -380,6 +393,7 @@ export interface FileRoutesByFullPath {
   '/agent/privacy': typeof AgentPrivacyRoute
   '/agent/product': typeof AgentProductRoute
   '/agent/results': typeof AgentResultsRoute
+  '/api/contact': typeof ApiContactRoute
   '/api/diagnostic': typeof ApiDiagnosticRoute
   '/zh/approach': typeof ZhApproachRoute
   '/zh/company': typeof ZhCompanyRoute
@@ -411,6 +425,7 @@ export interface FileRoutesByTo {
   '/approach': typeof ApproachRoute
   '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
@@ -438,6 +453,7 @@ export interface FileRoutesByTo {
   '/agent/privacy': typeof AgentPrivacyRoute
   '/agent/product': typeof AgentProductRoute
   '/agent/results': typeof AgentResultsRoute
+  '/api/contact': typeof ApiContactRoute
   '/api/diagnostic': typeof ApiDiagnosticRoute
   '/zh/approach': typeof ZhApproachRoute
   '/zh/company': typeof ZhCompanyRoute
@@ -470,6 +486,7 @@ export interface FileRoutesById {
   '/approach': typeof ApproachRoute
   '/casework': typeof CaseworkRoute
   '/company': typeof CompanyRoute
+  '/contact': typeof ContactRoute
   '/diagnostic': typeof DiagnosticRoute
   '/features': typeof FeaturesRoute
   '/geo': typeof GeoRoute
@@ -497,6 +514,7 @@ export interface FileRoutesById {
   '/agent/privacy': typeof AgentPrivacyRoute
   '/agent/product': typeof AgentProductRoute
   '/agent/results': typeof AgentResultsRoute
+  '/api/contact': typeof ApiContactRoute
   '/api/diagnostic': typeof ApiDiagnosticRoute
   '/zh/approach': typeof ZhApproachRoute
   '/zh/company': typeof ZhCompanyRoute
@@ -530,6 +548,7 @@ export interface FileRouteTypes {
     | '/approach'
     | '/casework'
     | '/company'
+    | '/contact'
     | '/diagnostic'
     | '/features'
     | '/geo'
@@ -557,6 +576,7 @@ export interface FileRouteTypes {
     | '/agent/privacy'
     | '/agent/product'
     | '/agent/results'
+    | '/api/contact'
     | '/api/diagnostic'
     | '/zh/approach'
     | '/zh/company'
@@ -588,6 +608,7 @@ export interface FileRouteTypes {
     | '/approach'
     | '/casework'
     | '/company'
+    | '/contact'
     | '/diagnostic'
     | '/features'
     | '/geo'
@@ -615,6 +636,7 @@ export interface FileRouteTypes {
     | '/agent/privacy'
     | '/agent/product'
     | '/agent/results'
+    | '/api/contact'
     | '/api/diagnostic'
     | '/zh/approach'
     | '/zh/company'
@@ -646,6 +668,7 @@ export interface FileRouteTypes {
     | '/approach'
     | '/casework'
     | '/company'
+    | '/contact'
     | '/diagnostic'
     | '/features'
     | '/geo'
@@ -673,6 +696,7 @@ export interface FileRouteTypes {
     | '/agent/privacy'
     | '/agent/product'
     | '/agent/results'
+    | '/api/contact'
     | '/api/diagnostic'
     | '/zh/approach'
     | '/zh/company'
@@ -705,6 +729,7 @@ export interface RootRouteChildren {
   ApproachRoute: typeof ApproachRoute
   CaseworkRoute: typeof CaseworkRoute
   CompanyRoute: typeof CompanyRoute
+  ContactRoute: typeof ContactRoute
   DiagnosticRoute: typeof DiagnosticRoute
   FeaturesRoute: typeof FeaturesRoute
   GeoRoute: typeof GeoRoute
@@ -732,6 +757,7 @@ export interface RootRouteChildren {
   AgentPrivacyRoute: typeof AgentPrivacyRoute
   AgentProductRoute: typeof AgentProductRoute
   AgentResultsRoute: typeof AgentResultsRoute
+  ApiContactRoute: typeof ApiContactRoute
   ApiDiagnosticRoute: typeof ApiDiagnosticRoute
   ZhApproachRoute: typeof ZhApproachRoute
   ZhCompanyRoute: typeof ZhCompanyRoute
@@ -787,6 +813,13 @@ declare module '@tanstack/react-router' {
       path: '/company'
       fullPath: '/company'
       preLoaderRoute: typeof CompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/diagnostic': {
@@ -985,6 +1018,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgentResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/contact': {
+      id: '/api/contact'
+      path: '/api/contact'
+      fullPath: '/api/contact'
+      preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/diagnostic': {
       id: '/api/diagnostic'
       path: '/api/diagnostic'
@@ -1161,6 +1201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApproachRoute: ApproachRoute,
   CaseworkRoute: CaseworkRoute,
   CompanyRoute: CompanyRoute,
+  ContactRoute: ContactRoute,
   DiagnosticRoute: DiagnosticRoute,
   FeaturesRoute: FeaturesRoute,
   GeoRoute: GeoRoute,
@@ -1188,6 +1229,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgentPrivacyRoute: AgentPrivacyRoute,
   AgentProductRoute: AgentProductRoute,
   AgentResultsRoute: AgentResultsRoute,
+  ApiContactRoute: ApiContactRoute,
   ApiDiagnosticRoute: ApiDiagnosticRoute,
   ZhApproachRoute: ZhApproachRoute,
   ZhCompanyRoute: ZhCompanyRoute,

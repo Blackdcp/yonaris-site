@@ -1,4 +1,24 @@
 import type { ContactPageCopy } from "../../contracts/pages/contact";
+import type { ContactFormUiCopy } from "../../contracts/contact-form-ui";
+
+export const GLOBAL_EN_CONTACT_FORM_UI = {
+	fieldsetLegend: "Start a conversation",
+	botFieldLabel: "Leave this field empty",
+	sendingLabel: "Sending…",
+	retryLabel: "Try again",
+	privacySubmitLabel: "Submit privacy request",
+	unconfirmedMessage: "We could not confirm delivery. Your details are still here—please try again.",
+	conflictMessage: "This form changed before delivery could be confirmed. Please submit again.",
+	privacyBoundary: "This starts a manual privacy review. It does not automatically delete records.",
+	disclosure: "We use these details only to respond to this request.",
+	privacyLinkLabel: "Privacy",
+	validation: {
+		workEmailRequired: "Enter your work email.",
+		workEmailInvalid: "Enter a valid work email.",
+		fieldTooLong: "Shorten this field and try again.",
+		formInvalid: "Check the form and try again.",
+	},
+} as const satisfies ContactFormUiCopy;
 
 export const GLOBAL_EN_CONTACT_PAGE = {
 	edition: "global-en",

@@ -5,6 +5,8 @@ import {
 	sanitizeAnalyticsReferrer,
 	sanitizeAnalyticsUrl,
 } from "./diagnostic-analytics-privacy";
+import { CONTACT_HYDRATION_INTENT_STATE_KEY, CONTACT_INTENT_STATE_KEY } from "./contact-request-intent";
+import { DIAGNOSTIC_HYDRATION_INTENT_STATE_KEY, DIAGNOSTIC_INTENT_STATE_KEY } from "./diagnostic-request-intent";
 
 function runBootstrap(pathname: string, search: string, hash = "", initialState: Record<string, unknown> = { route: pathname }) {
 	const windowObject: Record<string, unknown> = {};
@@ -20,7 +22,7 @@ function runBootstrap(pathname: string, search: string, hash = "", initialState:
 }
 
 describe("diagnostic analytics bootstrap", () => {
-	it.each(["/diagnostic", "/zh/diagnostic"])(
+	it.each(["/contact", "/zh/contact", "/diagnostic", "/zh/diagnostic"])(
 		"removes the raw query synchronously on %s without preserving legacy form values",
 		(pathname) => {
 			const raw = "?website=https%3A%2F%2Facme.example%2Fsecret&email=ava%40acme.example";
@@ -31,17 +33,20 @@ describe("diagnostic analytics bootstrap", () => {
 		},
 	);
 
-	it.each(["/diagnostic", "/zh/diagnostic"])(
+	it.each(["/contact", "/zh/contact", "/diagnostic", "/zh/diagnostic"])(
 		"moves only the allowlisted privacy intent into history state and strips the full query on %s",
 		(pathname) => {
 			const result = runBootstrap(pathname, "?intent=privacy&email=ava%40acme.example", "#request");
+			const contact = pathname.endsWith("/contact");
+			const intentKey = contact ? CONTACT_INTENT_STATE_KEY : DIAGNOSTIC_INTENT_STATE_KEY;
+			const hydrationKey = contact ? CONTACT_HYDRATION_INTENT_STATE_KEY : DIAGNOSTIC_HYDRATION_INTENT_STATE_KEY;
 
 			expect(result.calls).toHaveLength(1);
 			expect(result.calls[0]?.[0]).toEqual(
 				expect.objectContaining({
 					...result.history.state,
-					__yonarisDiagnosticIntent: "privacy",
-					__yonarisDiagnosticHydrationIntent: "privacy",
+					[intentKey]: "privacy",
+					[hydrationKey]: "privacy",
 					__TSR_index: 0,
 					key: expect.any(String),
 					__TSR_key: expect.any(String),
@@ -104,6 +109,14 @@ describe("analytics sanitization", () => {
 			email: "ava@acme.example",
 			phone: "+86 138 0013 8000",
 			company: "Acme Confidential",
+			workEmail: "ava@acme.example",
+			companyOrWebsite: "acme.example",
+			curiosity: "Could this fit?",
+			marketQuestion: "Which source matters?",
+			marketOrLanguage: "France / French",
+			buyerOrCommercialContext: "Commercial review",
+			botField: "",
+			submissionId: "0198ef3d-34e1-7f14-a74d-e09b66d14b11",
 			consent: true,
 			companyUrl: "bot.example",
 			domain: "acme.example",
@@ -115,6 +128,8 @@ describe("analytics sanitization", () => {
 			requestType: "privacy",
 			__yonarisDiagnosticIntent: "privacy",
 			__yonarisDiagnosticHydrationIntent: "privacy",
+			__yonarisContactIntent: "privacy",
+			__yonarisContactHydrationIntent: "privacy",
 			$current_url: "https://yonaris.com/diagnostic?website=secret",
 			$referrer: "https://search.example/?q=secret",
 		});

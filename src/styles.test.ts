@@ -18,6 +18,23 @@ function ruleFor(source: string, selector: string): string {
 }
 
 describe("zero-to-one stylesheet boundary", () => {
+	it("imports the Contact aperture with state geometry, mobile containment, and reduced-motion fallbacks", () => {
+		const stylesheet = read("styles.css");
+		const contactPath = join(sourceRoot, "styles/site-v1/contact.css");
+		expect(stylesheet).toContain('@import "./styles/site-v1/contact.css";');
+		expect(existsSync(contactPath)).toBe(true);
+		if (!existsSync(contactPath)) return;
+		const css = read("styles/site-v1/contact.css");
+		for (const state of ["idle", "focused", "expanded", "invalid", "unconfirmed", "confirmed"]) {
+			expect(css).toContain(`[data-v1-state="${state}"]`);
+		}
+		expect(ruleFor(css, ".site-v1-contact-form__submit")).toContain("min-height: var(--site-v1-target)");
+		expect(css).toContain("@media (max-width: 44rem)");
+		const reduced = css.slice(css.lastIndexOf("@media (prefers-reduced-motion: reduce)"));
+		expect(reduced).toContain("animation: none !important");
+		expect(reduced).toContain("transition: none !important");
+	});
+
 	it("imports the Human / Agent lens and gives its spatial controls responsive reduced-motion behavior", () => {
 		const stylesheet = read("styles.css");
 		const humanAgentPath = join(sourceRoot, "styles/site-v1/human-agent.css");
