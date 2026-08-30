@@ -55,4 +55,15 @@ describe("permanent redirects", () => {
 		expect(response.headers.get("content-type")).toBeNull();
 		expect(await response.text()).toBe("");
 	});
+
+	test("places a preserved query before the destination fragment", () => {
+		const redirects = requireSubject();
+		if (!redirects) return;
+
+		const response = redirects.permanentRedirectResponse(
+			new Request("https://yonaris.test/approach?utm=x"),
+			"/product#how-it-works",
+		);
+		expect(response.headers.get("location")).toBe("/product?utm=x#how-it-works");
+	});
 });

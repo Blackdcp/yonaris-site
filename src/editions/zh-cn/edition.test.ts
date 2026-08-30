@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CHINA_COPY, HUMAN_PAGE_KEYS } from "@/content/experience";
+import { HUMAN_PAGE_TO_PUBLIC_PAGE } from "@/content/experience/types";
+import { getPublicPagePath } from "@/site/route-selectors";
 import { agentCatalogPath, agentMarkdownPath, getAgentTopic } from "@/lib/machine-documents";
 import { siteHref } from "@/lib/seo";
 import { zhPageHead } from "./edition";
@@ -25,7 +27,7 @@ describe("China edition SEO", () => {
 			expect(head.meta).toContainEqual({ name: "twitter:card", content: "summary_large_image" });
 			expect(head.meta).toContainEqual({ name: "twitter:image", content: ogImage?.content });
 			expect(head.meta).toContainEqual({ name: "twitter:description", content: CHINA_COPY[key].metaDescription });
-			expect(canonical?.href).toMatch(key === "home" ? /\/zh$/ : new RegExp(`/zh/${key}$`));
+			expect(canonical?.href).toBe(siteHref(getPublicPagePath("zh-cn", HUMAN_PAGE_TO_PUBLIC_PAGE[key])));
 			expect(head.links.some((link) => "hrefLang" in link && link.hrefLang === "zh-CN")).toBe(true);
 			expect(head.links.some((link) => "hrefLang" in link && link.hrefLang === "en")).toBe(true);
 			expect(head.links.some((link) => "hrefLang" in link && link.hrefLang === "x-default")).toBe(true);

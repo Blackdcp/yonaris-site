@@ -1,47 +1,9 @@
-import { GLOBAL_COPY } from "@/content/experience";
-import type { HumanPageKey } from "@/content/experience/types";
-import { machineDiscoveryLinks, pageSocialMeta, publicEntityGraph, siteHref } from "@/lib/seo";
+import { HUMAN_PAGE_TO_PUBLIC_PAGE, type HumanPageKey } from "@/content/experience/types";
+import { buildPageHead } from "../page-head";
 
-const pathFor: Record<HumanPageKey, `/${string}`> = {
-	home: "/",
-	product: "/product",
-	approach: "/approach",
-	geo: "/geo",
-	company: "/company",
-	diagnostic: "/diagnostic",
-	privacy: "/privacy",
-};
-
-const chinaPathFor: Record<HumanPageKey, `/${string}`> = {
-	home: "/zh",
-	product: "/zh/product",
-	approach: "/zh/approach",
-	geo: "/zh/geo",
-	company: "/zh/company",
-	diagnostic: "/zh/diagnostic",
-	privacy: "/zh/privacy",
-};
-
+/** @deprecated Legacy route adapter. Public pages use buildPageHead directly. */
 export type GlobalEnglishPageKey = HumanPageKey;
 
 export function globalEnglishPageHead(key: GlobalEnglishPageKey) {
-	const page = GLOBAL_COPY[key];
-	const title = page.metaTitle;
-	const canonicalPath = pathFor[key];
-	return {
-		meta: [
-			{ title },
-			{ name: "description", content: page.metaDescription },
-			{ name: "theme-color", content: "#f2ede3" },
-			...pageSocialMeta({ title, description: page.metaDescription, canonicalPath, locale: "en_US" }),
-		],
-		links: [
-			{ rel: "canonical", href: siteHref(canonicalPath) },
-			{ rel: "alternate", hrefLang: "en", href: siteHref(canonicalPath) },
-			{ rel: "alternate", hrefLang: "zh-CN", href: siteHref(chinaPathFor[key]) },
-			{ rel: "alternate", hrefLang: "x-default", href: siteHref(canonicalPath) },
-			...machineDiscoveryLinks("en", key),
-		],
-		scripts: [publicEntityGraph({ locale: "en", pageKey: key })],
-	};
+	return buildPageHead("global-en", HUMAN_PAGE_TO_PUBLIC_PAGE[key], key);
 }

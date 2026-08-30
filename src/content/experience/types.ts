@@ -1,7 +1,31 @@
+import type { PublicPageKey } from "@/site/route-types";
+
+/** @deprecated Legacy Human-page contract. Remove only after Task 11. */
 export const HUMAN_PAGE_KEYS = ["home", "product", "approach", "geo", "company", "diagnostic", "privacy"] as const;
 
+/** @deprecated Legacy Human-page contract. Remove only after Task 11. */
 export type HumanPageKey = (typeof HUMAN_PAGE_KEYS)[number];
 export type ExperienceLocale = "en" | "zh";
+
+export const HUMAN_PAGE_TO_PUBLIC_PAGE = {
+	home: "home",
+	product: "product",
+	approach: "casework",
+	geo: "product",
+	company: "human-agent",
+	diagnostic: "contact",
+	privacy: "privacy",
+} as const satisfies Readonly<Record<HumanPageKey, PublicPageKey>>;
+
+export const PUBLIC_PAGE_TO_HUMAN_PAGE = {
+	home: "home",
+	product: "product",
+	casework: "approach",
+	company: "company",
+	"human-agent": "company",
+	contact: "diagnostic",
+	privacy: "privacy",
+} as const satisfies Readonly<Record<PublicPageKey, HumanPageKey>>;
 
 export interface HumanPageCopy {
 	readonly navLabel: string;

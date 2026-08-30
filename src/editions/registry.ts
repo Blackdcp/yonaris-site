@@ -1,68 +1,38 @@
-import { HUMAN_PAGE_KEYS, type HumanPageKey } from "@/content/experience/types";
+import { GLOBAL_EN_NAVIGATION } from "@/content/public-site/global-en/navigation";
+import { ZH_CN_NAVIGATION } from "@/content/public-site/zh-cn/navigation";
+import { PUBLIC_PAGE_MANIFEST } from "@/site/public-page-manifest";
+import type { PublicPageKey } from "@/site/route-types";
 import type { EditionDefinition, EditionPage, EditionPageRef, SiteEdition } from "./types";
 
-const globalPath: Record<HumanPageKey, `/${string}`> = {
-	home: "/",
-	product: "/product",
-	approach: "/approach",
-	geo: "/geo",
-	company: "/company",
-	diagnostic: "/diagnostic",
-	privacy: "/privacy",
-};
-
-const chinaPath: Record<HumanPageKey, `/${string}`> = {
-	home: "/zh",
-	product: "/zh/product",
-	approach: "/zh/approach",
-	geo: "/zh/geo",
-	company: "/zh/company",
-	diagnostic: "/zh/diagnostic",
-	privacy: "/zh/privacy",
-};
-
-function navigationFor(key: HumanPageKey): EditionPage["navigation"] {
-	if (key === "diagnostic") return ["utility", "footer"];
-	if (key === "privacy" || key === "home") return ["footer"];
-	return ["primary", "footer"];
+function ref(edition: SiteEdition, page: PublicPageKey): EditionPageRef {
+	return `${edition}:${page}`;
 }
 
-function pagesFor(editionId: SiteEdition): readonly EditionPage[] {
-	return HUMAN_PAGE_KEYS.map((key) => ({
-		ref: `${editionId}:${key}`,
-		editionId,
-		locale: editionId === "global-en" ? "en" : "zh-CN",
-		pathname: editionId === "global-en" ? globalPath[key] : chinaPath[key],
-		intentId: editionId === "global-en" ? key : `zh-${key}`,
+function pagesFor(edition: SiteEdition): readonly EditionPage[] {
+	return PUBLIC_PAGE_MANIFEST.map((page) => ({
+		ref: ref(edition, page.key),
+		editionId: edition,
+		locale: edition === "global-en" ? "en" : "zh-CN",
+		pathname: page.paths[edition],
+		intentId: page.key,
 		publication: "published",
-		navigation: navigationFor(key),
-		seo: { indexable: true, ...(editionId === "global-en" ? { xDefault: true } : {}) },
+		navigation: page.key === "contact" ? ["utility", "footer"] : page.key === "home" || page.key === "privacy" ? ["footer"] : ["primary", "footer"],
+		seo: { indexable: true, ...(edition === "global-en" ? { xDefault: true } : {}) },
 	}));
 }
 
-const globalPages = pagesFor("global-en");
-const chinaPages = pagesFor("zh-cn");
+function navigationPages(edition: SiteEdition, area: "header" | "footer"): readonly EditionPageRef[] {
+	const record = edition === "global-en" ? GLOBAL_EN_NAVIGATION : ZH_CN_NAVIGATION;
+	const targets = area === "header" ? [...record.header, record.contactCta] : record.footer;
+	return targets.flatMap((target) => (target.kind === "page" ? [ref(edition, target.page)] : []));
+}
 
 const editions: Record<SiteEdition, EditionDefinition> = {
 	"global-en": {
-		id: "global-en",
-		home: "global-en:home",
-		pages: globalPages,
-		primaryNavigation: ["global-en:product", "global-en:approach", "global-en:geo", "global-en:company"],
-		footerNavigation: globalPages.filter((page) => page.navigation.includes("footer")).map((page) => page.ref),
-		localeFallbackHome: "global-en:home",
-		analyticsPolicy: "disabled",
-		diagnosticPolicy: "global-v2",
+		id: "global-en", home: ref("global-en", "home"), pages: pagesFor("global-en"), primaryNavigation: navigationPages("global-en", "header"), footerNavigation: navigationPages("global-en", "footer"), localeFallbackHome: ref("global-en", "home"), analyticsPolicy: "disabled", diagnosticPolicy: "global-v2",
 	},
 	"zh-cn": {
-		id: "zh-cn",
-		home: "zh-cn:home",
-		pages: chinaPages,
-		primaryNavigation: ["zh-cn:product", "zh-cn:approach", "zh-cn:geo", "zh-cn:company"],
-		footerNavigation: chinaPages.filter((page) => page.navigation.includes("footer")).map((page) => page.ref),
-		localeFallbackHome: "zh-cn:home",
-		analyticsPolicy: "disabled",
-		diagnosticPolicy: "regional-v2",
+		id: "zh-cn", home: ref("zh-cn", "home"), pages: pagesFor("zh-cn"), primaryNavigation: navigationPages("zh-cn", "header"), footerNavigation: navigationPages("zh-cn", "footer"), localeFallbackHome: ref("zh-cn", "home"), analyticsPolicy: "disabled", diagnosticPolicy: "regional-v2",
 	},
 };
 
@@ -71,15 +41,11 @@ export function getEdition(id: SiteEdition): EditionDefinition {
 }
 
 export function getEditionPage(ref: EditionPageRef): EditionPage {
-	const page = Object.values(editions)
-		.flatMap((edition) => edition.pages)
-		.find((candidate) => candidate.ref === ref);
+	const page = Object.values(editions).flatMap((edition) => edition.pages).find((candidate) => candidate.ref === ref);
 	if (!page) throw new Error(`Unknown edition page: ${ref}`);
 	return page;
 }
 
 export function findPublishedEditionPage(pathname: string): EditionPage | undefined {
-	return Object.values(editions)
-		.flatMap((edition) => edition.pages)
-		.find((page) => page.pathname === pathname && page.publication === "published");
+	return Object.values(editions).flatMap((edition) => edition.pages).find((page) => page.pathname === pathname && page.publication === "published");
 }

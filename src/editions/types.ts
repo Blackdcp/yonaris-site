@@ -1,4 +1,6 @@
-export type SiteEdition = "global-en" | "zh-cn";
+import type { SiteEdition as PublicSiteEdition } from "@/site/route-types";
+
+export type SiteEdition = PublicSiteEdition;
 export type EditionPageRef = `${SiteEdition}:${string}`;
 
 export interface EditionPage {

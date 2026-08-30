@@ -1,8 +1,10 @@
+import type { PublicPageKey } from "@/site/route-types";
 import type { HumanPageKey } from "@/content/experience/types";
 
 export type Locale = "en" | "zh";
-export type CorePageKey = HumanPageKey;
-export type AgentPageKey = Exclude<CorePageKey, "home">;
+export type CorePageKey = PublicPageKey;
+/** @deprecated Legacy machine-document key contract. */
+export type AgentPageKey = Exclude<HumanPageKey, "home">;
 
 export type SiteRouteClass = "core" | "utility" | "legacy" | "machine";
 export type IndexPolicy = "index,follow" | "noindex,follow";
@@ -10,10 +12,10 @@ export type IndexPolicy = "index,follow" | "noindex,follow";
 export const SITE_ROUTE_KEYS = [
 	"home",
 	"product",
-	"approach",
-	"geo",
+	"casework",
 	"company",
-	"diagnostic",
+	"human-agent",
+	"contact",
 	"privacy",
 	"agent",
 	"llms",
