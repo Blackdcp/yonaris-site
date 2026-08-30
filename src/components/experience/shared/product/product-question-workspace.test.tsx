@@ -82,6 +82,9 @@ describe("ProductQuestionWorkspace progressive record", () => {
 	it("keeps its horizontal state rail semantically aligned at narrow widths", () => {
 		const controls = host.querySelector<HTMLElement>('[role="tablist"]');
 		expect(controls?.getAttribute("aria-orientation")).toBe("horizontal");
+		expect(controls?.querySelectorAll(':scope > button[role="tab"]')).toHaveLength(5);
+		expect(controls?.querySelector("svg[aria-hidden='true'] path")).not.toBeNull();
+		expect(controls?.querySelector("article, section, ol, ul")).toBeNull();
 	});
 
 	it("projects answer reasons and their evidence relationships inside the visible answer panel", async () => {
@@ -125,14 +128,15 @@ describe("ProductQuestionWorkspace progressive record", () => {
 		expect(panel.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[3]);
 	});
 
-	it("keeps a canonical relationship spine across input, system, evidence, human boundary, output and review", () => {
-		const spine = host.querySelector<HTMLElement>("[data-persistent-record-spine]");
-		expect(spine).not.toBeNull();
-		const text = spine?.textContent ?? "";
+	it("keeps a few persistent record anchors without recreating the six-step system sequence", () => {
+		expect(host.querySelector("[data-persistent-record-spine]")).toBeNull();
+		const anchors = host.querySelector<HTMLElement>("[data-persistent-record-anchors]");
+		expect(anchors).not.toBeNull();
+		expect(anchors?.querySelector("ol, [role='list']")).toBeNull();
+		expect(anchors?.querySelectorAll(":scope > article, :scope > div")).toHaveLength(3);
+		const text = anchors?.textContent ?? "";
 		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.id);
 		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.question);
-		for (const answer of GLOBAL_EN_BUYER_QUESTION.channelAnswers) expect(text).toContain(answer.id);
-		for (const reason of GLOBAL_EN_BUYER_QUESTION.comparisonReasons) expect(text).toContain(reason.id);
 		for (const evidence of GLOBAL_EN_BUYER_QUESTION.evidence) expect(text).toContain(evidence.id);
 		for (const action of GLOBAL_EN_BUYER_QUESTION.proposedActions) {
 			expect(text).toContain(action.id);
@@ -142,6 +146,8 @@ describe("ProductQuestionWorkspace progressive record", () => {
 		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.changed[0]?.evidenceIds[0]);
 		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.evidenceIds[0]);
 		expect(text).toContain(GLOBAL_EN_BUYER_QUESTION.review.attribution.status);
+		const repeatedSystemSequence = GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence.filter((phrase) => text.includes(phrase));
+		expect(repeatedSystemSequence.length).toBeLessThan(3);
 	});
 
 	it("accepts touch, Enter, Space and roving arrow input as independent direct controls", async () => {

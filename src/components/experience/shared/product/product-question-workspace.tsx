@@ -42,6 +42,7 @@ export function ProductQuestionWorkspace({ copy }: { readonly copy: ProductPageC
 				<small>{record.market} · {record.language}</small>
 			</header>
 			<div className="site-v1-product-workspace__controls" role="tablist" aria-label={copy.hero.headline} aria-orientation={orientation}>
+				<svg aria-hidden="true" viewBox="0 0 1000 24" preserveAspectRatio="none"><path d="M12 16 C190 3 320 22 490 11 S790 4 988 15" /></svg>
 				{WORKSPACE_VIEW_IDS.map((view, index) => {
 					const props = tabs.getTabProps(view, index);
 					return (

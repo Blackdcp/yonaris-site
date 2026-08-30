@@ -3,7 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "@playwright/test";
 
-const outputDir = path.resolve(".superpowers/sdd/2026-08-30-yonaris-site-1-0-production/visual-task-5/fix-round-1");
+const outputDir = path.resolve(process.argv[2] ?? ".superpowers/sdd/2026-08-30-yonaris-site-1-0-production/visual-task-5/product-workspace-layout");
 const states = [
 	["Buyer questions", "buyer-questions"],
 	["Current answers", "current-answers"],
@@ -46,6 +46,7 @@ try {
 		if (metadata.title !== "Yonaris Product — From buyer question to next move" || metadata.description !== "Connect buyer questions, observed answers, evidence, reviewed actions and outcome review in one working record." || metadata.jsonLdName !== metadata.title || metadata.jsonLdDescription !== metadata.description) {
 			throw new Error(`Metadata mismatch: ${JSON.stringify(metadata)}`);
 		}
+		await page.locator("#how-it-works").screenshot({ path: path.join(outputDir, `${viewport.name}-how-it-works.png`), animations: "disabled", timeout: 10_000 });
 
 		if (viewport.hasTouch) {
 			await page.getByRole("tab", { name: states[0][0] }).focus();
@@ -66,6 +67,7 @@ try {
 				const boxesOverlap = (first, second) => Boolean(first && second && first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top);
 				const workspace = document.querySelector(".site-v1-product-workspace");
 				const controls = document.querySelector(".site-v1-product-workspace__controls");
+				const controlButtons = [...(controls?.querySelectorAll(':scope > button[role="tab"]') ?? [])];
 				const panel = document.querySelector(`[data-workspace-view="${slug}"]:not([hidden])`);
 				const disclosure = document.querySelector(".site-v1-product-workspace > .site-v1-representative-disclosure");
 				const workspaceBox = box(workspace);
@@ -76,10 +78,27 @@ try {
 				const answerBoundary = box(document.querySelector('[data-workspace-view="current-answers"] .site-v1-workspace-answer-environments > p'));
 				const unchanged = box(document.querySelector('[data-workspace-view="outcome-review"] [data-review-comparison="unchanged"]'));
 				const cannotAttribute = box(document.querySelector('[data-workspace-view="outcome-review"] [data-review-comparison="cannot-attribute"]'));
+				const method = document.querySelector("#how-it-works");
+				const methodItems = [...(method?.querySelectorAll(".site-v1-product-method__field > p") ?? [])];
 				return {
 					documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
 					workspace: { clientWidth: workspace?.clientWidth, scrollWidth: workspace?.scrollWidth, scrollLeft: workspace?.scrollLeft, box: workspaceBox },
-					controls: { clientWidth: controls?.clientWidth, scrollWidth: controls?.scrollWidth, scrollLeft: controls?.scrollLeft, orientation: controls?.getAttribute("aria-orientation") },
+					controls: {
+						clientWidth: controls?.clientWidth,
+						scrollWidth: controls?.scrollWidth,
+						scrollLeft: controls?.scrollLeft,
+						orientation: controls?.getAttribute("aria-orientation"),
+						pathCount: controls?.querySelectorAll(':scope > svg[aria-hidden="true"] path').length,
+						buttonWidths: controlButtons.map((button) => Math.round(button.getBoundingClientRect().width)),
+						buttonBorders: controlButtons.map((button) => getComputedStyle(button).borderRightWidth),
+					},
+					recordAnchors: document.querySelectorAll("[data-persistent-record-anchors] > article, [data-persistent-record-anchors] > div").length,
+					orderedRecordSpine: document.querySelectorAll("[data-persistent-record-spine]").length,
+					method: {
+						orderedStructures: method?.querySelectorAll("ol, li, [role='list']").length,
+						itemWidths: methodItems.map((item) => Math.round(item.getBoundingClientRect().width)),
+						itemBorders: methodItems.map((item) => getComputedStyle(item).borderWidth),
+					},
 					panelBox,
 					disclosureBox,
 					panelInside: inside(panelBox),
@@ -96,6 +115,14 @@ try {
 			if (!metrics.panelInside) failures.push("active panel outside workspace");
 			if (!metrics.disclosureInside) failures.push("disclosure outside workspace");
 			if (metrics.controls.orientation !== "horizontal") failures.push(`controls orientation ${metrics.controls.orientation}`);
+			if (metrics.controls.pathCount !== 1) failures.push(`record path count ${metrics.controls.pathCount}`);
+			if (new Set(metrics.controls.buttonWidths).size < 3) failures.push(`controls remain equal-width: ${metrics.controls.buttonWidths.join(",")}`);
+			if (metrics.controls.buttonBorders.some((width) => width !== "0px")) failures.push(`controls retain boxed borders: ${metrics.controls.buttonBorders.join(",")}`);
+			if (viewport.name === "desktop" && metrics.controls.scrollWidth !== metrics.controls.clientWidth) failures.push(`desktop controls clipped ${metrics.controls.clientWidth}/${metrics.controls.scrollWidth}`);
+			if (metrics.recordAnchors !== 3 || metrics.orderedRecordSpine !== 0) failures.push(`record anchors/spine ${metrics.recordAnchors}/${metrics.orderedRecordSpine}`);
+			if (metrics.method.orderedStructures !== 0 || metrics.method.itemWidths.length !== 6) failures.push(`method structure ${JSON.stringify(metrics.method)}`);
+			if (viewport.name === "desktop" && new Set(metrics.method.itemWidths).size < 3) failures.push(`method remains equal-width: ${metrics.method.itemWidths.join(",")}`);
+			if (metrics.method.itemBorders.some((width) => width !== "0px")) failures.push(`method retains item borders: ${metrics.method.itemBorders.join(",")}`);
 			if (slug === "current-answers" && metrics.answerOverlap) failures.push("answer sheets overlap observation boundary");
 			if (slug === "outcome-review" && metrics.outcomeOverlap) failures.push("unchanged overlaps cannot-attribute");
 			results.push({ viewport: viewport.name, state: slug, metrics, failures });

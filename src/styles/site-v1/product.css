@@ -161,22 +161,24 @@
 	color: var(--site-v1-optical-300);
 }
 
-.site-v1-product-method ol {
-	display: grid;
-	grid-template-columns: repeat(12, minmax(0, 1fr));
+.site-v1-product-method__field {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--site-v1-space-2) clamp(1.5rem, 4vw, 4.5rem);
+	align-items: flex-start;
 	margin-top: var(--site-v1-space-5);
-	padding: 0;
-	border-top: 1px solid var(--site-v1-hairline-dark);
-	list-style: none;
+	padding-block: var(--site-v1-space-4);
 }
 
-.site-v1-product-method li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); grid-column: span 4; gap: var(--site-v1-space-2); align-items: start; min-width: 0; padding: var(--site-v1-space-3) var(--site-v1-space-4) var(--site-v1-space-3) 0; border-bottom: 1px solid var(--site-v1-hairline-dark); }
-.site-v1-product-method li:nth-child(2),
-.site-v1-product-method li:nth-child(5) { grid-column: span 5; }
-.site-v1-product-method li:nth-child(3),
-.site-v1-product-method li:nth-child(4) { grid-column: span 3; }
-.site-v1-product-method li span { color: var(--site-v1-orange-400); font-family: "Geist Mono", monospace; font-size: 0.7rem; }
-.site-v1-product-method li p { font-size: 0.9rem; }
+.site-v1-product-method__field::before { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgb(240 122 61 / 45%), rgb(112 134 152 / 24%), transparent); content: ""; }
+.site-v1-product-method__field > p { position: relative; flex: 0 1 20rem; max-width: 26ch; padding-left: 0.85rem; font-size: clamp(0.9rem, 1.35vw, 1.15rem); }
+.site-v1-product-method__field > p::before { position: absolute; top: 0.45rem; left: 0; width: 0.3rem; height: 0.3rem; border-radius: 50%; background: var(--site-v1-orange-400); box-shadow: 0 0 0.8rem rgb(240 122 61 / 55%); content: ""; }
+.site-v1-product-method__field > p:nth-child(2) { flex-basis: 27rem; margin-top: 2.8rem; font-size: clamp(1rem, 1.7vw, 1.45rem); }
+.site-v1-product-method__field > p:nth-child(3) { flex-basis: 16rem; margin-top: 0.8rem; }
+.site-v1-product-method__field > p:nth-child(4) { flex-basis: 24rem; margin-top: 3.6rem; }
+.site-v1-product-method__field > p:nth-child(5) { flex-basis: 15rem; font-size: clamp(1rem, 1.55vw, 1.3rem); }
+.site-v1-product-method__field > p:nth-child(6) { flex-basis: 22rem; margin-top: 1.7rem; }
 .site-v1-product-method__inputs { display: flex; flex-wrap: wrap; gap: var(--site-v1-space-2) var(--site-v1-space-3); margin-top: var(--site-v1-space-3); color: var(--site-v1-optical-300); font-family: "Geist Mono", monospace; font-size: 0.7rem; }
 
 .site-v1-product-theatre { width: 100%; max-width: none; border-block: 1px solid var(--site-v1-hairline-dark); background: var(--site-v1-navy-1000); }
@@ -216,8 +218,6 @@
 
 @media (max-width: 70rem) {
 	.site-v1-product-hero { grid-template-columns: minmax(20rem, 0.9fr) minmax(0, 1.1fr); }
-	.site-v1-product-method li,
-	.site-v1-product-method li:nth-child(n) { grid-column: span 6; }
 	.site-v1-product-human-agent { grid-template-columns: 1fr 1fr; }
 	.site-v1-product-human-agent > .site-v1-product-action { justify-self: start; }
 }
@@ -254,9 +254,11 @@
 	.site-v1-product-closing { padding: var(--site-v1-space-5) var(--site-v1-space-3); }
 	.site-v1-product-method > header,
 	.site-v1-product-theatre > header { grid-template-columns: 1fr; gap: var(--site-v1-space-2); }
-	.site-v1-product-method ol { grid-template-columns: 1fr; }
-	.site-v1-product-method li,
-	.site-v1-product-method li:nth-child(n) { grid-column: 1; padding: 0.75rem 0; }
+	.site-v1-product-method__field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.9rem; padding-left: var(--site-v1-space-2); }
+	.site-v1-product-method__field::before { top: 1rem; bottom: 1rem; left: 0.1rem; right: auto; width: 1px; height: auto; background: linear-gradient(var(--site-v1-orange-400), rgb(112 134 152 / 30%), transparent); }
+	.site-v1-product-method__field > p,
+	.site-v1-product-method__field > p:nth-child(n) { max-width: 28ch; margin-top: 0; font-size: 1rem; }
+	.site-v1-product-method__field > p:nth-child(even) { margin-left: clamp(1rem, 8vw, 3rem); }
 	.site-v1-product-markets dl { grid-template-columns: 1fr; }
 	.site-v1-product-markets dl > div { min-height: 0; border-right: 0; }
 	.site-v1-product-human-agent article { padding: var(--site-v1-space-3); }

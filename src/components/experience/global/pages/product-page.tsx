@@ -61,9 +61,11 @@ function HowItWorks() {
 	return (
 		<section id="how-it-works" className="site-v1-product-method" data-record-id={record.id}>
 			<header><span>{copy.input.labels[1]}</span><h2>{copy.systemWork.headline}</h2><p>{record.question}</p></header>
-			<ol>{copy.systemWork.sequence.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
+			<div className="site-v1-product-method__field">
+				{copy.systemWork.sequence.map((item) => <p key={item}>{item}</p>)}
+			</div>
 			<div className="site-v1-product-method__inputs">
-				{copy.input.labels.map((label, index) => <span key={label}>{String(index + 1).padStart(2, "0")} · {label}</span>)}
+				{copy.input.labels.map((label) => <span key={label}>{label}</span>)}
 			</div>
 		</section>
 	);

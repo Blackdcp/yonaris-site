@@ -40,6 +40,18 @@ describe("English Site 1.0 Product route", () => {
 		expect(firstViewport?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.statement);
 	});
 
+	it("keeps every typed system phrase in an editorial field instead of a numbered six-cell flow", () => {
+		const html = renderToStaticMarkup(<ProductRouteComponent />);
+		const document = new DOMParser().parseFromString(html, "text/html");
+		const method = document.querySelector<HTMLElement>("#how-it-works");
+		expect(method).not.toBeNull();
+		expect(method?.querySelector("ol, li, [role='list']")).toBeNull();
+		const phrases = [...(method?.querySelectorAll(".site-v1-product-method__field > p") ?? [])].map((node) => node.textContent);
+		expect(phrases).toEqual([...GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence]);
+		for (const inputLabel of GLOBAL_EN_PRODUCT_PAGE.input.labels) expect(method?.textContent).toContain(inputLabel);
+		expect(method?.textContent).not.toMatch(/01\s*Observe|02\s*Compare|03\s*Trace|04\s*Put|05\s*Record|06\s*Review/);
+	});
+
 	it("uses the original responsive Product image and exposes the three canonical anchors", () => {
 		const html = renderToStaticMarkup(<ProductRouteComponent />);
 		expect(html).toContain("/assets/site-v1/product-observation-room-640.avif");
