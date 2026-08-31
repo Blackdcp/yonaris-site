@@ -1,179 +1,22 @@
-(() => {
-  "use strict";
-
-  const root = document.documentElement;
-  const header = document.querySelector("[data-header]");
-  const formation = document.querySelector("[data-formation]");
-  const menuToggle = document.querySelector("[data-menu-toggle]");
-  const navigation = document.querySelector("[data-nav]");
-  const contactForm = document.querySelector("[data-contact-form]");
-  const mobileQuery = window.matchMedia("(max-width: 900px)");
-  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const titles = {
-    en: "Yonaris — Know what buyers are being told",
-    zh: "Yonaris — 看清客户听到了什么",
-  };
-  let language = readLanguage();
-  let menuOpen = false;
-  let framePending = false;
-
-  function readLanguage() {
-    try {
-      return window.localStorage.getItem("yonaris-language") === "zh" ? "zh" : "en";
-    } catch (_error) {
-      return "en";
-    }
-  }
-
-  function storeLanguage() {
-    try {
-      window.localStorage.setItem("yonaris-language", language);
-    } catch (_error) {
-      // Language switching remains available when storage is blocked.
-    }
-  }
-
-  function applyLanguage(nextLanguage, persist = true) {
-    language = nextLanguage === "zh" ? "zh" : "en";
-    root.lang = language === "zh" ? "zh-CN" : "en";
-    root.dataset.language = language;
-    document.title = titles[language];
-
-    document.querySelectorAll("[data-lang]").forEach((node) => {
-      node.hidden = node.dataset.lang !== language;
-    });
-    document.querySelectorAll("[data-language]").forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.language === language));
-    });
-    document.querySelectorAll("[data-aria-en][data-aria-zh]").forEach((node) => {
-      node.setAttribute("aria-label", language === "zh" ? node.dataset.ariaZh : node.dataset.ariaEn);
-    });
-
-    if (persist) storeLanguage();
-  }
-
-  function syncMenu() {
-    const active = mobileQuery.matches && menuOpen;
-    header?.classList.toggle("menu-open", active);
-    document.body.classList.toggle("menu-open", active);
-    menuToggle?.setAttribute("aria-expanded", String(active));
-    if (navigation) navigation.setAttribute("aria-hidden", String(mobileQuery.matches && !active));
-  }
-
-  function closeMenu(returnFocus = false) {
-    if (!menuOpen) return;
-    menuOpen = false;
-    syncMenu();
-    if (returnFocus) menuToggle?.focus();
-  }
-
-  function setFormationProgress() {
-    if (!formation) return;
-    if (reducedMotionQuery.matches) {
-      formation.style.setProperty("--formation-progress", "1");
-      return;
-    }
-    const rect = formation.getBoundingClientRect();
-    const travel = Math.max(formation.offsetHeight - window.innerHeight, 1);
-    const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    formation.style.setProperty("--formation-progress", progress.toFixed(4));
-  }
-
-  function updateScrollState() {
-    framePending = false;
-    header?.classList.toggle("is-scrolled", window.scrollY > 20);
-    setFormationProgress();
-  }
-
-  function requestScrollUpdate() {
-    if (framePending) return;
-    framePending = true;
-    window.requestAnimationFrame(updateScrollState);
-  }
-
-  function revealContent() {
-    const items = document.querySelectorAll(".reveal");
-    if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: "0px 0px -12%", threshold: 0.12 });
-
-    items.forEach((item) => observer.observe(item));
-  }
-
-  function scrollToAnchor(anchor, event) {
-    const href = anchor.getAttribute("href");
-    if (!href?.startsWith("#")) return;
-    const target = document.getElementById(href.slice(1));
-    if (!target) return;
-    event.preventDefault();
-    closeMenu();
-    target.scrollIntoView({ behavior: reducedMotionQuery.matches ? "auto" : "smooth", block: "start" });
-    if (window.history?.pushState) window.history.pushState(null, "", href);
-  }
-
-  function submitContact(event) {
-    event.preventDefault();
-    if (!contactForm?.reportValidity()) return;
-    const data = new FormData(contactForm);
-    const email = String(data.get("email") || "").trim();
-    const name = String(data.get("name") || "").trim();
-    const curious = String(data.get("curious") || "").trim();
-    const copy = language === "zh"
-      ? { subject: "Yonaris 咨询", email: "工作邮箱", name: "称呼", curious: "想了解的事情" }
-      : { subject: "Yonaris conversation request", email: "Work email", name: "Name", curious: "What I am curious about" };
-    const body = [
-      `${copy.email}: ${email}`,
-      `${copy.name}: ${name || "—"}`,
-      "",
-      `${copy.curious}:`,
-      curious || "—",
-    ].join("\n");
-    const query = new URLSearchParams({ subject: copy.subject, body });
-    window.location.href = `mailto:hello@yonaris.com?${query.toString()}`;
-  }
-
-  document.querySelectorAll("[data-language]").forEach((button) => {
-    button.addEventListener("click", () => applyLanguage(button.dataset.language));
-  });
-
-  menuToggle?.addEventListener("click", () => {
-    menuOpen = !menuOpen;
-    syncMenu();
-    if (menuOpen) navigation?.querySelector("a")?.focus();
-  });
-
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", (event) => scrollToAnchor(anchor, event));
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu(true);
-  });
-
-  contactForm?.addEventListener("submit", submitContact);
-  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
-  window.addEventListener("resize", requestScrollUpdate, { passive: true });
-  mobileQuery.addEventListener?.("change", () => {
-    if (!mobileQuery.matches) menuOpen = false;
-    syncMenu();
-    requestScrollUpdate();
-  });
-  reducedMotionQuery.addEventListener?.("change", requestScrollUpdate);
-
-  document.querySelectorAll("[data-year]").forEach((node) => {
-    node.textContent = String(new Date().getFullYear());
-  });
-  applyLanguage(language, false);
-  syncMenu();
-  revealContent();
-  updateScrollState();
+(()=>{"use strict";
+const root=document.documentElement,header=document.querySelector('[data-header]'),menu=document.querySelector('[data-menu]'),nav=document.querySelector('[data-nav]'),showcase=document.querySelector('[data-showcase]'),morph=document.querySelector('[data-morph]'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let language='en',menuOpen=false;
+try{language=localStorage.getItem('yonaris-language')==='zh'?'zh':'en'}catch(_error){}
+const titles={en:'Yonaris — Know what buyers are being told',zh:'Yonaris — 看清客户听到了什么'};
+function setLanguage(next,persist=true){language=next==='zh'?'zh':'en';root.lang=language==='zh'?'zh-CN':'en';root.dataset.language=language;document.title=titles[language];document.querySelectorAll('[data-lang]').forEach(el=>el.hidden=el.dataset.lang!==language);document.querySelectorAll('[data-language]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.language===language)));document.querySelectorAll('[data-aria-en][data-aria-zh]').forEach(el=>el.setAttribute('aria-label',language==='zh'?el.dataset.ariaZh:el.dataset.ariaEn));if(persist)try{localStorage.setItem('yonaris-language',language)}catch(_error){}}
+function syncMenu(){header?.classList.toggle('open',menuOpen);document.body.classList.toggle('menu-open',menuOpen);menu?.setAttribute('aria-expanded',String(menuOpen));nav?.setAttribute('aria-hidden',String(innerWidth<=900&&!menuOpen))}
+function closeMenu(){menuOpen=false;syncMenu()}
+function setView(name,focus=false){if(!showcase)return;showcase.querySelectorAll('[data-view]').forEach(btn=>{const active=btn.dataset.view===name;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1;if(active&&focus)btn.focus()});showcase.querySelectorAll('[data-panel]').forEach(panel=>{const active=panel.dataset.panel===name;panel.hidden=!active;panel.classList.toggle('is-active',active)});if(name==='human')buildParticles()}
+function buildParticles(){const field=morph?.querySelector('[data-particles]');if(!field||field.childElementCount)return;for(let i=0;i<74;i++){const p=document.createElement('span'),x=((i*37)%100),y=((i*61)%100),dx=((i%7)-3)*5,dy=((i%11)-5)*3;p.style.left=`${x}%`;p.style.top=`${y}%`;p.style.setProperty('--dx',`${dx}px`);p.style.setProperty('--dy',`${dy}px`);p.style.animationDelay=`${(i%13)*-.17}s`;field.append(p)}}
+function updateMorph(event){if(!morph||reduced.matches)return;const rect=morph.getBoundingClientRect(),position=Math.max(22,Math.min(78,((event.clientX-rect.left)/rect.width)*100));morph.style.setProperty('--split',`${position}%`)}
+function resetMorph(){morph?.style.setProperty('--split','52%')}
+function setupReveal(){const items=document.querySelectorAll('.reveal');if(reduced.matches||!('IntersectionObserver'in window)){items.forEach(el=>el.classList.add('visible'));return}const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -8%'});items.forEach(el=>observer.observe(el))}
+function scrollToAnchor(event){const anchor=event.currentTarget,href=anchor.getAttribute('href');if(!href?.startsWith('#'))return;const target=document.querySelector(href);if(!target)return;event.preventDefault();closeMenu();target.scrollIntoView({behavior:reduced.matches?'auto':'smooth',block:'start'});history.pushState?.(null,'',href)}
+document.querySelectorAll('[data-language]').forEach(btn=>btn.addEventListener('click',()=>setLanguage(btn.dataset.language)));
+menu?.addEventListener('click',()=>{menuOpen=!menuOpen;syncMenu()});
+document.querySelectorAll('a[href^="#"]').forEach(link=>link.addEventListener('click',scrollToAnchor));
+showcase?.querySelectorAll('[data-view]').forEach((btn,index,buttons)=>{btn.addEventListener('click',()=>setView(btn.dataset.view));btn.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();const step=event.key==='ArrowRight'?1:-1,next=(index+step+buttons.length)%buttons.length;setView(buttons[next].dataset.view,true)})});
+morph?.addEventListener('pointermove',updateMorph);morph?.addEventListener('pointerleave',resetMorph);morph?.addEventListener('pointerdown',updateMorph);
+addEventListener('scroll',()=>header?.classList.toggle('scrolled',scrollY>8),{passive:true});addEventListener('resize',()=>{if(innerWidth>900&&menuOpen)closeMenu()},{passive:true});document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu()});
+document.querySelectorAll('[data-year]').forEach(el=>el.textContent=String(new Date().getFullYear()));setLanguage(language,false);syncMenu();setView('observe');setupReveal();
 })();
