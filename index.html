@@ -14,10 +14,19 @@
     <script src="/script.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="skip-link" href="#top">
+      <span data-copy="skip-link" data-lang="en">Skip to content</span>
+      <span data-copy="skip-link" data-lang="zh" lang="zh-CN" hidden>跳到主要内容</span>
+    </a>
 
     <header class="site-header" data-site-header>
-      <a class="brand-link" href="#top" aria-label="Yonaris home">
+      <a
+        class="brand-link"
+        href="#top"
+        aria-label="Yonaris home"
+        data-aria-en="Yonaris home"
+        data-aria-zh="Yonaris 主页"
+      >
         <img
           src="/public/brand/yonaris-wordmark-white.png"
           alt="Yonaris"
@@ -37,7 +46,13 @@
         <span data-copy="nav-menu" data-lang="zh" lang="zh-CN" hidden>菜单</span>
       </button>
 
-      <nav id="primary-navigation" aria-label="Primary navigation" data-mobile-nav>
+      <nav
+        id="primary-navigation"
+        aria-label="Primary navigation"
+        data-aria-en="Primary navigation"
+        data-aria-zh="主导航"
+        data-mobile-nav
+      >
         <a href="#product">
           <span data-copy="nav-product" data-lang="en">Product</span>
           <span data-copy="nav-product" data-lang="zh" lang="zh-CN" hidden>产品</span>
@@ -56,7 +71,13 @@
         </a>
       </nav>
 
-      <div class="language-switcher" role="group" aria-label="Language">
+      <div
+        class="language-switcher"
+        role="group"
+        aria-label="Language"
+        data-aria-en="Language"
+        data-aria-zh="语言"
+      >
         <button type="button" lang="en" aria-pressed="true" data-language-toggle="en">
           English
         </button>
@@ -168,7 +189,13 @@
           </fieldset>
         </form>
 
-        <div class="source-field" data-formation-stage="sources" aria-label="Attached sources">
+        <div
+          class="source-field"
+          data-formation-stage="sources"
+          aria-label="Attached sources"
+          data-aria-en="Attached sources"
+          data-aria-zh="已关联来源"
+        >
           <article
             class="source-fragment"
             tabindex="0"
@@ -596,6 +623,14 @@
 
       <section id="markets" class="markets" aria-labelledby="markets-title">
         <header class="section-heading">
+          <p class="representative-label">
+            <span data-copy="markets-representative-disclosure" data-lang="en">
+              Representative observation—not a customer performance claim.
+            </span>
+            <span data-copy="markets-representative-disclosure" data-lang="zh" lang="zh-CN" hidden>
+              代表性观测，不构成客户效果声明。
+            </span>
+          </p>
           <h2 id="markets-title">
             <span data-copy="markets-title" data-lang="en">
               One company fact. Different market conditions.
@@ -1000,7 +1035,12 @@
             </li>
           </ol>
 
-          <div class="outcome-boundaries" aria-label="Outcome boundaries">
+          <div
+            class="outcome-boundaries"
+            aria-label="Outcome boundaries"
+            data-aria-en="Outcome boundaries"
+            data-aria-zh="结果边界"
+          >
             <div>
               <h3>
                 <span data-copy="outcome-changed-title" data-lang="en">Changed</span>
@@ -1399,7 +1439,13 @@
     </main>
 
     <footer class="site-footer">
-      <a class="footer-brand" href="#top" aria-label="Yonaris home">
+      <a
+        class="footer-brand"
+        href="#top"
+        aria-label="Yonaris home"
+        data-aria-en="Yonaris home"
+        data-aria-zh="Yonaris 主页"
+      >
         <img
           src="/public/brand/yonaris-wordmark-white.png"
           alt="Yonaris"
@@ -1407,7 +1453,11 @@
           height="64"
         >
       </a>
-      <nav aria-label="Footer navigation">
+      <nav
+        aria-label="Footer navigation"
+        data-aria-en="Footer navigation"
+        data-aria-zh="页脚导航"
+      >
         <a href="#human-agent">
           <span data-copy="footer-human-agent" data-lang="en">Human / Agent</span>
           <span data-copy="footer-human-agent" data-lang="zh" lang="zh-CN" hidden>
@@ -1433,7 +1483,13 @@
           </span>
         </a>
       </nav>
-      <div class="language-switcher" role="group" aria-label="Language">
+      <div
+        class="language-switcher"
+        role="group"
+        aria-label="Language"
+        data-aria-en="Language"
+        data-aria-zh="语言"
+      >
         <button type="button" lang="en" aria-pressed="true" data-language-toggle="en">
           English
         </button>
