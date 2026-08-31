@@ -309,9 +309,8 @@
   }
 
   function savePreferences() {
-    const audience = document.querySelector('[data-condition="audience"]')?.value || "";
     try {
-      window.localStorage.setItem(storageKey, JSON.stringify({ language: state.language, market: state.market, locale: state.locale, audience }));
+      window.localStorage.setItem(storageKey, JSON.stringify({ language: state.language, market: state.market, locale: state.locale }));
     } catch (_error) {
       // The site remains fully usable when storage is unavailable.
     }
@@ -567,26 +566,18 @@
 
   conditionControls.forEach((control) => {
     control.addEventListener("change", () => {
-      if (control.dataset.condition === "market" || control.dataset.condition === "language") {
-        const pair = normalizePair(
-          control.dataset.condition === "market" ? control.value : state.market,
-          control.dataset.condition === "language" ? control.value : state.locale,
-          control.dataset.condition,
-        );
-        state.market = pair.market;
-        state.locale = pair.locale;
-        syncConditionControls();
-        savePreferences();
-        renderConditions();
-        return;
-      }
+      const pair = normalizePair(
+        control.dataset.condition === "market" ? control.value : state.market,
+        control.dataset.condition === "language" ? control.value : state.locale,
+        control.dataset.condition,
+      );
+      state.market = pair.market;
+      state.locale = pair.locale;
+      syncConditionControls();
       savePreferences();
+      renderConditions();
     });
   });
-
-  const savedAudience = savedPreferences.audience;
-  const audienceControl = document.querySelector('[data-condition="audience"]');
-  if (audienceControl && [...audienceControl.options].some((option) => option.value === savedAudience)) audienceControl.value = savedAudience;
 
   sourceFragments.forEach((fragment) => {
     fragment.setAttribute("aria-describedby", "source-note");

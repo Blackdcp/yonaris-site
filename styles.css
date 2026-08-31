@@ -496,7 +496,7 @@ main > section {
 .formation-conditions fieldset,
 .market-conditions fieldset {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--rule-dark);
   border-bottom: 1px solid var(--rule-dark);
 }
@@ -1005,7 +1005,6 @@ main > section {
 }
 
 .market-conditions fieldset {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-color: var(--rule-light);
 }
 
@@ -1798,16 +1797,12 @@ main > section {
   }
 
   .shared-record::before {
-    top: 50%;
-    right: -0.5rem;
-    bottom: auto;
-    left: -0.5rem;
-    width: auto;
-    height: 0.5rem;
+    display: none;
   }
 
   .agent-reading {
     padding-left: clamp(2rem, 4.5vw, 5rem);
+    border-top: 0.5rem solid var(--slate);
   }
 
   .case-passages li {
@@ -2027,6 +2022,12 @@ main > section {
 
   .evidence-boundary {
     transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 52rem) and (prefers-reduced-motion: reduce) {
+  .evidence-boundary {
+    transform: none;
   }
 }
 
