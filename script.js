@@ -1,259 +1,556 @@
-document.documentElement.classList.add('js');
+(() => {
+  "use strict";
 
-const translations = {
-  en: {
-    skip: 'Skip to content', homeLabel: 'Yonaris home', navLabel: 'Primary navigation', mobileNavLabel: 'Mobile navigation', footerNavLabel: 'Footer navigation', openMenu: 'Open menu', closeMenu: 'Close menu', navProduct: 'Product', navCasework: 'Casework', navTalk: 'Talk to Yonaris',
-    brandLine: 'AI-native MarTech infrastructure', heroTitle: 'Before sales,\nthe view is forming', heroBody: 'See what buyers hear in public channels, why it shapes decisions, and what deserves attention first.', theatreLabel: 'Product journey', stageLabel: 'Product stages', followRecord: 'Follow the record', pause: 'Pause', play: 'Play', pauseAnimation: 'Pause automatic stages', playAnimation: 'Play automatic stages',
-    stageQuestion: 'Question', stageAnswers: 'Answers', stageEvidence: 'Evidence', stageAction: 'Action', stageReview: 'Review', questionText: 'Which partner can support several markets without losing local context?', questionNote: 'APAC · Enterprise marketing · English',
-    channelAiLabel: 'AI answers', channelAiValue: 'Alternative A advances', channelSearchLabel: 'Search', channelSearchValue: 'Your company is mentioned', channelEditorialLabel: 'Editorial', channelEditorialValue: 'Market support is cited', channelCompanyLabel: 'Company', channelCompanyValue: 'Capability is published',
-    claim: 'Claim', evidenceClaim: 'Supports local-market teams', source: 'Source', sourceAttached: 'Public source attached', gapNote: 'Gap: your capability lacks the same inspectable relationship.', actionText: 'Clarify scope and supported markets. Attach a source a buyer can inspect.', humanReview: 'For human review', changed: 'Changed', unchanged: 'Unchanged', reasonAppears: 'Selection reason appears', orderSame: 'Recommendation order stays the same', boundary: 'Change observed; cause not established.',
-    productTitle: 'From question\nto next move', productBody: 'Start with one real question, connect answers, evidence, gaps, and review, then decide what to do next.', storyLabel: 'Product scenes', questionIn: 'Question in', apac: 'APAC', englishCode: 'EN', enterprise: 'Enterprise', answersOut: 'Public answers', answerAiShortLabel: 'AI', answerAiShortValue: 'Alternative advances', answerSearchShortLabel: 'Search', answerSearchShortValue: 'Mention only', answerEditorialShortLabel: 'Editorial', answerEditorialShortValue: 'Evidence cited', answerCompanyShortLabel: 'Company', answerCompanyShortValue: 'Scope unclear', reasonTrace: 'Reason traced', selectionReason: 'Selection reason', localSupport: 'Local-market support', publicEvidence: 'Public evidence', conditionsSource: 'Conditions + source', openGap: 'Open gap — your published capability is not connected to this criterion.', nextMove: 'Next move', actionShort: 'Clarify the capability’s scope and supported markets.', reviewedByTeam: 'Reviewed by team', approved: 'Approved', sameConditions: 'Same conditions, later review', nowVisible: 'Now visible', stillSame: 'Still the same',
-    humanTitle: 'One fact,\ntwo readings', humanBody: 'Teams get a clear conclusion. Agents get a structured record. The meaning stays the same.', clearConclusion: 'Clear conclusion', humanConclusion: 'A selection reason became visible. Recommendation order did not change.', humanNext: 'Next: review whether the reason appears again under the same conditions.', claimValue: 'selection reason visible', scope: 'Scope', sourceValue: 'public record · attached', agentScopeValue: 'APAC · EN · selected channels', observedAt: 'Observed at', boundaryLabel: 'Boundary', boundaryValue: 'order unchanged · cause not established', wipeLabel: 'Move between Human and Agent readings', wipeValue: '{human}% Human view, {agent}% Agent view', sameMeaning: 'Same fact, source, scope and boundary.',
-    caseTitle: 'See one full\ncasework', caseBody: 'Follow the path from first answer to later review, including what changed and what still cannot be claimed.', caseStageLabel: 'Before and after casework comparison', caseStateLabel: 'Casework state', before: 'Before', after: 'After', capability: 'Multi-market capability', reasonMissing: 'No inspectable reason', reasonVisible: 'Reason is now inspectable', sourceDisconnected: 'Published capability · relationship missing', sourceConnected: 'Scope + markets · public source attached', recommendationOrder: 'Recommendation order', alternativeA: 'Alternative A', yourCompany: 'Your company', caseDisclosure: 'Representative casework—not a customer performance claim.',
-    startHere: 'Start here', ctaTitle: 'One question\nis enough', ctaBody: 'You do not need a full brief. Bring the question you want to understand, and start there.',
-    documentTitle: 'Yonaris — Before sales, the view is forming', documentDescription: 'Yonaris helps teams see what buyers hear in public channels, why it shapes decisions, and what deserves attention first.'
-  },
-  zh: {
-    skip: '跳到主要内容', homeLabel: 'Yonaris 首页', navLabel: '主导航', mobileNavLabel: '移动端导航', footerNavLabel: '页脚导航', openMenu: '打开菜单', closeMenu: '关闭菜单', navProduct: '产品', navCasework: '案例拆解', navTalk: '联系 Yonaris',
-    brandLine: 'AI 原生营销科技基础设施', heroTitle: '销售之前，\n判断已在发生', heroBody: '看清客户在公开渠道里听到了什么，为什么形成判断，以及哪里值得先改。', theatreLabel: '产品过程', stageLabel: '产品阶段', followRecord: '跟随同一条记录', pause: '暂停', play: '播放', pauseAnimation: '暂停自动切换', playAnimation: '播放自动切换',
-    stageQuestion: '问题', stageAnswers: '答案', stageEvidence: '依据', stageAction: '行动', stageReview: '复核', questionText: '哪一家合作伙伴能支持多个市场，同时保留当地语境？', questionNote: '亚太 · 企业营销团队 · 英文',
-    channelAiLabel: 'AI 答案', channelAiValue: '竞品 A 进入备选', channelSearchLabel: '搜索', channelSearchValue: '你的公司被提到', channelEditorialLabel: '行业内容', channelEditorialValue: '当地市场支持被引用', channelCompanyLabel: '品牌信息', channelCompanyValue: '能力已经公开',
-    claim: '陈述', evidenceClaim: '支持当地市场团队', source: '来源', sourceAttached: '已关联公开来源', gapNote: '缺口：你的能力缺少同样可核对的关联。', actionText: '明确适用范围与支持市场，关联客户可以核对的来源。', humanReview: '交由团队审阅', changed: '已变化', unchanged: '未变化', reasonAppears: '选择理由已经出现', orderSame: '推荐顺序仍然没有变化', boundary: '观察到变化；未建立因果。',
-    productTitle: '从问题\n到下一步', productBody: '从一个真实问题出发，串起答案、依据、缺口与复核，帮助团队决定下一步。', storyLabel: '产品场景', questionIn: '输入问题', apac: '亚太', englishCode: '英文', enterprise: '企业客户', answersOut: '公开答案', answerAiShortLabel: 'AI', answerAiShortValue: '竞品进入备选', answerSearchShortLabel: '搜索', answerSearchShortValue: '仅被提到', answerEditorialShortLabel: '行业内容', answerEditorialShortValue: '引用了依据', answerCompanyShortLabel: '品牌信息', answerCompanyShortValue: '范围不清楚', reasonTrace: '追溯理由', selectionReason: '选择理由', localSupport: '当地市场支持', publicEvidence: '公开依据', conditionsSource: '条件 + 来源', openGap: '待处理缺口——已公开的能力没有连接到这项选择标准。', nextMove: '下一步', actionShort: '明确这项能力的适用范围与支持市场。', reviewedByTeam: '经团队审阅', approved: '已批准', sameConditions: '相同条件，后续复核', nowVisible: '现在可见', stillSame: '仍然没变',
-    humanTitle: '同一事实，\n两种读法', humanBody: '给团队的是清晰结论，给 Agent 的是结构化记录；内容一致，只是表达不同。', clearConclusion: '清晰结论', humanConclusion: '一条选择理由已经出现，推荐顺序没有变化。', humanNext: '下一步：在相同条件下复核这条理由是否再次出现。', claimValue: '选择理由已可见', scope: '适用范围', sourceValue: '公开记录 · 已关联', agentScopeValue: '亚太 · 英文 · 已选渠道', observedAt: '观测时间', boundaryLabel: '边界', boundaryValue: '顺序未变 · 未建立因果', wipeLabel: '在 Human 与 Agent 读法之间拖动', wipeValue: 'Human 视图 {human}%，Agent 视图 {agent}%', sameMeaning: '事实、来源、范围和边界保持一致。',
-    caseTitle: '看一次\n完整拆解', caseBody: '从最初答案到后续复核，清楚看到哪些理由成立，哪些变化仍不能轻易下结论。', caseStageLabel: '案例复核前后对照', caseStateLabel: '案例状态', before: '复核前', after: '复核后', capability: '多市场支持能力', reasonMissing: '没有可核对的理由', reasonVisible: '理由现在可以核对', sourceDisconnected: '能力已公开 · 关联缺失', sourceConnected: '范围 + 市场 · 已关联公开来源', recommendationOrder: '推荐顺序', alternativeA: '竞品 A', yourCompany: '你的公司', caseDisclosure: '代表性案例演示，不构成客户效果声明。',
-    startHere: '从这里开始', ctaTitle: '一个问题，\n就够开始', ctaBody: '不用先准备完整方案。带着你最想弄清楚的问题来，我们从那里开始。',
-    documentTitle: 'Yonaris — 销售之前，判断已在发生', documentDescription: 'Yonaris 帮助团队看清客户在公开渠道里听到了什么、为什么形成判断，以及哪里值得先改。'
+  const root = document.documentElement;
+  const formation = document.querySelector("[data-formation]");
+  const header = document.querySelector("[data-site-header]");
+  const menuToggle = document.querySelector("[data-menu-toggle]");
+  const mobileNav = document.querySelector("[data-mobile-nav]");
+  const sourceNote = document.querySelector("[data-source-note] p");
+  const sourceFragments = [...document.querySelectorAll("[data-source]")];
+  const conditionControls = [...document.querySelectorAll("[data-condition]")];
+  const contactForm = document.querySelector("[data-contact-form]");
+  const marketQuestionToggle = document.querySelector("[data-market-question-toggle]");
+  const marketQuestionFields = document.querySelector("[data-market-question-fields]");
+  const mobileQuery = window.matchMedia?.("(max-width: 52rem)");
+  const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const storageKey = "yonaris-preferences-v1";
+
+  const titles = {
+    en: "Yonaris — Know what buyers are being told",
+    zh: "Yonaris — 看清客户听到了什么",
+  };
+  const languageButtonLabels = { en: "English", zh: "中文" };
+  const defaultSourceNote = {
+    en: "Focus a source to keep its exact note in view. Press Escape to clear it.",
+    zh: "聚焦一份来源可固定查看其准确说明；按 Escape 清除固定。",
+  };
+
+  const conditionData = Object.freeze({
+    "apac:en": {
+      sources: {
+        "ai-answer": {
+          relevance: "high",
+          note: {
+            en: "Observed AI answer: Northstar is presented as the safer multi-market option. This records the answer; it does not verify performance.",
+            zh: "观测到的 AI 答案：Northstar 被呈现为更稳妥的多市场选择。这里记录的是答案，并不验证实际表现。",
+          },
+        },
+        search: {
+          relevance: "high",
+          note: {
+            en: "Inspectable search evidence connects Northstar to published markets and local support scope.",
+            zh: "可核对的搜索证据把 Northstar 与已发布的支持市场和本地服务范围连接起来。",
+          },
+        },
+        "editorial-review": {
+          relevance: "medium",
+          note: {
+            en: "The editorial source treats local support as an enterprise-readiness criterion, but it is category context rather than company proof.",
+            zh: "行业来源把本地支持视为企业级准备度标准，但它提供的是品类语境，而不是公司的直接证明。",
+          },
+        },
+        "company-record": {
+          relevance: "low",
+          condition: {
+            en: "Multi-market support · public connection not found",
+            zh: "多市场支持 · 未找到公开连接",
+          },
+          note: {
+            en: "Meridian states the capability. The public record inspected here does not connect it to the selected market and language condition.",
+            zh: "Meridian 声明了这项能力；本次核对的公开记录没有把它与所选市场和语言条件连接起来。",
+          },
+        },
+      },
+      formation: {
+        interpretation: {
+          en: "Northstar is easier to advance because its multi-market support is publicly connected to the buyer’s condition.",
+          zh: "Northstar 更容易进入下一步，因为它公开地把多市场支持与买方条件连接起来。",
+        },
+        boundary: {
+          en: "Capability stated. Public connection to the selected condition not found.",
+          zh: "能力已声明。未找到与所选条件的公开连接。",
+        },
+        review: {
+          en: "Verify supported languages and local service scope, then connect the approved claim to inspectable evidence.",
+          zh: "核实支持语言和本地服务范围，再把已批准的声明连接到可核对证据。",
+        },
+      },
+      comparison: {
+        relevance: "high",
+        alignment: "medium",
+        relevanceCopy: {
+          en: "Relevant when supported markets and local service scope are inspectable.",
+          zh: "当支持市场和本地服务范围可核对时，这项事实与问题相关。",
+        },
+        alignmentCopy: {
+          en: "Partial. The capability is stated; the selected market connection needs review.",
+          zh: "部分对齐。能力已经声明，但与所选市场的公开连接仍需审阅。",
+        },
+        interpretationCopy: {
+          en: "Verify the selected market and language before using this fact as a comparison reason.",
+          zh: "在把这项事实作为比较理由前，先核实所选市场与语言。",
+        },
+      },
+    },
+    "china:zh": {
+      sources: {
+        "ai-answer": {
+          relevance: "medium",
+          note: {
+            en: "The selected answer is relevant, but its mainland-China and Simplified-Chinese service context still needs verification.",
+            zh: "所选答案具有相关性，但其中关于中国大陆与简体中文服务的语境仍需核实。",
+          },
+        },
+        search: {
+          relevance: "medium",
+          note: {
+            en: "Published market pages provide a lead, but the inspected evidence does not fully connect local service scope to mainland China.",
+            zh: "已发布的市场页面提供了线索，但本次核对的证据尚未完整连接到中国大陆的本地服务范围。",
+          },
+        },
+        "editorial-review": {
+          relevance: "low",
+          note: {
+            en: "General enterprise-readiness criteria do not establish mainland-China delivery or Simplified-Chinese support.",
+            zh: "通用的企业级准备度标准不能证明中国大陆的交付能力或简体中文支持。",
+          },
+        },
+        "company-record": {
+          relevance: "low",
+          condition: {
+            en: "Mainland China · Simplified Chinese connection not found",
+            zh: "中国大陆 · 未找到简体中文公开连接",
+          },
+          note: {
+            en: "Meridian states multi-market capability, but the public record inspected here does not connect it to mainland China in Simplified Chinese.",
+            zh: "Meridian 声明具备多市场能力，但本次核对的公开记录没有用简体中文把它与中国大陆条件连接起来。",
+          },
+        },
+      },
+      formation: {
+        interpretation: {
+          en: "Neither option should advance on the same basis until mainland-China and Simplified-Chinese service evidence is connected to the buyer’s condition.",
+          zh: "在中国大陆与简体中文服务证据连接到买方条件前，不应沿用同一依据推进任何选项。",
+        },
+        boundary: {
+          en: "Capability stated. Mainland-China and Simplified-Chinese connection not found.",
+          zh: "能力已声明。未找到中国大陆与简体中文的公开连接。",
+        },
+        review: {
+          en: "Verify mainland-China availability, Simplified-Chinese support, and the approved public source before advancing the claim.",
+          zh: "在推进这项声明前，核实中国大陆可用性、简体中文支持以及已批准的公开来源。",
+        },
+      },
+      comparison: {
+        relevance: "medium",
+        alignment: "low",
+        relevanceCopy: {
+          en: "Potentially relevant, pending inspectable mainland-China service scope.",
+          zh: "可能相关，但仍需可核对的中国大陆服务范围。",
+        },
+        alignmentCopy: {
+          en: "Not aligned yet. A general multi-market claim does not establish mainland-China or Simplified-Chinese support.",
+          zh: "尚未对齐。通用的多市场声明不能证明中国大陆或简体中文支持。",
+        },
+        interpretationCopy: {
+          en: "Review locally applicable evidence before using the fixed company fact in this market comparison.",
+          zh: "在这次市场比较中使用该公司事实前，先审阅适用于当地的证据。",
+        },
+      },
+    },
+    "japan:ja": {
+      sources: {
+        "ai-answer": {
+          relevance: "medium",
+          note: {
+            en: "The answer provides a comparison lead, but Japanese-language and Japan service context require separate verification.",
+            zh: "该答案提供了比较线索，但日语信息和日本服务语境仍需单独核实。",
+          },
+        },
+        search: {
+          relevance: "medium",
+          note: {
+            en: "Published support scope is relevant only where a Japan-specific, Japanese-language connection is inspectable.",
+            zh: "只有在日本市场与日语连接可核对时，已发布的支持范围才具有充分相关性。",
+          },
+        },
+        "editorial-review": {
+          relevance: "medium",
+          note: {
+            en: "Enterprise-readiness context helps frame the question, but it does not prove local delivery in Japan.",
+            zh: "企业级准备度语境有助于界定问题，但不能证明在日本的本地交付。",
+          },
+        },
+        "company-record": {
+          relevance: "low",
+          condition: {
+            en: "Japan · Japanese-language connection not found",
+            zh: "日本 · 未找到日语公开连接",
+          },
+          note: {
+            en: "Meridian states multi-market capability, but the inspected public record does not connect it to Japan in Japanese.",
+            zh: "Meridian 声明具备多市场能力，但本次核对的公开记录没有用日语把它与日本市场连接起来。",
+          },
+        },
+      },
+      formation: {
+        interpretation: {
+          en: "The comparison remains provisional until Japanese-language evidence connects local service scope to the Japan buyer condition.",
+          zh: "在日语证据把本地服务范围与日本买方条件连接起来前，这项比较仍是暂定判断。",
+        },
+        boundary: {
+          en: "Capability stated. Japan and Japanese-language connection not found.",
+          zh: "能力已声明。未找到日本市场与日语的公开连接。",
+        },
+        review: {
+          en: "Verify Japan availability, Japanese-language support, and an approved local source before advancing the claim.",
+          zh: "在推进这项声明前，核实日本市场可用性、日语支持以及已批准的当地来源。",
+        },
+      },
+      comparison: {
+        relevance: "medium",
+        alignment: "low",
+        relevanceCopy: {
+          en: "Potentially relevant, pending inspectable Japan service and Japanese-language scope.",
+          zh: "可能相关，但仍需可核对的日本服务与日语支持范围。",
+        },
+        alignmentCopy: {
+          en: "Not aligned yet. A multi-market claim does not establish Japan delivery or Japanese-language support.",
+          zh: "尚未对齐。多市场声明不能证明日本交付或日语支持。",
+        },
+        interpretationCopy: {
+          en: "Review Japan-specific evidence before using the fixed company fact as a comparison reason.",
+          zh: "在把该公司事实作为比较理由前，先审阅适用于日本市场的证据。",
+        },
+      },
+    },
+  });
+
+  const savedPreferences = readPreferences();
+  const initialMarket = validControlValue("market", savedPreferences.market) || validControlValue("market", "uk") || "uk";
+  const initialLocale = validControlValue("language", savedPreferences.locale) || validControlValue("language", "en") || "en";
+  const state = {
+    language: savedPreferences.language === "zh" ? "zh" : "en",
+    market: initialMarket,
+    locale: initialLocale,
+    formationState: "question",
+    pinnedSource: null,
+    menuOpen: false,
+  };
+
+  function readPreferences() {
+    try {
+      return JSON.parse(window.localStorage.getItem(storageKey) || "{}") || {};
+    } catch (_error) {
+      return {};
+    }
   }
-};
 
-let language = 'en';
-let theatreStage = 0;
-let storyStage = 0;
-let caseState = 'before';
-let theatreHoverPaused = false;
-let theatreFocusPaused = false;
-let theatreManualPaused = false;
-let theatreUserEnabledMotion = true;
-let theatreTimer = 0;
-let scrollFrame = 0;
-let wheelLocked = false;
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-theatreManualPaused = reducedMotion.matches;
-theatreUserEnabledMotion = !reducedMotion.matches;
+  function savePreferences() {
+    const audience = document.querySelector('[data-condition="audience"]')?.value || "";
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify({ language: state.language, market: state.market, locale: state.locale, audience }));
+    } catch (_error) {
+      // The site remains fully usable when storage is unavailable.
+    }
+  }
 
-function t(key) { return translations[language][key] ?? translations.en[key] ?? key; }
+  function validControlValue(condition, candidate) {
+    if (!candidate) return "";
+    const isValid = conditionControls.some((control) => control.dataset.condition === condition
+      && [...control.options].some((option) => option.value === candidate));
+    return isValid ? candidate : "";
+  }
 
-function setTheatreStage(index, focus = false) {
-  theatreStage = (index + 5) % 5;
-  const theatre = document.querySelector('[data-hero-theatre]');
-  theatre.dataset.stage = String(theatreStage);
-  document.querySelectorAll('[data-theatre-scene]').forEach((scene) => {
-    const active = Number(scene.dataset.theatreScene) === theatreStage;
-    scene.classList.toggle('is-active', active);
-    scene.setAttribute('aria-hidden', String(!active));
-  });
-  document.querySelectorAll('[data-theatre-button]').forEach((button) => {
-    const active = Number(button.dataset.theatreButton) === theatreStage;
-    button.setAttribute('aria-selected', String(active));
-    button.tabIndex = active ? 0 : -1;
-    if (active && focus) button.focus();
-  });
-}
+  function activeProfileKey() {
+    if (state.market === "japan" || state.locale === "ja") return "japan:ja";
+    if (state.market === "china" && state.locale === "zh") return "china:zh";
+    return "apac:en";
+  }
 
-function startTheatre() {
-  window.clearInterval(theatreTimer);
-  if (!theatreUserEnabledMotion) return;
-  theatreTimer = window.setInterval(() => {
-    if (!theatreManualPaused && !theatreHoverPaused && !theatreFocusPaused) setTheatreStage(theatreStage + 1);
-  }, 4300);
-}
+  function activeProfile() {
+    return conditionData[activeProfileKey()];
+  }
 
-function updateTheatreToggle() {
-  const button = document.querySelector('[data-theatre-toggle]');
-  const label = document.querySelector('[data-theatre-toggle-label]');
-  const actionKey = theatreManualPaused ? 'play' : 'pause';
-  button.setAttribute('aria-pressed', String(theatreManualPaused));
-  button.setAttribute('aria-label', t(theatreManualPaused ? 'playAnimation' : 'pauseAnimation'));
-  label.textContent = t(actionKey);
-  button.querySelector('i').textContent = theatreManualPaused ? '▶' : 'Ⅱ';
-}
+  function setLocalizedText(container, copy) {
+    if (!container || !copy) return;
+    const localizedNodes = container.querySelectorAll("[data-lang]");
+    if (!localizedNodes.length) {
+      container.textContent = copy[state.language] || copy.en || "";
+      return;
+    }
+    localizedNodes.forEach((node) => {
+      const value = copy[node.dataset.lang];
+      if (typeof value === "string") node.textContent = value;
+    });
+  }
 
-function setStoryStage(index) {
-  const next = Math.max(0, Math.min(4, index));
-  if (next === storyStage && document.querySelector('.story-scene.is-active')) return;
-  storyStage = next;
-  const canvas = document.querySelector('[data-story-canvas]');
-  canvas.dataset.scene = String(storyStage);
-  document.querySelector('[data-story-index]').textContent = String(storyStage + 1).padStart(2, '0');
-  document.querySelectorAll('[data-story-scene]').forEach((scene) => {
-    const active = Number(scene.dataset.storyScene) === storyStage;
-    scene.classList.toggle('is-active', active);
-    scene.setAttribute('aria-hidden', String(!active));
-  });
-  document.querySelectorAll('[data-story-button]').forEach((button) => {
-    if (Number(button.dataset.storyButton) === storyStage) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
-  });
-}
+  function selectedLabel(condition, value, language = state.language) {
+    const control = conditionControls.find((item) => item.dataset.condition === condition);
+    const option = control?.querySelector(`option[value="${value}"]`);
+    return option?.dataset[`label${language === "zh" ? "Zh" : "En"}`] || option?.textContent.trim() || value;
+  }
 
-function jumpToStoryStage(index) {
-  const story = document.querySelector('[data-product-story]');
-  const scrollable = story.offsetHeight - window.innerHeight;
-  const top = story.offsetTop + (scrollable * index / 4);
-  window.scrollTo({ top, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
-}
+  function conditionLabel(language) {
+    return `${selectedLabel("market", state.market, language)} · ${selectedLabel("language", state.locale, language)}`;
+  }
 
-function updateStoryFromScroll() {
-  const story = document.querySelector('[data-product-story]');
-  const rect = story.getBoundingClientRect();
-  const scrollable = story.offsetHeight - window.innerHeight;
-  const progress = scrollable > 0 ? Math.max(0, Math.min(1, -rect.top / scrollable)) : 0;
-  setStoryStage(Math.min(4, Math.floor(progress * 5)));
-  scrollFrame = 0;
-}
+  function renderConditions({ announce = true } = {}) {
+    const profile = activeProfile();
+    conditionControls.forEach((control) => {
+      if (control.dataset.condition === "market" && validControlValue("market", state.market)) control.value = state.market;
+      if (control.dataset.condition === "language" && validControlValue("language", state.locale)) control.value = state.locale;
+    });
 
-function setCaseState(state, focus = false) {
-  caseState = state;
-  const stage = document.querySelector('[data-case-stage]');
-  stage.dataset.state = state;
-  document.querySelectorAll('[data-case-button]').forEach((button) => {
-    const active = button.dataset.caseButton === state;
-    button.setAttribute('aria-pressed', String(active));
-    if (active && focus) button.focus();
-  });
-  document.querySelector('[data-case-reason]').textContent = t(state === 'before' ? 'reasonMissing' : 'reasonVisible');
-  document.querySelector('[data-case-source]').textContent = t(state === 'before' ? 'sourceDisconnected' : 'sourceConnected');
-}
+    sourceFragments.forEach((fragment) => {
+      const source = profile.sources[fragment.dataset.source];
+      if (!source) return;
+      fragment.dataset.sourceRelevance = source.relevance;
+      setLocalizedText(fragment.querySelector("[data-source-condition]"), source.condition || {
+        en: conditionLabel("en"),
+        zh: conditionLabel("zh"),
+      });
+    });
 
-function updateLanguage(next) {
-  language = next;
-  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
-  document.documentElement.dataset.language = language;
-  document.title = t('documentTitle');
-  document.querySelector('meta[name="description"]').content = t('documentDescription');
-  document.querySelectorAll('[data-i18n]').forEach((node) => {
-    const translated = translations[language][node.dataset.i18n];
-    if (translated !== undefined) node.textContent = translated;
-  });
-  document.querySelectorAll('[data-i18n-aria]').forEach((node) => node.setAttribute('aria-label', t(node.dataset.i18nAria)));
-  const toggle = document.querySelector('[data-language-toggle]');
-  toggle.textContent = language === 'en' ? '中文' : 'English';
-  toggle.setAttribute('aria-label', language === 'en' ? '切换到中文' : 'Switch to English');
-  const menuOpen = document.querySelector('[data-menu-toggle]').getAttribute('aria-expanded') === 'true';
-  document.querySelector('[data-menu-label]').textContent = t(menuOpen ? 'closeMenu' : 'openMenu');
-  setCaseState(caseState);
-  updateTheatreToggle();
-  updateWipe();
-}
+    setLocalizedText(document.querySelector('[data-condition-output="formation-interpretation"]'), profile.formation.interpretation);
+    setLocalizedText(document.querySelector('[data-condition-output="formation-boundary"]'), profile.formation.boundary);
+    setLocalizedText(document.querySelector('[data-condition-output="formation-review"]'), profile.formation.review);
+    const relevance = document.querySelector('[data-condition-output="relevance"]');
+    const alignment = document.querySelector('[data-condition-output="alignment"]');
+    const interpretation = document.querySelector('[data-condition-output="interpretation"]');
+    setLocalizedText(relevance, profile.comparison.relevanceCopy);
+    setLocalizedText(alignment, profile.comparison.alignmentCopy);
+    setLocalizedText(interpretation, profile.comparison.interpretationCopy);
+    relevance.dataset.relevance = profile.comparison.relevance;
+    alignment.dataset.alignment = profile.comparison.alignment;
 
-document.querySelector('[data-language-toggle]').addEventListener('click', () => updateLanguage(language === 'en' ? 'zh' : 'en'));
+    if (announce) {
+      setLocalizedText(document.querySelector("[data-condition-announcement]"), {
+        en: `Conditions updated: ${conditionLabel("en")}. Interpretation and evidence alignment have been reviewed against this selection.`,
+        zh: `条件已更新：${conditionLabel("zh")}。当前判断与证据对齐情况已按此选择更新。`,
+      });
+    }
+    renderSourceNote();
+  }
 
-const menuToggle = document.querySelector('[data-menu-toggle]');
-const mobileNav = document.querySelector('[data-mobile-nav]');
-function closeMenu(restoreFocus = false) {
-  const wasOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-  menuToggle.setAttribute('aria-expanded', 'false');
-  mobileNav.hidden = true;
-  document.body.classList.remove('menu-open');
-  document.querySelector('[data-menu-label]').textContent = t('openMenu');
-  if (restoreFocus && wasOpen) menuToggle.focus();
-}
-menuToggle.addEventListener('click', () => {
-  const open = menuToggle.getAttribute('aria-expanded') !== 'true';
-  menuToggle.setAttribute('aria-expanded', String(open));
-  mobileNav.hidden = !open;
-  document.body.classList.toggle('menu-open', open);
-  document.querySelector('[data-menu-label]').textContent = t(open ? 'closeMenu' : 'openMenu');
-});
-mobileNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu(false)));
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(true); });
-window.addEventListener('resize', () => { if (window.innerWidth > 780) closeMenu(false); }, { passive: true });
+  function renderSourceNote() {
+    const source = state.pinnedSource ? activeProfile().sources[state.pinnedSource] : null;
+    setLocalizedText(sourceNote, source?.note || defaultSourceNote);
+    sourceFragments.forEach((fragment) => {
+      fragment.dataset.pinned = String(fragment.dataset.source === state.pinnedSource);
+    });
+  }
 
-const theatre = document.querySelector('[data-hero-theatre]');
-theatre.addEventListener('mouseenter', () => { theatreHoverPaused = true; });
-theatre.addEventListener('mouseleave', () => { theatreHoverPaused = false; });
-theatre.addEventListener('focusin', () => { theatreFocusPaused = true; });
-theatre.addEventListener('focusout', (event) => { if (!theatre.contains(event.relatedTarget)) theatreFocusPaused = false; });
-document.querySelector('[data-theatre-toggle]').addEventListener('click', () => {
-  theatreManualPaused = !theatreManualPaused;
-  if (!theatreManualPaused && reducedMotion.matches) theatreUserEnabledMotion = true;
-  updateTheatreToggle();
-  startTheatre();
-});
-const theatreButtons = Array.from(document.querySelectorAll('[data-theatre-button]'));
-theatreButtons.forEach((button, index) => {
-  button.addEventListener('click', () => setTheatreStage(index));
-  button.addEventListener('keydown', (event) => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+  function pinSource(sourceName) {
+    if (!activeProfile().sources[sourceName]) return;
+    state.pinnedSource = sourceName;
+    renderSourceNote();
+  }
+
+  function clearPinnedSource() {
+    if (!state.pinnedSource) return;
+    state.pinnedSource = null;
+    renderSourceNote();
+  }
+
+  function updateAriaLabels() {
+    document.querySelectorAll("[data-aria-en][data-aria-zh]").forEach((element) => {
+      element.setAttribute("aria-label", element.dataset[state.language === "zh" ? "ariaZh" : "ariaEn"]);
+    });
+  }
+
+  function updateOptionLabels() {
+    document.querySelectorAll("option[data-label-en][data-label-zh]").forEach((option) => {
+      option.textContent = option.dataset[state.language === "zh" ? "labelZh" : "labelEn"];
+    });
+  }
+
+  function applyLanguage(language, { persist = true } = {}) {
+    state.language = language === "zh" ? "zh" : "en";
+    root.lang = state.language === "zh" ? "zh-CN" : "en";
+    root.dataset.activeLanguage = state.language;
+    root.dataset.language = state.language;
+    document.title = titles[state.language];
+    document.querySelectorAll("[data-copy][data-lang]").forEach((node) => {
+      node.hidden = node.dataset.lang !== state.language;
+    });
+    document.querySelectorAll("[data-language-toggle]").forEach((button) => {
+      const targetLanguage = button.dataset.languageToggle;
+      button.textContent = languageButtonLabels[targetLanguage];
+      button.setAttribute("aria-pressed", String(targetLanguage === state.language));
+    });
+    updateAriaLabels();
+    updateOptionLabels();
+    renderConditions({ announce: false });
+    if (persist) savePreferences();
+  }
+
+  function syncMenu() {
+    header?.classList.toggle("menu-open", state.menuOpen);
+    document.body.classList.toggle("menu-open", state.menuOpen);
+    menuToggle?.setAttribute("aria-expanded", String(state.menuOpen));
+    if (mobileQuery?.matches) mobileNav?.setAttribute("aria-hidden", String(!state.menuOpen));
+    else mobileNav?.removeAttribute("aria-hidden");
+  }
+
+  function openMenu() {
+    if (!mobileQuery?.matches) return;
+    state.menuOpen = true;
+    syncMenu();
+    mobileNav?.querySelector("a")?.focus();
+  }
+
+  function closeMenu({ returnFocus = false } = {}) {
+    if (!state.menuOpen) return;
+    state.menuOpen = false;
+    syncMenu();
+    if (returnFocus) menuToggle?.focus();
+  }
+
+  function scrollToAnchor(anchor) {
+    const hash = anchor.getAttribute("href");
+    if (!hash || hash === "#") return;
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+    const hadTabIndex = target.hasAttribute("tabindex");
+    if (!hadTabIndex) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ behavior: reducedMotionQuery?.matches ? "auto" : "smooth", block: "start" });
+    if (!hadTabIndex) target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });
+    if (window.history?.pushState) window.history.pushState(null, "", hash);
+  }
+
+  function syncMarketQuestionFields() {
+    if (!marketQuestionFields || !marketQuestionToggle) return;
+    marketQuestionFields.hidden = !marketQuestionToggle.checked;
+    marketQuestionFields.setAttribute("aria-hidden", String(!marketQuestionToggle.checked));
+  }
+
+  function contactValue(name) {
+    return contactForm?.querySelector(`[data-contact-field="${name}"]`)?.value.trim() || "";
+  }
+
+  function composeContactEmail(event) {
     event.preventDefault();
-    let next = index;
-    if (event.key === 'ArrowRight') next = (index + 1) % 5;
-    if (event.key === 'ArrowLeft') next = (index + 4) % 5;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = 4;
-    setTheatreStage(next, true);
+    if (!contactForm?.reportValidity()) return;
+    const labels = state.language === "zh"
+      ? { subject: "Yonaris 咨询", email: "工作邮箱", name: "称呼", company: "公司或官网", curious: "想了解的事情", question: "市场问题", marketLanguage: "市场或语言", context: "购买决策或商业背景" }
+      : { subject: "Yonaris conversation request", email: "Work email", name: "Name", company: "Company or website", curious: "What I am curious about", question: "Market question", marketLanguage: "Market or language", context: "Buyer or commercial context" };
+    const lines = [
+      `${labels.email}: ${contactValue("email")}`,
+      `${labels.name}: ${contactValue("name") || "—"}`,
+      `${labels.company}: ${contactValue("company") || "—"}`,
+      "",
+      `${labels.curious}:`,
+      contactValue("curious") || "—",
+    ];
+    if (marketQuestionToggle?.checked) {
+      lines.push("", `${labels.question}:`, contactValue("market-question") || "—", "", `${labels.marketLanguage}: ${contactValue("market-language") || "—"}`, "", `${labels.context}:`, contactValue("commercial-context") || "—");
+    }
+    const query = new URLSearchParams({ subject: labels.subject, body: lines.join("\n") });
+    window.location.href = `mailto:hello@yonaris.com?${query.toString()}`;
+  }
+
+  const formationStages = ["question", "sources", "interpretation", "boundary", "review"];
+  const stageThresholds = [0.12, 0.32, 0.56, 0.8];
+  let framePending = false;
+
+  function setFormationProgress(progress) {
+    const normalized = Math.max(0, Math.min(1, progress));
+    const stageIndex = stageThresholds.reduce((index, threshold) => index + Number(normalized >= threshold), 0);
+    const nextStage = formationStages[stageIndex];
+    formation?.style.setProperty("--formation-progress", normalized.toFixed(4));
+    formation?.style.setProperty("--sources-progress", Math.max(0, Math.min(1, normalized / stageThresholds[1])).toFixed(4));
+    formation?.style.setProperty("--interpretation-progress", Math.max(0, Math.min(1, (normalized - stageThresholds[1]) / (stageThresholds[2] - stageThresholds[1]))).toFixed(4));
+    formation?.style.setProperty("--boundary-progress", Math.max(0, Math.min(1, (normalized - stageThresholds[2]) / (stageThresholds[3] - stageThresholds[2]))).toFixed(4));
+    formation?.style.setProperty("--review-progress", Math.max(0, Math.min(1, (normalized - stageThresholds[3]) / (1 - stageThresholds[3]))).toFixed(4));
+    if (nextStage !== state.formationState) {
+      state.formationState = nextStage;
+      formation.dataset.formationState = nextStage;
+    }
+  }
+
+  function updateScrollState() {
+    framePending = false;
+    header?.classList.toggle("is-scrolled", window.scrollY > 16);
+    if (!formation) return;
+    if (mobileQuery?.matches || reducedMotionQuery?.matches) {
+      setFormationProgress(1);
+      return;
+    }
+    const rect = formation.getBoundingClientRect();
+    const travel = Math.max(formation.offsetHeight - window.innerHeight, 1);
+    setFormationProgress(-rect.top / travel);
+  }
+
+  function requestScrollUpdate() {
+    if (framePending) return;
+    framePending = true;
+    (window.requestAnimationFrame || ((callback) => window.setTimeout(callback, 16)))(updateScrollState);
+  }
+
+  conditionControls.forEach((control) => {
+    control.addEventListener("change", () => {
+      if (control.dataset.condition === "market") state.market = control.value;
+      if (control.dataset.condition === "language") state.locale = control.value;
+      renderConditions();
+      savePreferences();
+    });
   });
-});
 
-document.querySelectorAll('[data-story-button]').forEach((button) => button.addEventListener('click', () => jumpToStoryStage(Number(button.dataset.storyButton))));
+  const savedAudience = savedPreferences.audience;
+  const audienceControl = document.querySelector('[data-condition="audience"]');
+  if (audienceControl && [...audienceControl.options].some((option) => option.value === savedAudience)) audienceControl.value = savedAudience;
 
-const wipe = document.querySelector('[data-wipe-stage]');
-const wipeControl = document.querySelector('[data-wipe-control]');
-function updateWipe() {
-  wipe.style.setProperty('--split', `${wipeControl.value}%`);
-  wipeControl.setAttribute('aria-valuetext', t('wipeValue')
-    .replace('{human}', wipeControl.value)
-    .replace('{agent}', String(100 - Number(wipeControl.value))));
-}
-wipeControl.addEventListener('input', updateWipe);
-
-document.querySelectorAll('[data-case-button]').forEach((button) => button.addEventListener('click', () => setCaseState(button.dataset.caseButton, true)));
-const caseStage = document.querySelector('[data-case-stage]');
-caseStage.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowLeft') setCaseState('before');
-  if (event.key === 'ArrowRight') setCaseState('after');
-});
-caseStage.addEventListener('wheel', (event) => {
-  if (wheelLocked || Math.abs(event.deltaY) < 18) return;
-  const next = event.deltaY > 0 ? 'after' : 'before';
-  if (next === caseState) return;
-  event.preventDefault();
-  setCaseState(next);
-  wheelLocked = true;
-  window.setTimeout(() => { wheelLocked = false; }, 500);
-}, { passive: false });
-
-function addParallax(node) {
-  node.addEventListener('pointermove', (event) => {
-    if (reducedMotion.matches || event.pointerType === 'touch') return;
-    const rect = node.getBoundingClientRect();
-    node.style.setProperty('--px', `${((event.clientX - rect.left) / rect.width - .5) * 8}px`);
-    node.style.setProperty('--py', `${((event.clientY - rect.top) / rect.height - .5) * 8}px`);
+  sourceFragments.forEach((fragment) => {
+    fragment.setAttribute("aria-describedby", "source-note");
+    fragment.addEventListener("click", () => pinSource(fragment.dataset.source));
+    fragment.addEventListener("focus", () => pinSource(fragment.dataset.source));
   });
-  node.addEventListener('pointerleave', () => { node.style.setProperty('--px', '0px'); node.style.setProperty('--py', '0px'); });
-}
-addParallax(theatre);
-addParallax(document.querySelector('[data-story-canvas]'));
+  sourceNote?.closest("[data-source-note]")?.setAttribute("id", "source-note");
 
-window.addEventListener('scroll', () => {
-  document.querySelector('[data-header]').classList.toggle('is-scrolled', window.scrollY > 24);
-  if (!scrollFrame) scrollFrame = requestAnimationFrame(updateStoryFromScroll);
-}, { passive: true });
+  document.querySelectorAll("[data-language-toggle]").forEach((button) => {
+    button.addEventListener("click", () => applyLanguage(button.dataset.languageToggle));
+  });
+  menuToggle?.addEventListener("click", () => {
+    if (state.menuOpen) closeMenu({ returnFocus: true });
+    else openMenu();
+  });
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const hash = anchor.getAttribute("href");
+      if (!hash || !document.getElementById(hash.slice(1))) return;
+      event.preventDefault();
+      closeMenu();
+      scrollToAnchor(anchor);
+    });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const shouldReturnFocus = state.menuOpen;
+    closeMenu({ returnFocus: shouldReturnFocus });
+    clearPinnedSource();
+  });
+  marketQuestionToggle?.addEventListener("change", syncMarketQuestionFields);
+  contactForm?.addEventListener("submit", composeContactEmail);
+  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+  window.addEventListener("resize", () => {
+    if (state.menuOpen && !mobileQuery?.matches) closeMenu();
+    syncMenu();
+    requestScrollUpdate();
+  }, { passive: true });
+  mobileQuery?.addEventListener?.("change", () => {
+    if (state.menuOpen && !mobileQuery.matches) closeMenu();
+    syncMenu();
+    requestScrollUpdate();
+  });
+  reducedMotionQuery?.addEventListener?.("change", requestScrollUpdate);
 
-const reveals = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window && !reducedMotion.matches) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
-  reveals.forEach((node) => observer.observe(node));
-} else {
-  reveals.forEach((node) => node.classList.add('is-visible'));
-}
-
-updateLanguage('en');
-setTheatreStage(0);
-setStoryStage(0);
-setCaseState('before');
-updateWipe();
-updateStoryFromScroll();
-startTheatre();
+  syncMarketQuestionFields();
+  syncMenu();
+  applyLanguage(state.language, { persist: false });
+  formation?.setAttribute("data-formation-state", state.formationState);
+  requestScrollUpdate();
+})();
