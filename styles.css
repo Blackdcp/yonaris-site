@@ -786,12 +786,13 @@ main > section {
     border-width 220ms ease;
 }
 
-.formed-interpretation,
-.review-instruction {
-  padding-right: clamp(1rem, 3vw, 3.5rem);
-  padding-left: clamp(1rem, 3vw, 3.5rem);
-  background: var(--paper);
-  box-shadow: 0 1rem 3rem rgb(11 18 32 / 18%);
+@media (min-width: 52.01rem) {
+  .formed-interpretation,
+  .review-instruction {
+    padding-right: clamp(1rem, 3vw, 3.5rem);
+    padding-left: clamp(1rem, 3vw, 3.5rem);
+    background: var(--paper);
+  }
 }
 
 .formed-interpretation > p:last-child,
@@ -1071,10 +1072,17 @@ main > section {
 
 .condition-results [data-relevance="low"],
 .condition-results [data-alignment="low"] {
-  color: var(--mist);
   text-decoration: underline;
   text-decoration-color: var(--stone);
   text-underline-offset: 0.3em;
+}
+
+.condition-results [data-relevance="low"] {
+  color: var(--stone);
+}
+
+.condition-results [data-alignment="low"] {
+  color: var(--stone);
 }
 
 .condition-announcement {
@@ -1915,6 +1923,10 @@ main > section {
   .formation-conditions fieldset,
   .market-conditions fieldset {
     grid-template-columns: 1fr;
+  }
+
+  .condition-results [data-alignment="low"] {
+    color: var(--mist);
   }
 
   .formation-conditions label,

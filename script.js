@@ -386,15 +386,12 @@
     relevance.dataset.relevance = profile.comparison.relevance;
     alignment.dataset.alignment = profile.comparison.alignment;
 
-    setLocalizedText(document.querySelector("[data-condition-announcement]"), announce
-      ? {
+    if (announce) {
+      setLocalizedText(document.querySelector("[data-condition-announcement]"), {
         en: `Conditions updated: ${conditionLabel("en")}. Interpretation and evidence alignment have been reviewed against this selection.`,
         zh: `条件已更新：${conditionLabel("zh")}。当前判断与证据对齐情况已按此选择更新。`,
-      }
-      : {
-        en: `Conditions: ${conditionLabel("en")}.`,
-        zh: `当前条件：${conditionLabel("zh")}。`,
       });
+    }
     renderSourceNote();
   }
 
@@ -446,7 +443,7 @@
     });
     updateAriaLabels();
     updateOptionLabels();
-    renderConditions({ announce: false });
+    renderConditions({ announce: persist });
     if (persist) savePreferences();
   }
 
