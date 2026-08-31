@@ -19,9 +19,11 @@ export function HighIntentFields({ copy, values, errors, refs, expanded, autoFoc
 			className="site-v1-contact-form__high-intent"
 			data-contact-high-intent="true"
 			open={expanded}
-			onToggle={(event) => onExpandedChange(event.currentTarget.open)}
 		>
-			<summary>{copy.expansionLabel}</summary>
+			<summary onClick={(event) => {
+				event.preventDefault();
+				onExpandedChange(!expanded);
+			}}>{copy.expansionLabel}</summary>
 			<div className="site-v1-contact-form__high-intent-fields">
 				<div className="site-v1-contact-field" data-contact-field="marketQuestion">
 					<label htmlFor="contact-market-question">{copy.expandedFields[0]}</label>

@@ -1,8 +1,14 @@
 import { defineConfig } from "@playwright/test";
-import { resolveSystemChrome, VIEWPORT_MATRIX } from "./scripts/site-v1-english-matrix.mjs";
+import {
+	CONTACT_E2E_TOKEN_HEADER,
+	parseCliArgs,
+	resolveSystemChrome,
+	VIEWPORT_MATRIX,
+} from "./scripts/site-v1-english-matrix.mjs";
 
-const baseURL = process.env.YONARIS_TEST_BASE_URL ?? "http://127.0.0.1:3000";
+const baseURL = parseCliArgs(["--base-url", process.env.YONARIS_TEST_BASE_URL ?? "http://127.0.0.1:3000"]).baseUrl;
 const executablePath = resolveSystemChrome();
+const contactE2EToken = process.env.YONARIS_CONTACT_E2E_TOKEN?.trim();
 
 export default defineConfig({
 	testDir: "./e2e",
@@ -22,6 +28,7 @@ export default defineConfig({
 		actionTimeout: 10_000,
 		navigationTimeout: 30_000,
 		launchOptions: { executablePath },
+		extraHTTPHeaders: contactE2EToken ? { [CONTACT_E2E_TOKEN_HEADER]: contactE2EToken } : undefined,
 		screenshot: "only-on-failure",
 		trace: "retain-on-failure",
 		video: "off",

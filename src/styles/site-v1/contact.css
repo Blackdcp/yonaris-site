@@ -277,6 +277,12 @@
 	background: linear-gradient(180deg, transparent, rgb(232 100 40 / 5%));
 }
 
+.site-v1-contact-field input:focus-visible,
+.site-v1-contact-field textarea:focus-visible {
+	outline: 2px solid var(--site-v1-orange-400);
+	outline-offset: 2px;
+}
+
 .site-v1-contact-field [aria-invalid="true"] { border-bottom-color: #b43919; }
 .site-v1-contact-field__error { color: #8f2d16; font-size: 0.72rem; line-height: 1.35; }
 

@@ -124,7 +124,7 @@ export function EvidenceLens({ copy, edition, fact, ringLabels, agentHref }: {
 				} as CSSProperties}
 			>
 				<div className="site-v1-evidence-lens__focal-mask" aria-hidden="true" />
-				<div className="site-v1-evidence-lens__particles" aria-hidden="true">
+				<div className="site-v1-evidence-lens__particles" data-visual-atmosphere="true" aria-hidden="true">
 					{Array.from({ length: 12 }, (_, index) => <i key={index} style={{ "--particle-index": index } as CSSProperties} />)}
 				</div>
 				{layers.map((layer, index) => (

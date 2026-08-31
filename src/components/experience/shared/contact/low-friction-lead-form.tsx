@@ -59,7 +59,7 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 			data-motion-preference={motionPreference}
 			data-enhanced={enhanced ? "true" : undefined}
 		>
-			<div className="site-v1-contact-aperture__signal" aria-hidden="true">
+			<div className="site-v1-contact-aperture__signal" data-visual-atmosphere="true" aria-hidden="true">
 				<i /><i /><i />
 			</div>
 			{form.state === "confirmed" ? (
@@ -84,7 +84,10 @@ export function LowFrictionLeadForm({ copy, uiCopy, locale, privacyHref, request
 				hidden={form.state === "confirmed"}
 				aria-hidden={form.state === "confirmed" ? true : undefined}
 				data-contact-submitting={form.submitting ? "true" : undefined}
-				onFocusCapture={form.focusAperture}
+				onFocusCapture={(event) => {
+					if (!(event.target instanceof HTMLElement) || !event.target.matches("input, textarea, select, [contenteditable='true']")) return;
+					form.focusAperture();
+				}}
 				onSubmit={form.submit}
 			>
 				<input type="hidden" name="locale" value={locale} />

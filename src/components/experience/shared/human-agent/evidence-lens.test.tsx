@@ -173,6 +173,8 @@ describe("Human / Agent evidence lens", () => {
 	it("uses the existing particles to reveal the selected layer rather than as a fixed decoration", async () => {
 		const host = await mount();
 		const optics = host.querySelector<HTMLElement>("[data-lens-optics]");
+		const atmosphere = host.querySelector<HTMLElement>("[data-visual-atmosphere='true'][aria-hidden='true']");
+		expect(atmosphere?.classList.contains("site-v1-evidence-lens__particles")).toBe(true);
 		expect(host.querySelectorAll(".site-v1-evidence-lens__particles i")).toHaveLength(12);
 		const particleSignatures = new Set<string>();
 		for (const layer of ["human", "evidence", "agent"] as const) {

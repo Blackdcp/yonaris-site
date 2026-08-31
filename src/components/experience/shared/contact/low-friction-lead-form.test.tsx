@@ -101,6 +101,9 @@ describe("low-friction contact aperture", () => {
 		expect(document.querySelector('[name="botField"]')).not.toBeNull();
 		expect(document.querySelector('[name="locale"]')?.getAttribute("value")).toBe("en");
 		expect(document.querySelector('[name="requestType"]')?.getAttribute("value")).toBe("conversation");
+		const signal = document.querySelector(".site-v1-contact-aperture__signal");
+		expect(signal?.getAttribute("aria-hidden")).toBe("true");
+		expect(signal?.getAttribute("data-visual-atmosphere")).toBe("true");
 	});
 
 	it("opens from idle to focused without losing the email value", async () => {
@@ -114,11 +117,25 @@ describe("low-friction contact aperture", () => {
 	it("uses a distinct expanded state and keeps it directly available with reduced motion", async () => {
 		const mounted = await mount(undefined, true);
 		const details = mounted.querySelector<HTMLDetailsElement>("details[data-contact-high-intent]");
+		const summary = details?.querySelector("summary");
 		if (!details) throw new Error("High-intent expansion missing");
-		details.open = true;
-		await act(async () => details.dispatchEvent(new Event("toggle", { bubbles: true })));
+		if (!summary) throw new Error("High-intent summary missing");
+		const activation = new MouseEvent("click", { bubbles: true, cancelable: true });
+		await act(async () => summary.dispatchEvent(new FocusEvent("focusin", { bubbles: true })));
+		expect(aperture(mounted).dataset.v1State).toBe("idle");
+		await act(async () => summary.dispatchEvent(activation));
+		expect(activation.defaultPrevented).toBe(true);
+		expect(details.open).toBe(true);
 		expect(aperture(mounted).dataset.v1State).toBe("expanded");
 		expect(aperture(mounted).dataset.motionPreference).toBe("reduced");
+	});
+
+	it("does not move the aperture between press and release on the submit control", async () => {
+		const mounted = await mount();
+		const submitControl = mounted.querySelector<HTMLButtonElement>("button[type='submit']");
+		if (!submitControl) throw new Error("Contact submit control missing");
+		await act(async () => submitControl.dispatchEvent(new FocusEvent("focusin", { bubbles: true })));
+		expect(aperture(mounted).dataset.v1State).toBe("idle");
 	});
 
 	it("shows invalid state, preserves optional values, and focuses the first invalid field", async () => {
