@@ -1,154 +1,1454 @@
 <!doctype html>
-<html lang="en" data-language="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Yonaris helps teams see what buyers hear in public channels, why it shapes decisions, and what deserves attention first.">
-  <meta name="theme-color" content="#F6F4F1">
-  <title>Yonaris — Before sales, the view is forming</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
-  <header class="site-header" data-header>
-    <div class="nav-shell">
-      <a class="brand" href="#top" aria-label="Yonaris home" data-i18n-aria="homeLabel"><img src="public/brand/yonaris-wordmark-navy.png" width="170" height="39" alt="Yonaris"></a>
-      <nav class="desktop-nav" aria-label="Primary navigation" data-i18n-aria="navLabel">
-        <a href="#product" data-i18n="navProduct">Product</a>
-        <a href="#human-agent">Human / Agent</a>
-        <a href="#casework" data-i18n="navCasework">Casework</a>
+<html lang="en" data-active-language="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0B1220">
+    <meta
+      name="description"
+      content="Yonaris makes the evidence shaping buyer decisions visible, reviewable, and useful to people and agents."
+    >
+    <title>Yonaris — Know what buyers are being told</title>
+    <link rel="icon" href="/public/brand/yonaris-icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#top">Skip to content</a>
+
+    <header class="site-header" data-site-header>
+      <a class="brand-link" href="#top" aria-label="Yonaris home">
+        <img
+          src="/public/brand/yonaris-wordmark-white.png"
+          alt="Yonaris"
+          width="290"
+          height="64"
+        >
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+        data-menu-toggle
+      >
+        <span data-copy="nav-menu" data-lang="en">Menu</span>
+        <span data-copy="nav-menu" data-lang="zh" lang="zh-CN" hidden>菜单</span>
+      </button>
+
+      <nav id="primary-navigation" aria-label="Primary navigation" data-mobile-nav>
+        <a href="#product">
+          <span data-copy="nav-product" data-lang="en">Product</span>
+          <span data-copy="nav-product" data-lang="zh" lang="zh-CN" hidden>产品</span>
+        </a>
+        <a href="#casework">
+          <span data-copy="nav-casework" data-lang="en">Casework</span>
+          <span data-copy="nav-casework" data-lang="zh" lang="zh-CN" hidden>案例拆解</span>
+        </a>
+        <a href="#company">
+          <span data-copy="nav-company" data-lang="en">Company</span>
+          <span data-copy="nav-company" data-lang="zh" lang="zh-CN" hidden>关于 Yonaris</span>
+        </a>
+        <a href="#contact">
+          <span data-copy="nav-contact" data-lang="en">Talk to Yonaris</span>
+          <span data-copy="nav-contact" data-lang="zh" lang="zh-CN" hidden>联系 Yonaris</span>
+        </a>
       </nav>
-      <div class="nav-actions">
-        <button class="language-switch" type="button" data-language-toggle aria-label="切换到中文">中文</button>
-        <a class="nav-cta" href="mailto:hello@yonaris.com"><span data-i18n="navTalk">Talk to Yonaris</span><i aria-hidden="true">↗</i></a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle><span aria-hidden="true"><i></i><i></i></span><b class="sr-only" data-menu-label data-i18n="openMenu">Open menu</b></button>
-      </div>
-    </div>
-    <nav class="mobile-nav" id="mobile-menu" aria-label="Mobile navigation" data-i18n-aria="mobileNavLabel" data-mobile-nav hidden>
-      <a href="#product" data-i18n="navProduct">Product</a><a href="#human-agent">Human / Agent</a><a href="#casework" data-i18n="navCasework">Casework</a><a href="mailto:hello@yonaris.com" data-i18n="navTalk">Talk to Yonaris</a>
-    </nav>
-  </header>
 
-  <main id="main">
-    <section class="hero" id="top">
-      <div class="shell hero-copy reveal">
-        <p class="eyebrow" data-i18n="brandLine">AI-native MarTech infrastructure</p>
-        <h1 data-i18n="heroTitle">Before sales,<br>the view is forming</h1>
-        <p data-i18n="heroBody">See what buyers hear in public channels, why it shapes decisions, and what deserves attention first.</p>
+      <div class="language-switcher" role="group" aria-label="Language">
+        <button type="button" lang="en" aria-pressed="true" data-language-toggle="en">
+          English
+        </button>
+        <button type="button" lang="zh-CN" aria-pressed="false" data-language-toggle="zh">
+          中文
+        </button>
       </div>
+    </header>
 
-      <div class="shell theatre hero-theatre reveal" data-hero-theatre data-stage="0" tabindex="0" aria-label="Product journey" data-i18n-aria="theatreLabel">
-        <div class="theatre-track" aria-hidden="true"><i></i><span data-theatre-cursor></span></div>
-        <div class="theatre-scenes">
-          <article class="theatre-scene question-scene is-active" role="tabpanel" id="theatre-panel-0" aria-labelledby="theatre-tab-0" data-theatre-scene="0">
-            <span class="scene-index">01</span>
-            <p class="scene-label" data-i18n="stageQuestion">Question</p>
-            <h2 data-i18n="questionText">Which partner can support several markets without losing local context?</h2>
-            <p class="scene-note" data-i18n="questionNote">APAC · Enterprise marketing · English</p>
+    <main>
+      <section id="top" class="hero" aria-labelledby="hero-title">
+        <figure class="hero-art" aria-hidden="true">
+          <img src="/public/art/evidence-room.png" alt="">
+        </figure>
+        <div class="hero-content">
+          <h1 id="hero-title">
+            <span data-copy="hero-title" data-lang="en">
+              Know what buyers are being told—and what to change.
+            </span>
+            <span data-copy="hero-title" data-lang="zh" lang="zh-CN" hidden>
+              看清客户听到了什么，再决定哪里值得改。
+            </span>
+          </h1>
+          <p>
+            <span data-copy="hero-body" data-lang="en">
+              Yonaris shows marketing teams what AI and digital channels are telling buyers,
+              which evidence is shaping the shortlist, what action can change it, and what
+              actually changed afterwards.
+            </span>
+            <span data-copy="hero-body" data-lang="zh" lang="zh-CN" hidden>
+              Yonaris 把 AI 和数字渠道中的答案、比较理由与证据连在一起，帮助营销团队看清品牌为什么进入或退出备选、下一步先处理什么，以及复核后哪些发生了变化。
+            </span>
+          </p>
+          <a class="primary-action" href="#formation">
+            <span data-copy="hero-action" data-lang="en">See Yonaris in action</span>
+            <span data-copy="hero-action" data-lang="zh" lang="zh-CN" hidden>
+              看看 Yonaris 怎么工作
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <section id="formation" class="formation" aria-labelledby="formation-title" data-formation>
+        <header class="section-heading" data-formation-stage="question">
+          <p class="representative-label">
+            <span data-copy="representative-record" data-lang="en">Representative record</span>
+            <span data-copy="representative-record" data-lang="zh" lang="zh-CN" hidden>
+              代表性记录
+            </span>
+          </p>
+          <h2 id="formation-title">
+            <span data-copy="formation-title" data-lang="en">
+              One question. Four public fragments. One review boundary.
+            </span>
+            <span data-copy="formation-title" data-lang="zh" lang="zh-CN" hidden>
+              一个问题，四份公开信息，一条审阅边界。
+            </span>
+          </h2>
+          <blockquote>
+            <p>
+              <span data-copy="record-question" data-lang="en">
+                Which analytics partner can support an enterprise marketing team across several
+                markets without losing local context or evidence?
+              </span>
+              <span data-copy="record-question" data-lang="zh" lang="zh-CN" hidden>
+                哪家分析合作伙伴能在不丢失本地语境或证据的前提下，为跨多个市场的企业营销团队提供支持？
+              </span>
+            </p>
+          </blockquote>
+        </header>
+
+        <form class="formation-conditions" data-condition-controls>
+          <fieldset>
+            <legend>
+              <span data-copy="formation-conditions" data-lang="en">Recorded conditions</span>
+              <span data-copy="formation-conditions" data-lang="zh" lang="zh-CN" hidden>
+                已记录条件
+              </span>
+            </legend>
+            <label>
+              <span data-copy="condition-market" data-lang="en">Market</span>
+              <span data-copy="condition-market" data-lang="zh" lang="zh-CN" hidden>市场</span>
+              <select name="formation-market" data-condition="market">
+                <option value="uk" data-label-en="United Kingdom" data-label-zh="英国">United Kingdom</option>
+                <option value="us" data-label-en="United States" data-label-zh="美国">United States</option>
+                <option value="singapore" data-label-en="Singapore" data-label-zh="新加坡">Singapore</option>
+                <option value="china" data-label-en="Chinese mainland" data-label-zh="中国大陆">Chinese mainland</option>
+              </select>
+            </label>
+            <label>
+              <span data-copy="condition-language" data-lang="en">Observation language</span>
+              <span data-copy="condition-language" data-lang="zh" lang="zh-CN" hidden>
+                观测语言
+              </span>
+              <select name="formation-language" data-condition="language">
+                <option value="en" data-label-en="English" data-label-zh="英语">English</option>
+                <option value="zh" data-label-en="Simplified Chinese" data-label-zh="简体中文">Simplified Chinese</option>
+              </select>
+            </label>
+            <label>
+              <span data-copy="condition-audience" data-lang="en">Audience</span>
+              <span data-copy="condition-audience" data-lang="zh" lang="zh-CN" hidden>人群</span>
+              <select name="formation-audience" data-condition="audience">
+                <option value="enterprise-marketing" data-label-en="Enterprise marketing team" data-label-zh="企业营销团队">Enterprise marketing team</option>
+                <option value="commercial-leadership" data-label-en="Commercial leadership" data-label-zh="商业管理团队">Commercial leadership</option>
+                <option value="regional-marketing" data-label-en="Regional marketing team" data-label-zh="区域营销团队">Regional marketing team</option>
+              </select>
+            </label>
+          </fieldset>
+        </form>
+
+        <div class="source-field" data-formation-stage="sources" aria-label="Attached sources">
+          <article
+            class="source-fragment"
+            tabindex="0"
+            data-source="ai-answer"
+            data-source-relevance="high"
+            aria-labelledby="source-ai-title"
+          >
+            <header>
+              <p>
+                <span data-copy="source-channel" data-lang="en">Channel</span>
+                <span data-copy="source-channel" data-lang="zh" lang="zh-CN" hidden>渠道</span>
+              </p>
+              <h3 id="source-ai-title">
+                <span data-copy="source-ai-title" data-lang="en">AI answer</span>
+                <span data-copy="source-ai-title" data-lang="zh" lang="zh-CN" hidden>
+                  AI 答案
+                </span>
+              </h3>
+            </header>
+            <p>
+              <span data-copy="source-ai-observation" data-lang="en">
+                Northstar is described as the safer multi-market option.
+              </span>
+              <span data-copy="source-ai-observation" data-lang="zh" lang="zh-CN" hidden>
+                Northstar 被描述为更稳妥的多市场选择。
+              </span>
+            </p>
+            <dl>
+              <div>
+                <dt>
+                  <span data-copy="source-scope" data-lang="en">Scope</span>
+                  <span data-copy="source-scope" data-lang="zh" lang="zh-CN" hidden>范围</span>
+                </dt>
+                <dd>
+                  <span data-copy="source-ai-scope" data-lang="en">Selected AI answer</span>
+                  <span data-copy="source-ai-scope" data-lang="zh" lang="zh-CN" hidden>
+                    选定 AI 答案
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="source-condition" data-lang="en">Condition</span>
+                  <span data-copy="source-condition" data-lang="zh" lang="zh-CN" hidden>
+                    条件
+                  </span>
+                </dt>
+                <dd data-source-condition>
+                  <span data-copy="condition-uk-en" data-lang="en">United Kingdom · English</span>
+                  <span data-copy="condition-uk-en" data-lang="zh" lang="zh-CN" hidden>英国 · 英语</span>
+                </dd>
+              </div>
+            </dl>
           </article>
-          <article class="theatre-scene answers-scene" role="tabpanel" id="theatre-panel-1" aria-labelledby="theatre-tab-1" data-theatre-scene="1" aria-hidden="true">
-            <span class="scene-index">02</span><p class="scene-label" data-i18n="stageAnswers">Answers</p>
-            <div class="answer-field"><p><span data-i18n="channelAiLabel">AI answers</span><b data-i18n="channelAiValue">Alternative A advances</b></p><p><span data-i18n="channelSearchLabel">Search</span><b data-i18n="channelSearchValue">Your company is mentioned</b></p><p><span data-i18n="channelEditorialLabel">Editorial</span><b data-i18n="channelEditorialValue">Market support is cited</b></p><p><span data-i18n="channelCompanyLabel">Company</span><b data-i18n="channelCompanyValue">Capability is published</b></p></div>
+
+          <article
+            class="source-fragment"
+            tabindex="0"
+            data-source="search"
+            data-source-relevance="high"
+            aria-labelledby="source-search-title"
+          >
+            <header>
+              <p>
+                <span data-copy="source-channel" data-lang="en">Channel</span>
+                <span data-copy="source-channel" data-lang="zh" lang="zh-CN" hidden>渠道</span>
+              </p>
+              <h3 id="source-search-title">
+                <span data-copy="source-search-title" data-lang="en">Search</span>
+                <span data-copy="source-search-title" data-lang="zh" lang="zh-CN" hidden>
+                  搜索结果
+                </span>
+              </h3>
+            </header>
+            <p>
+              <span data-copy="source-search-observation" data-lang="en">
+                Northstar publishes supported markets and local support scope.
+              </span>
+              <span data-copy="source-search-observation" data-lang="zh" lang="zh-CN" hidden>
+                Northstar 公布了支持的市场和本地服务范围。
+              </span>
+            </p>
+            <dl>
+              <div>
+                <dt>
+                  <span data-copy="source-scope" data-lang="en">Scope</span>
+                  <span data-copy="source-scope" data-lang="zh" lang="zh-CN" hidden>范围</span>
+                </dt>
+                <dd>
+                  <span data-copy="source-search-scope" data-lang="en">
+                    Published market and service pages
+                  </span>
+                  <span data-copy="source-search-scope" data-lang="zh" lang="zh-CN" hidden>
+                    已发布的市场与服务页面
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="source-condition" data-lang="en">Condition</span>
+                  <span data-copy="source-condition" data-lang="zh" lang="zh-CN" hidden>
+                    条件
+                  </span>
+                </dt>
+                <dd data-source-condition>
+                  <span data-copy="condition-uk-en" data-lang="en">United Kingdom · English</span>
+                  <span data-copy="condition-uk-en" data-lang="zh" lang="zh-CN" hidden>英国 · 英语</span>
+                </dd>
+              </div>
+            </dl>
           </article>
-          <article class="theatre-scene evidence-scene" role="tabpanel" id="theatre-panel-2" aria-labelledby="theatre-tab-2" data-theatre-scene="2" aria-hidden="true">
-            <span class="scene-index">03</span><p class="scene-label" data-i18n="stageEvidence">Evidence</p>
-            <div class="evidence-statement"><span data-i18n="claim">Claim</span><strong data-i18n="evidenceClaim">Supports local-market teams</strong><i aria-hidden="true"></i><span data-i18n="source">Source</span><strong data-i18n="sourceAttached">Public source attached</strong></div>
-            <p class="gap-note" data-i18n="gapNote">Gap: your capability lacks the same inspectable relationship.</p>
+
+          <article
+            class="source-fragment"
+            tabindex="0"
+            data-source="editorial-review"
+            data-source-relevance="medium"
+            aria-labelledby="source-editorial-title"
+          >
+            <header>
+              <p>
+                <span data-copy="source-channel" data-lang="en">Channel</span>
+                <span data-copy="source-channel" data-lang="zh" lang="zh-CN" hidden>渠道</span>
+              </p>
+              <h3 id="source-editorial-title">
+                <span data-copy="source-editorial-title" data-lang="en">Editorial review</span>
+                <span data-copy="source-editorial-title" data-lang="zh" lang="zh-CN" hidden>
+                  行业评测
+                </span>
+              </h3>
+            </header>
+            <p>
+              <span data-copy="source-editorial-observation" data-lang="en">
+                Local support is treated as part of enterprise readiness.
+              </span>
+              <span data-copy="source-editorial-observation" data-lang="zh" lang="zh-CN" hidden>
+                本地支持被视为企业级准备度的一部分。
+              </span>
+            </p>
+            <dl>
+              <div>
+                <dt>
+                  <span data-copy="source-scope" data-lang="en">Scope</span>
+                  <span data-copy="source-scope" data-lang="zh" lang="zh-CN" hidden>范围</span>
+                </dt>
+                <dd>
+                  <span data-copy="source-editorial-scope" data-lang="en">
+                    Enterprise analytics category review
+                  </span>
+                  <span data-copy="source-editorial-scope" data-lang="zh" lang="zh-CN" hidden>
+                    企业分析品类评测
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="source-condition" data-lang="en">Condition</span>
+                  <span data-copy="source-condition" data-lang="zh" lang="zh-CN" hidden>
+                    条件
+                  </span>
+                </dt>
+                <dd data-source-condition>
+                  <span data-copy="condition-uk-en" data-lang="en">United Kingdom · English</span>
+                  <span data-copy="condition-uk-en" data-lang="zh" lang="zh-CN" hidden>英国 · 英语</span>
+                </dd>
+              </div>
+            </dl>
           </article>
-          <article class="theatre-scene action-scene" role="tabpanel" id="theatre-panel-3" aria-labelledby="theatre-tab-3" data-theatre-scene="3" aria-hidden="true">
-            <span class="scene-index">04</span><p class="scene-label" data-i18n="stageAction">Action</p>
-            <p class="action-number">01</p><h2 data-i18n="actionText">Clarify scope and supported markets. Attach a source a buyer can inspect.</h2><p class="scene-note" data-i18n="humanReview">For human review</p>
-          </article>
-          <article class="theatre-scene review-scene" role="tabpanel" id="theatre-panel-4" aria-labelledby="theatre-tab-4" data-theatre-scene="4" aria-hidden="true">
-            <span class="scene-index">05</span><p class="scene-label" data-i18n="stageReview">Review</p>
-            <div><p><span data-i18n="changed">Changed</span><b data-i18n="reasonAppears">Selection reason appears</b></p><p><span data-i18n="unchanged">Unchanged</span><b data-i18n="orderSame">Recommendation order stays the same</b></p></div>
-            <p class="boundary-copy" data-i18n="boundary">Change observed; cause not established.</p>
+
+          <article
+            class="source-fragment"
+            tabindex="0"
+            data-source="company-record"
+            data-source-relevance="boundary"
+            aria-labelledby="source-company-title"
+          >
+            <header>
+              <p>
+                <span data-copy="source-channel" data-lang="en">Channel</span>
+                <span data-copy="source-channel" data-lang="zh" lang="zh-CN" hidden>渠道</span>
+              </p>
+              <h3 id="source-company-title">
+                <span data-copy="source-company-title" data-lang="en">Company record</span>
+                <span data-copy="source-company-title" data-lang="zh" lang="zh-CN" hidden>
+                  公司公开记录
+                </span>
+              </h3>
+            </header>
+            <p>
+              <span data-copy="source-company-observation" data-lang="en">
+                Meridian states the capability, but the public connection to the market condition
+                is missing.
+              </span>
+              <span data-copy="source-company-observation" data-lang="zh" lang="zh-CN" hidden>
+                Meridian 声明了这项能力，但公开信息没有把它与该市场条件连接起来。
+              </span>
+            </p>
+            <dl>
+              <div>
+                <dt>
+                  <span data-copy="source-scope" data-lang="en">Scope</span>
+                  <span data-copy="source-scope" data-lang="zh" lang="zh-CN" hidden>范围</span>
+                </dt>
+                <dd>
+                  <span data-copy="source-company-scope" data-lang="en">
+                    Meridian public capability page
+                  </span>
+                  <span data-copy="source-company-scope" data-lang="zh" lang="zh-CN" hidden>
+                    Meridian 公开能力页面
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="source-condition" data-lang="en">Condition</span>
+                  <span data-copy="source-condition" data-lang="zh" lang="zh-CN" hidden>
+                    条件
+                  </span>
+                </dt>
+                <dd data-source-condition>
+                  <span data-copy="condition-missing-link" data-lang="en">Multi-market support · connection not found</span>
+                  <span data-copy="condition-missing-link" data-lang="zh" lang="zh-CN" hidden>多市场支持 · 未找到公开连接</span>
+                </dd>
+              </div>
+            </dl>
           </article>
         </div>
-        <button class="theatre-toggle" type="button" data-theatre-toggle aria-pressed="false" aria-label="Pause automatic stages"><span data-theatre-toggle-label data-i18n="pause">Pause</span><i aria-hidden="true">Ⅱ</i></button>
-        <div class="theatre-controls" role="tablist" aria-label="Product stages" data-i18n-aria="stageLabel">
-          <button type="button" role="tab" id="theatre-tab-0" aria-controls="theatre-panel-0" aria-selected="true" data-theatre-button="0"><span>01</span><b data-i18n="stageQuestion">Question</b></button>
-          <button type="button" role="tab" id="theatre-tab-1" aria-controls="theatre-panel-1" aria-selected="false" data-theatre-button="1" tabindex="-1"><span>02</span><b data-i18n="stageAnswers">Answers</b></button>
-          <button type="button" role="tab" id="theatre-tab-2" aria-controls="theatre-panel-2" aria-selected="false" data-theatre-button="2" tabindex="-1"><span>03</span><b data-i18n="stageEvidence">Evidence</b></button>
-          <button type="button" role="tab" id="theatre-tab-3" aria-controls="theatre-panel-3" aria-selected="false" data-theatre-button="3" tabindex="-1"><span>04</span><b data-i18n="stageAction">Action</b></button>
-          <button type="button" role="tab" id="theatre-tab-4" aria-controls="theatre-panel-4" aria-selected="false" data-theatre-button="4" tabindex="-1"><span>05</span><b data-i18n="stageReview">Review</b></button>
-        </div>
-      </div>
-      <a class="hero-scroll" href="#product"><span data-i18n="followRecord">Follow the record</span><i aria-hidden="true">↓</i></a>
-    </section>
 
-    <section class="product-story" id="product" data-product-story>
-      <div class="product-sticky">
-        <div class="shell product-layout">
-          <div class="product-intro reveal">
-            <p class="eyebrow eyebrow-light" data-i18n="navProduct">Product</p>
-            <h2 data-i18n="productTitle">From question<br>to next move</h2>
-            <p data-i18n="productBody">Start with one real question, connect answers, evidence, gaps, and review, then decide what to do next.</p>
+        <aside class="source-note" aria-live="polite" data-source-note>
+          <p>
+            <span data-copy="source-note-default" data-lang="en">
+              Focus a source to keep its exact note in view. Press Escape to clear it.
+            </span>
+            <span data-copy="source-note-default" data-lang="zh" lang="zh-CN" hidden>
+              聚焦一份来源可固定查看其准确说明；按 Escape 清除固定。
+            </span>
+          </p>
+        </aside>
+
+        <div class="formed-interpretation" data-formation-stage="interpretation">
+          <p class="step-label">
+            <span data-copy="interpretation-label" data-lang="en">Formed interpretation</span>
+            <span data-copy="interpretation-label" data-lang="zh" lang="zh-CN" hidden>
+              形成的判断
+            </span>
+          </p>
+          <p data-condition-output="formation-interpretation">
+            <span data-copy="formed-interpretation" data-lang="en">
+              Northstar is easier to advance because its multi-market support is publicly
+              connected to the buyer’s condition.
+            </span>
+            <span data-copy="formed-interpretation" data-lang="zh" lang="zh-CN" hidden>
+              Northstar 更容易进入下一步，因为它公开地把多市场支持与买方条件连接起来。
+            </span>
+          </p>
+        </div>
+
+        <div class="evidence-boundary" data-formation-stage="boundary">
+          <p class="step-label">
+            <span data-copy="boundary-label" data-lang="en">Where public evidence ends</span>
+            <span data-copy="boundary-label" data-lang="zh" lang="zh-CN" hidden>
+              公开证据到此为止
+            </span>
+          </p>
+          <p data-condition-output="formation-boundary">
+            <span data-copy="record-boundary" data-lang="en">
+              Capability stated. Public connection not found.
+            </span>
+            <span data-copy="record-boundary" data-lang="zh" lang="zh-CN" hidden>
+              能力已声明。未找到公开连接。
+            </span>
+          </p>
+        </div>
+
+        <div class="review-instruction" data-formation-stage="review">
+          <p class="step-label">
+            <span data-copy="review-label" data-lang="en">Human review instruction</span>
+            <span data-copy="review-label" data-lang="zh" lang="zh-CN" hidden>
+              人工审阅指令
+            </span>
+          </p>
+          <p data-condition-output="formation-review">
+            <span data-copy="record-review-action" data-lang="en">
+              Verify supported languages and local service scope, then connect the approved claim
+              to inspectable evidence.
+            </span>
+            <span data-copy="record-review-action" data-lang="zh" lang="zh-CN" hidden>
+              核实支持语言和本地服务范围，再把已批准的声明连接到可核对证据。
+            </span>
+          </p>
+          <p class="human-boundary">
+            <span data-copy="review-human-boundary" data-lang="en">
+              A person decides whether the claim is accurate, appropriate, and approved.
+            </span>
+            <span data-copy="review-human-boundary" data-lang="zh" lang="zh-CN" hidden>
+              事实是否准确、行动是否合适、是否批准执行，仍由人来判断。
+            </span>
+          </p>
+        </div>
+      </section>
+
+      <section id="product" class="product-flow" aria-labelledby="product-title">
+        <header class="section-heading">
+          <h2 id="product-title">
+            <span data-copy="product-title" data-lang="en">
+              From one buyer question to the next market action.
+            </span>
+            <span data-copy="product-title" data-lang="zh" lang="zh-CN" hidden>
+              从一个市场问题，到团队下一步该做什么。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="product-body" data-lang="en">
+              One record moves through five acts of work. It never becomes five disconnected
+              modules.
+            </span>
+            <span data-copy="product-body" data-lang="zh" lang="zh-CN" hidden>
+              同一条记录依次完成五项工作，而不是被拆成五个彼此割裂的模块。
+            </span>
+          </p>
+        </header>
+
+        <ol class="product-stations">
+          <li data-product-stage="question">
+            <p class="station-number">01</p>
+            <h3>
+              <span data-copy="product-step-1-title" data-lang="en">Record the question</span>
+              <span data-copy="product-step-1-title" data-lang="zh" lang="zh-CN" hidden>
+                记录客户问题
+              </span>
+            </h3>
+            <p>
+              <span data-copy="product-step-1-body" data-lang="en">
+                Start with the question—and the market, audience, language, and alternatives
+                around it.
+              </span>
+              <span data-copy="product-step-1-body" data-lang="zh" lang="zh-CN" hidden>
+                先把问题，以及对应的市场、人群、语言和比较对象记录下来。
+              </span>
+            </p>
+          </li>
+          <li data-product-stage="observe">
+            <figure aria-hidden="true">
+              <img src="/public/art/evidence-observe.png" alt="">
+            </figure>
+            <p class="station-number">02</p>
+            <h3>
+              <span data-copy="product-step-2-title" data-lang="en">Observe the answers</span>
+              <span data-copy="product-step-2-title" data-lang="zh" lang="zh-CN" hidden>
+                观察当前答案
+              </span>
+            </h3>
+            <p>
+              <span data-copy="product-step-2-body" data-lang="en">
+                See what selected AI, search, editorial, and company-owned channels are telling
+                buyers now.
+              </span>
+              <span data-copy="product-step-2-body" data-lang="zh" lang="zh-CN" hidden>
+                看清选定的 AI、搜索、行业内容和品牌公开信息正在怎样回答客户。
+              </span>
+            </p>
+          </li>
+          <li data-product-stage="trace">
+            <figure aria-hidden="true">
+              <img src="/public/art/evidence-trace.png" alt="">
+            </figure>
+            <p class="station-number">03</p>
+            <h3>
+              <span data-copy="product-step-3-title" data-lang="en">Trace the reasons</span>
+              <span data-copy="product-step-3-title" data-lang="zh" lang="zh-CN" hidden>
+                追溯比较理由
+              </span>
+            </h3>
+            <p>
+              <span data-copy="product-step-3-body" data-lang="en">
+                Trace each reason to supporting evidence, missing context, or contradictory
+                information.
+              </span>
+              <span data-copy="product-step-3-body" data-lang="zh" lang="zh-CN" hidden>
+                把每个比较理由追溯到支持它的证据、缺失的语境或相互矛盾的信息。
+              </span>
+            </p>
+          </li>
+          <li data-product-stage="review">
+            <figure aria-hidden="true">
+              <img src="/public/art/evidence-decide.png" alt="">
+            </figure>
+            <p class="station-number">04</p>
+            <h3>
+              <span data-copy="product-step-4-title" data-lang="en">Review an action</span>
+              <span data-copy="product-step-4-title" data-lang="zh" lang="zh-CN" hidden>
+                审阅下一步行动
+              </span>
+            </h3>
+            <p>
+              <span data-copy="product-step-4-body" data-lang="en">
+                Turn the clearest gap into a prioritised action for the team to approve, adjust,
+                or reject.
+              </span>
+              <span data-copy="product-step-4-body" data-lang="zh" lang="zh-CN" hidden>
+                把最清楚的缺口变成一项有优先级的行动，由团队批准、调整或放弃。
+              </span>
+            </p>
+          </li>
+          <li data-product-stage="repeat">
+            <p class="station-number">05</p>
+            <h3>
+              <span data-copy="product-step-5-title" data-lang="en">Ask again</span>
+              <span data-copy="product-step-5-title" data-lang="zh" lang="zh-CN" hidden>
+                再次提出问题
+              </span>
+            </h3>
+            <p>
+              <span data-copy="product-step-5-body" data-lang="en">
+                Review the same question under recorded conditions. Keep changed, unchanged, and
+                non-attributable findings separate.
+              </span>
+              <span data-copy="product-step-5-body" data-lang="zh" lang="zh-CN" hidden>
+                在已记录条件中复核同一个问题，把已变化、未变化和无法归因的结果分开。
+              </span>
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="markets" class="markets" aria-labelledby="markets-title">
+        <header class="section-heading">
+          <h2 id="markets-title">
+            <span data-copy="markets-title" data-lang="en">
+              One company fact. Different market conditions.
+            </span>
+            <span data-copy="markets-title" data-lang="zh" lang="zh-CN" hidden>
+              同一个公司事实，不同的市场条件。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="markets-body" data-lang="en">
+              Market, language, category terms, alternatives, sources, and observation conditions
+              stay attached to every buyer question.
+            </span>
+            <span data-copy="markets-body" data-lang="zh" lang="zh-CN" hidden>
+              每个客户问题都保留市场、语言、当地品类用语、比较对象、来源和观测条件。全球化不是简单翻译，而是在每个市场保留正确的判断背景。
+            </span>
+          </p>
+        </header>
+
+        <div class="fixed-fact" data-condition-fact>
+          <p class="step-label">
+            <span data-copy="fixed-fact-label" data-lang="en">Fact that stays fixed</span>
+            <span data-copy="fixed-fact-label" data-lang="zh" lang="zh-CN" hidden>
+              保持不变的事实
+            </span>
+          </p>
+          <p>
+            <span data-copy="fixed-fact" data-lang="en">
+              Meridian provides enterprise analytics support across multiple markets.
+            </span>
+            <span data-copy="fixed-fact" data-lang="zh" lang="zh-CN" hidden>
+              Meridian 为多个市场提供企业分析支持。
+            </span>
+          </p>
+        </div>
+
+        <form class="market-conditions" data-condition-controls>
+          <fieldset>
+            <legend>
+              <span data-copy="market-controls-title" data-lang="en">Change the conditions</span>
+              <span data-copy="market-controls-title" data-lang="zh" lang="zh-CN" hidden>
+                更改判断条件
+              </span>
+            </legend>
+            <label>
+              <span data-copy="condition-market" data-lang="en">Market</span>
+              <span data-copy="condition-market" data-lang="zh" lang="zh-CN" hidden>市场</span>
+              <select name="market" data-condition="market">
+                <option value="uk" data-label-en="United Kingdom" data-label-zh="英国">United Kingdom</option>
+                <option value="us" data-label-en="United States" data-label-zh="美国">United States</option>
+                <option value="singapore" data-label-en="Singapore" data-label-zh="新加坡">Singapore</option>
+                <option value="china" data-label-en="Chinese mainland" data-label-zh="中国大陆">Chinese mainland</option>
+              </select>
+            </label>
+            <label>
+              <span data-copy="condition-language" data-lang="en">Observation language</span>
+              <span data-copy="condition-language" data-lang="zh" lang="zh-CN" hidden>
+                观测语言
+              </span>
+              <select name="language" data-condition="language">
+                <option value="en" data-label-en="English" data-label-zh="英语">English</option>
+                <option value="zh" data-label-en="Simplified Chinese" data-label-zh="简体中文">Simplified Chinese</option>
+              </select>
+            </label>
+          </fieldset>
+        </form>
+
+        <div class="condition-results">
+          <div>
+            <h3>
+              <span data-copy="relevance-title" data-lang="en">Relevance</span>
+              <span data-copy="relevance-title" data-lang="zh" lang="zh-CN" hidden>相关性</span>
+            </h3>
+            <p data-condition-output="relevance">
+              <span data-copy="markets-relevance" data-lang="en">
+                Relevant when supported markets and local service scope are inspectable.
+              </span>
+              <span data-copy="markets-relevance" data-lang="zh" lang="zh-CN" hidden>
+                当支持市场和本地服务范围可核对时，这项事实与问题相关。
+              </span>
+            </p>
           </div>
-          <nav class="story-rail" aria-label="Product scenes" data-i18n-aria="storyLabel">
-            <button type="button" data-story-button="0" aria-current="step"><span>01</span><b data-i18n="stageQuestion">Question</b></button>
-            <button type="button" data-story-button="1"><span>02</span><b data-i18n="stageAnswers">Answers</b></button>
-            <button type="button" data-story-button="2"><span>03</span><b data-i18n="stageEvidence">Evidence</b></button>
-            <button type="button" data-story-button="3"><span>04</span><b data-i18n="stageAction">Action</b></button>
-            <button type="button" data-story-button="4"><span>05</span><b data-i18n="stageReview">Review</b></button>
-          </nav>
-          <div class="story-canvas" data-story-canvas data-scene="0" aria-live="polite">
-            <div class="story-cursor" aria-hidden="true"><i></i><span></span></div>
-            <article class="story-scene story-question is-active" data-story-scene="0">
-              <p class="canvas-overline" data-i18n="questionIn">Question in</p><h3 data-i18n="questionText">Which partner can support several markets without losing local context?</h3><div class="question-context"><span data-i18n="apac">APAC</span><span data-i18n="englishCode">EN</span><span data-i18n="enterprise">Enterprise</span><span>A / B / C</span></div>
-            </article>
-            <article class="story-scene story-answers" data-story-scene="1" aria-hidden="true">
-              <p class="canvas-overline" data-i18n="answersOut">Public answers</p><div class="answer-cross"><p><span data-i18n="answerAiShortLabel">AI</span><b data-i18n="answerAiShortValue">Alternative advances</b></p><p><span data-i18n="answerSearchShortLabel">Search</span><b data-i18n="answerSearchShortValue">Mention only</b></p><p><span data-i18n="answerEditorialShortLabel">Editorial</span><b data-i18n="answerEditorialShortValue">Evidence cited</b></p><p><span data-i18n="answerCompanyShortLabel">Company</span><b data-i18n="answerCompanyShortValue">Scope unclear</b></p><i aria-hidden="true"></i></div>
-            </article>
-            <article class="story-scene story-evidence" data-story-scene="2" aria-hidden="true">
-              <p class="canvas-overline" data-i18n="reasonTrace">Reason traced</p><div class="source-chain"><p><span data-i18n="selectionReason">Selection reason</span><b data-i18n="localSupport">Local-market support</b></p><i></i><p><span data-i18n="publicEvidence">Public evidence</span><b data-i18n="conditionsSource">Conditions + source</b></p></div><p class="open-gap" data-i18n="openGap">Open gap — your published capability is not connected to this criterion.</p>
-            </article>
-            <article class="story-scene story-action" data-story-scene="3" aria-hidden="true">
-              <p class="canvas-overline" data-i18n="nextMove">Next move</p><span class="action-ordinal">01</span><h3 data-i18n="actionShort">Clarify the capability’s scope and supported markets.</h3><div class="approval-line"><span data-i18n="reviewedByTeam">Reviewed by team</span><i></i><b data-i18n="approved">Approved</b></div>
-            </article>
-            <article class="story-scene story-review" data-story-scene="4" aria-hidden="true">
-              <p class="canvas-overline" data-i18n="sameConditions">Same conditions, later review</p><div class="review-pair"><p><span data-i18n="nowVisible">Now visible</span><b data-i18n="reasonAppears">Selection reason appears</b></p><p><span data-i18n="stillSame">Still the same</span><b data-i18n="orderSame">Recommendation order stays the same</b></p></div><p class="story-boundary" data-i18n="boundary">Change observed; cause not established.</p>
-            </article>
-            <p class="canvas-counter"><span data-story-index>01</span> / 05</p>
+          <div>
+            <h3>
+              <span data-copy="alignment-title" data-lang="en">Evidence alignment</span>
+              <span data-copy="alignment-title" data-lang="zh" lang="zh-CN" hidden>
+                证据对齐
+              </span>
+            </h3>
+            <p data-condition-output="alignment">
+              <span data-copy="markets-alignment" data-lang="en">
+                Partial. The capability is stated; the selected market connection needs review.
+              </span>
+              <span data-copy="markets-alignment" data-lang="zh" lang="zh-CN" hidden>
+                部分对齐。能力已经声明，但与所选市场的公开连接仍需审阅。
+              </span>
+            </p>
+          </div>
+          <div>
+            <h3>
+              <span data-copy="interpretation-title" data-lang="en">Interpretation</span>
+              <span data-copy="interpretation-title" data-lang="zh" lang="zh-CN" hidden>
+                当前判断
+              </span>
+            </h3>
+            <p data-condition-output="interpretation">
+              <span data-copy="markets-interpretation" data-lang="en">
+                Verify the selected market and language before using this fact as a comparison
+                reason.
+              </span>
+              <span data-copy="markets-interpretation" data-lang="zh" lang="zh-CN" hidden>
+                在把这项事实作为比较理由前，先核实所选市场与语言。
+              </span>
+            </p>
           </div>
         </div>
-      </div>
-    </section>
+        <p class="condition-announcement" aria-live="polite" aria-atomic="true" data-condition-announcement>
+          <span data-copy="condition-default-announcement" data-lang="en">
+            Conditions: United Kingdom, English.
+          </span>
+          <span data-copy="condition-default-announcement" data-lang="zh" lang="zh-CN" hidden>
+            当前条件：英国，英语。
+          </span>
+        </p>
+      </section>
 
-    <section class="human-agent" id="human-agent">
-      <div class="shell section-heading reveal"><p class="eyebrow">Human / Agent</p><h2 data-i18n="humanTitle">One fact,<br>two readings</h2><p data-i18n="humanBody">Teams get a clear conclusion. Agents get a structured record. The meaning stays the same.</p></div>
-      <div class="shell wipe-stage reveal" data-wipe-stage style="--split: 50%;">
-        <div class="wipe-layer human-layer">
-          <p class="wipe-label">Human</p><div class="human-reading"><span data-i18n="clearConclusion">Clear conclusion</span><h3 data-i18n="humanConclusion">A selection reason became visible. Recommendation order did not change.</h3><p data-i18n="humanNext">Next: review whether the reason appears again under the same conditions.</p></div>
+      <section id="human-agent" class="human-agent" aria-labelledby="human-agent-title">
+        <header class="section-heading">
+          <p class="representative-label">
+            <span data-copy="representative-record" data-lang="en">Representative record</span>
+            <span data-copy="representative-record" data-lang="zh" lang="zh-CN" hidden>
+              代表性记录
+            </span>
+          </p>
+          <h2 id="human-agent-title">
+            <span data-copy="human-agent-title" data-lang="en">
+              One fact. Two readers. No conflicting versions.
+            </span>
+            <span data-copy="human-agent-title" data-lang="zh" lang="zh-CN" hidden>
+              同一个事实，让人看得懂，也让 Agent 读得准。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="human-agent-body" data-lang="en">
+              People need context, judgement, and a useful next move. Agents need a stable claim,
+              source, scope, timestamp, and boundary. Both views stay attached to one record.
+            </span>
+            <span data-copy="human-agent-body" data-lang="zh" lang="zh-CN" hidden>
+              人需要知道事实意味着什么、下一步审阅什么；Agent 需要稳定的事实陈述、来源、范围、时间戳和边界。两种视图始终关联同一条记录。
+            </span>
+          </p>
+        </header>
+
+        <article class="shared-record" data-record="yonaris-record-001">
+          <section class="human-reading" aria-labelledby="human-reading-title">
+            <h3 id="human-reading-title">
+              <span data-copy="human-reading-title" data-lang="en">Plain-language finding</span>
+              <span data-copy="human-reading-title" data-lang="zh" lang="zh-CN" hidden>
+                面向人的结论
+              </span>
+            </h3>
+            <dl>
+              <div>
+                <dt>
+                  <span data-copy="human-what" data-lang="en">What happened</span>
+                  <span data-copy="human-what" data-lang="zh" lang="zh-CN" hidden>
+                    发生了什么
+                  </span>
+                </dt>
+                <dd>
+                  <span data-copy="human-what-value" data-lang="en">
+                    Northstar’s multi-market support was connected to the buyer’s condition.
+                    Meridian’s capability was stated without that public connection.
+                  </span>
+                  <span data-copy="human-what-value" data-lang="zh" lang="zh-CN" hidden>
+                    Northstar 的多市场支持与买方条件形成了公开连接；Meridian 虽声明了能力，却缺少同样的连接。
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="human-why" data-lang="en">Why it matters</span>
+                  <span data-copy="human-why" data-lang="zh" lang="zh-CN" hidden>
+                    为什么重要
+                  </span>
+                </dt>
+                <dd>
+                  <span data-copy="human-why-value" data-lang="en">
+                    Buyers can inspect the reason for advancing one option more easily.
+                  </span>
+                  <span data-copy="human-why-value" data-lang="zh" lang="zh-CN" hidden>
+                    买方更容易核对为什么一个选项值得进入下一步。
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="human-next" data-lang="en">What to review next</span>
+                  <span data-copy="human-next" data-lang="zh" lang="zh-CN" hidden>
+                    下一步审阅什么
+                  </span>
+                </dt>
+                <dd>
+                  <span data-copy="human-next-value" data-lang="en">
+                    Verify supported languages and local service scope before approving a public
+                    claim.
+                  </span>
+                  <span data-copy="human-next-value" data-lang="zh" lang="zh-CN" hidden>
+                    在批准公开声明前，核实支持语言和本地服务范围。
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="agent-reading" aria-labelledby="agent-reading-title">
+            <h3 id="agent-reading-title">
+              <span data-copy="agent-reading-title" data-lang="en">Structured record</span>
+              <span data-copy="agent-reading-title" data-lang="zh" lang="zh-CN" hidden>
+                结构化记录
+              </span>
+            </h3>
+            <dl data-agent-record>
+              <div>
+                <dt>
+                  <span data-copy="agent-claim" data-lang="en">Claim</span>
+                  <span data-copy="agent-claim" data-lang="zh" lang="zh-CN" hidden>
+                    事实陈述
+                  </span>
+                </dt>
+                <dd data-record-field="claim">
+                  <span data-copy="agent-claim-value" data-lang="en">
+                    Meridian states multi-market support; a public connection to the selected
+                    market condition was not found in this representative observation.
+                  </span>
+                  <span data-copy="agent-claim-value" data-lang="zh" lang="zh-CN" hidden>
+                    Meridian 声明提供多市场支持；在这条代表性观测中，未找到它与所选市场条件的公开连接。
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="agent-id" data-lang="en">Stable ID</span>
+                  <span data-copy="agent-id" data-lang="zh" lang="zh-CN" hidden>
+                    稳定标识
+                  </span>
+                </dt>
+                <dd data-record-field="id">yonaris:representative:market-support:001</dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="agent-source" data-lang="en">Source</span>
+                  <span data-copy="agent-source" data-lang="zh" lang="zh-CN" hidden>来源</span>
+                </dt>
+                <dd data-record-field="source">
+                  <span data-copy="agent-source-value" data-lang="en">Company public capability record</span>
+                  <span data-copy="agent-source-value" data-lang="zh" lang="zh-CN" hidden>公司公开能力记录</span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="agent-scope" data-lang="en">Scope</span>
+                  <span data-copy="agent-scope" data-lang="zh" lang="zh-CN" hidden>
+                    适用范围
+                  </span>
+                </dt>
+                <dd data-record-field="scope">
+                  <span data-copy="agent-scope-value" data-lang="en">United Kingdom · English · enterprise analytics</span>
+                  <span data-copy="agent-scope-value" data-lang="zh" lang="zh-CN" hidden>英国 · 英语 · 企业分析</span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="agent-timestamp" data-lang="en">Timestamp</span>
+                  <span data-copy="agent-timestamp" data-lang="zh" lang="zh-CN" hidden>
+                    时间戳
+                  </span>
+                </dt>
+                <dd data-record-field="timestamp">
+                  <span data-copy="agent-timestamp-value" data-lang="en">2026-08-31 · illustrative record</span>
+                  <span data-copy="agent-timestamp-value" data-lang="zh" lang="zh-CN" hidden>2026-08-31 · 示例记录</span>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <span data-copy="agent-boundary" data-lang="en">Boundary</span>
+                  <span data-copy="agent-boundary" data-lang="zh" lang="zh-CN" hidden>边界</span>
+                </dt>
+                <dd data-record-field="boundary">
+                  <span data-copy="agent-boundary-value" data-lang="en">
+                    Structured public evidence does not guarantee crawling, retrieval, ranking,
+                    recommendation, or citation.
+                  </span>
+                  <span data-copy="agent-boundary-value" data-lang="zh" lang="zh-CN" hidden>
+                    结构化公开证据不保证抓取、检索、排名、推荐或引用。
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </section>
+        </article>
+      </section>
+
+      <section id="casework" class="casework" aria-labelledby="casework-title">
+        <header class="section-heading">
+          <p class="representative-label">
+            <span data-copy="casework-disclosure" data-lang="en">
+              Representative casework—not a customer performance claim.
+            </span>
+            <span data-copy="casework-disclosure" data-lang="zh" lang="zh-CN" hidden>
+              代表性案例演示，不构成客户效果声明。
+            </span>
+          </p>
+          <h2 id="casework-title">
+            <span data-copy="casework-title" data-lang="en">
+              One question, from first answer to review.
+            </span>
+            <span data-copy="casework-title" data-lang="zh" lang="zh-CN" hidden>
+              看一个市场问题如何被完整拆解。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="casework-body" data-lang="en">
+              Follow one representative record from the first observation to a reviewed action,
+              a later review, and the limits that remain.
+            </span>
+            <span data-copy="casework-body" data-lang="zh" lang="zh-CN" hidden>
+              从最初答案、证据缺口到团队行动和后续复核，一次看清判断如何形成，也看清哪些结论仍然不能下。
+            </span>
+          </p>
+        </header>
+
+        <article class="case-file">
+          <ol class="case-passages">
+            <li>
+              <h3>
+                <span data-copy="case-initial-title" data-lang="en">Initial answer</span>
+                <span data-copy="case-initial-title" data-lang="zh" lang="zh-CN" hidden>
+                  最初的答案
+                </span>
+              </h3>
+              <p>
+                <span data-copy="case-initial-body" data-lang="en">
+                  Northstar was recommended for documented local-market support. Meridian was
+                  mentioned without the same evidence attached to the reason.
+                </span>
+                <span data-copy="case-initial-body" data-lang="zh" lang="zh-CN" hidden>
+                  Northstar 因有本地市场支持的公开记录而被推荐；Meridian 虽被提到，却没有把同类证据关联到选择理由。
+                </span>
+              </p>
+            </li>
+            <li>
+              <h3>
+                <span data-copy="case-gap-title" data-lang="en">Evidence gap</span>
+                <span data-copy="case-gap-title" data-lang="zh" lang="zh-CN" hidden>
+                  证据缺口
+                </span>
+              </h3>
+              <p>
+                <span data-copy="case-gap-body" data-lang="en">
+                  The capability existed. The missing piece was a public evidence relationship
+                  connecting it to the buyer’s selection criterion.
+                </span>
+                <span data-copy="case-gap-body" data-lang="zh" lang="zh-CN" hidden>
+                  这项能力确实存在；缺少的是把能力与买方选择标准连接起来的公开证据关系。
+                </span>
+              </p>
+            </li>
+            <li>
+              <h3>
+                <span data-copy="case-action-title" data-lang="en">Reviewed action</span>
+                <span data-copy="case-action-title" data-lang="zh" lang="zh-CN" hidden>
+                  经团队审阅的行动
+                </span>
+              </h3>
+              <p>
+                <span data-copy="case-action-body" data-lang="en">
+                  The team clarified the capability’s scope and supported markets, then attached
+                  a source a buyer could inspect.
+                </span>
+                <span data-copy="case-action-body" data-lang="zh" lang="zh-CN" hidden>
+                  团队明确了能力的适用范围和支持市场，并关联一份买方可以核对的公开来源。
+                </span>
+              </p>
+            </li>
+            <li>
+              <h3>
+                <span data-copy="case-review-title" data-lang="en">Later review</span>
+                <span data-copy="case-review-title" data-lang="zh" lang="zh-CN" hidden>
+                  后续复核
+                </span>
+              </h3>
+              <p>
+                <span data-copy="case-review-body" data-lang="en">
+                  The reason for considering Meridian became visible. The recommendation order
+                  did not change.
+                </span>
+                <span data-copy="case-review-body" data-lang="zh" lang="zh-CN" hidden>
+                  考虑 Meridian 的理由已经可见，但推荐顺序没有变化。
+                </span>
+              </p>
+            </li>
+          </ol>
+
+          <div class="outcome-boundaries" aria-label="Outcome boundaries">
+            <div>
+              <h3>
+                <span data-copy="outcome-changed-title" data-lang="en">Changed</span>
+                <span data-copy="outcome-changed-title" data-lang="zh" lang="zh-CN" hidden>
+                  已变化
+                </span>
+              </h3>
+              <p>
+                <span data-copy="outcome-changed-body" data-lang="en">
+                  A public reason for considering Meridian became visible.
+                </span>
+                <span data-copy="outcome-changed-body" data-lang="zh" lang="zh-CN" hidden>
+                  考虑 Meridian 的公开理由已经出现。
+                </span>
+              </p>
+            </div>
+            <div>
+              <h3>
+                <span data-copy="outcome-unchanged-title" data-lang="en">Unchanged</span>
+                <span data-copy="outcome-unchanged-title" data-lang="zh" lang="zh-CN" hidden>
+                  未变化
+                </span>
+              </h3>
+              <p>
+                <span data-copy="outcome-unchanged-body" data-lang="en">
+                  The recommendation order did not change.
+                </span>
+                <span data-copy="outcome-unchanged-body" data-lang="zh" lang="zh-CN" hidden>
+                  推荐顺序没有变化。
+                </span>
+              </p>
+            </div>
+            <div>
+              <h3>
+                <span data-copy="outcome-cannot-title" data-lang="en">Cannot attribute</span>
+                <span data-copy="outcome-cannot-title" data-lang="zh" lang="zh-CN" hidden>
+                  无法归因
+                </span>
+              </h3>
+              <p>
+                <span data-copy="outcome-cannot-body" data-lang="en">
+                  One review cannot prove that a content change caused the answer change or
+                  produced a commercial result.
+                </span>
+                <span data-copy="outcome-cannot-body" data-lang="zh" lang="zh-CN" hidden>
+                  单次复核不能证明答案变化由某项内容造成，也不能据此声称已经带来商业结果。
+                </span>
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="company" class="company" aria-labelledby="company-title">
+        <header class="section-heading">
+          <h2 id="company-title">
+            <span data-copy="company-title" data-lang="en">
+              We build for the moment before the sales conversation.
+            </span>
+            <span data-copy="company-title" data-lang="zh" lang="zh-CN" hidden>
+              客户开口之前，很多判断已经发生了。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="company-body" data-lang="en">
+              Yonaris builds AI-Native MarTech Infrastructure for marketing and commercial teams
+              that need to understand what AI and digital channels are telling buyers, which
+              evidence shapes comparison, and what to change next.
+            </span>
+            <span data-copy="company-body" data-lang="zh" lang="zh-CN" hidden>
+              Yonaris 为营销和商业团队提供 AI 原生营销科技基础设施，帮助团队看清 AI 与数字渠道如何呈现和比较一家公司，并找到下一步该审阅的行动和复核条件。
+            </span>
+          </p>
+        </header>
+
+        <div class="company-principles">
+          <article>
+            <h3>
+              <span data-copy="principle-before-title" data-lang="en">
+                Make the first comparison visible
+              </span>
+              <span data-copy="principle-before-title" data-lang="zh" lang="zh-CN" hidden>
+                让第一轮比较可见
+              </span>
+            </h3>
+            <p>
+              <span data-copy="principle-before-body" data-lang="en">
+                Buyers can form a comparison across AI answers, search, public evidence, and
+                third-party sources before sales begins. Yonaris makes the information shaping
+                that comparison visible and reviewable.
+              </span>
+              <span data-copy="principle-before-body" data-lang="zh" lang="zh-CN" hidden>
+                销售介入前，第一轮比较可能已在 AI、搜索、公开证据和第三方来源中形成。Yonaris 让影响这轮比较的信息变得可见、可复核。
+              </span>
+            </p>
+          </article>
+          <article>
+            <h3>
+              <span data-copy="principle-markets-title" data-lang="en">
+                Keep facts and conditions together
+              </span>
+              <span data-copy="principle-markets-title" data-lang="zh" lang="zh-CN" hidden>
+                同时保留事实与条件
+              </span>
+            </h3>
+            <p>
+              <span data-copy="principle-markets-body" data-lang="en">
+                A company fact can stay stable while market, language, category terms,
+                alternatives, and evidence conditions change. Both remain visible.
+              </span>
+              <span data-copy="principle-markets-body" data-lang="zh" lang="zh-CN" hidden>
+                公司事实可以不变，市场、语言、品类用语、比较对象与证据条件却会变化。Yonaris 同时保留两者。
+              </span>
+            </p>
+          </article>
+          <article>
+            <h3>
+              <span data-copy="principle-human-title" data-lang="en">
+                Keep judgement with people
+              </span>
+              <span data-copy="principle-human-title" data-lang="zh" lang="zh-CN" hidden>
+                把判断留给人
+              </span>
+            </h3>
+            <p>
+              <span data-copy="principle-human-body" data-lang="en">
+                Yonaris can surface an observed answer, evidence, gaps, and a possible action.
+                People decide what is accurate, appropriate, and approved—and what happens next.
+              </span>
+              <span data-copy="principle-human-body" data-lang="zh" lang="zh-CN" hidden>
+                Yonaris 可以呈现答案、证据、缺口和可能的下一步；事实是否准确、行动是否合适、是否批准执行，仍由团队判断。
+              </span>
+            </p>
+          </article>
         </div>
-        <div class="wipe-layer agent-layer">
-          <p class="wipe-label">Agent</p><dl class="agent-reading"><div><dt data-i18n="claim">Claim</dt><dd data-i18n="claimValue">selection reason visible</dd></div><div><dt data-i18n="source">Source</dt><dd data-i18n="sourceValue">public record · attached</dd></div><div><dt data-i18n="scope">Scope</dt><dd data-i18n="agentScopeValue">APAC · EN · selected channels</dd></div><div><dt data-i18n="observedAt">Observed at</dt><dd>2026–08–28</dd></div><div><dt data-i18n="boundaryLabel">Boundary</dt><dd data-i18n="boundaryValue">order unchanged · cause not established</dd></div></dl>
+
+        <aside class="trust-boundary" aria-labelledby="trust-boundary-title">
+          <h3 id="trust-boundary-title">
+            <span data-copy="trust-boundary-title" data-lang="en">The trust boundary</span>
+            <span data-copy="trust-boundary-title" data-lang="zh" lang="zh-CN" hidden>
+              信任边界
+            </span>
+          </h3>
+          <p>
+            <span data-copy="trust-boundary-body" data-lang="en">
+              Yonaris does not promise exhaustive coverage, guaranteed ranking, guaranteed
+              citation, autonomous execution, causal proof, or a commercial result from a single
+              change.
+            </span>
+            <span data-copy="trust-boundary-body" data-lang="zh" lang="zh-CN" hidden>
+              Yonaris 不承诺覆盖所有答案，也不保证排名、引用、自动执行、因果证明或单次变化带来的商业结果。
+            </span>
+          </p>
+        </aside>
+      </section>
+
+      <section id="contact" class="contact" aria-labelledby="contact-title">
+        <header class="section-heading">
+          <h2 id="contact-title">
+            <span data-copy="contact-title" data-lang="en">Curious where Yonaris could fit?</span>
+            <span data-copy="contact-title" data-lang="zh" lang="zh-CN" hidden>
+              想知道 Yonaris 能不能帮上忙？
+            </span>
+          </h2>
+          <p>
+            <span data-copy="contact-body" data-lang="en">
+              You don’t need a brief. Leave a work email and we’ll start with what you’re curious
+              about.
+            </span>
+            <span data-copy="contact-body" data-lang="zh" lang="zh-CN" hidden>
+              不用准备方案，也不用先把问题想完整。留下工作邮箱，我们从你最关心的事情开始。
+            </span>
+          </p>
+        </header>
+
+        <form
+          class="email-composer"
+          action="mailto:hello@yonaris.com"
+          method="post"
+          enctype="text/plain"
+          data-contact-form
+        >
+          <label class="contact-line">
+            <span data-copy="contact-email" data-lang="en">Work email *</span>
+            <span data-copy="contact-email" data-lang="zh" lang="zh-CN" hidden>
+              工作邮箱 *
+            </span>
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              required
+              data-contact-field="email"
+            >
+          </label>
+          <label class="contact-line">
+            <span data-copy="contact-name" data-lang="en">Name</span>
+            <span data-copy="contact-name" data-lang="zh" lang="zh-CN" hidden>怎么称呼你</span>
+            <input type="text" name="name" autocomplete="name" data-contact-field="name">
+          </label>
+          <label class="contact-line">
+            <span data-copy="contact-company" data-lang="en">Company or website</span>
+            <span data-copy="contact-company" data-lang="zh" lang="zh-CN" hidden>
+              公司或官网
+            </span>
+            <input
+              type="text"
+              name="company"
+              autocomplete="organization"
+              data-contact-field="company"
+            >
+          </label>
+          <label class="contact-line contact-message">
+            <span data-copy="contact-curious" data-lang="en">What are you curious about?</span>
+            <span data-copy="contact-curious" data-lang="zh" lang="zh-CN" hidden>
+              你想了解什么？
+            </span>
+            <textarea name="curious" rows="3" data-contact-field="curious"></textarea>
+          </label>
+          <label class="contact-line contact-choice">
+            <input
+              type="checkbox"
+              name="has-market-question"
+              value="yes"
+              data-market-question-toggle
+            >
+            <span data-copy="contact-has-question" data-lang="en">
+              I already have a market question
+            </span>
+            <span data-copy="contact-has-question" data-lang="zh" lang="zh-CN" hidden>
+              我已经有一个市场问题
+            </span>
+          </label>
+
+          <fieldset class="market-question-fields" data-market-question-fields>
+            <legend>
+              <span data-copy="contact-context-title" data-lang="en">Optional question context</span>
+              <span data-copy="contact-context-title" data-lang="zh" lang="zh-CN" hidden>
+                可选的问题背景
+              </span>
+            </legend>
+            <label class="contact-line">
+              <span data-copy="contact-market-question" data-lang="en">Market question</span>
+              <span data-copy="contact-market-question" data-lang="zh" lang="zh-CN" hidden>
+                市场问题
+              </span>
+              <textarea
+                name="market-question"
+                rows="2"
+                data-contact-field="market-question"
+              ></textarea>
+            </label>
+            <label class="contact-line">
+              <span data-copy="contact-market-language" data-lang="en">Market or language</span>
+              <span data-copy="contact-market-language" data-lang="zh" lang="zh-CN" hidden>
+                市场或语言
+              </span>
+              <input
+                type="text"
+                name="market-language"
+                data-contact-field="market-language"
+              >
+            </label>
+            <label class="contact-line">
+              <span data-copy="contact-commercial-context" data-lang="en">
+                Buyer or commercial context
+              </span>
+              <span data-copy="contact-commercial-context" data-lang="zh" lang="zh-CN" hidden>
+                购买决策或商业背景
+              </span>
+              <textarea
+                name="commercial-context"
+                rows="2"
+                data-contact-field="commercial-context"
+              ></textarea>
+            </label>
+          </fieldset>
+
+          <button type="submit" data-contact-compose>
+            <span data-copy="contact-submit" data-lang="en">Start a conversation</span>
+            <span data-copy="contact-submit" data-lang="zh" lang="zh-CN" hidden>
+              开始聊聊
+            </span>
+          </button>
+          <p class="contact-delivery-note" data-contact-status aria-live="polite">
+            <span data-copy="contact-delivery-note" data-lang="en">
+              This opens a draft in your email app. Nothing is sent automatically.
+            </span>
+            <span data-copy="contact-delivery-note" data-lang="zh" lang="zh-CN" hidden>
+              这会在你的邮件应用中打开草稿，不会自动发送。
+            </span>
+          </p>
+        </form>
+      </section>
+
+      <section id="privacy" class="privacy" aria-labelledby="privacy-title">
+        <header class="section-heading">
+          <h2 id="privacy-title">
+            <span data-copy="privacy-title" data-lang="en">
+              Your contact details follow one short route.
+            </span>
+            <span data-copy="privacy-title" data-lang="zh" lang="zh-CN" hidden>
+              我们怎样处理你的咨询信息。
+            </span>
+          </h2>
+          <p>
+            <span data-copy="privacy-body" data-lang="en">
+              We use the details you choose to send to understand and respond to your request. We
+              retain them only as reasonably needed for follow-up and applicable record-keeping
+              duties.
+            </span>
+            <span data-copy="privacy-body" data-lang="zh" lang="zh-CN" hidden>
+              我们使用你选择发送的信息来理解并回复这次咨询，并仅在后续沟通与合理记录所需的时间内保存。
+            </span>
+          </p>
+        </header>
+
+        <div class="privacy-details">
+          <article>
+            <h3>
+              <span data-copy="privacy-submit-title" data-lang="en">What you submit</span>
+              <span data-copy="privacy-submit-title" data-lang="zh" lang="zh-CN" hidden>
+                你提交了什么
+              </span>
+            </h3>
+            <p>
+              <span data-copy="privacy-submit-body" data-lang="en">
+                Work email is required. Name, company or website, what you are curious about, and
+                additional market context are optional.
+              </span>
+              <span data-copy="privacy-submit-body" data-lang="zh" lang="zh-CN" hidden>
+                工作邮箱为必填项。称呼、公司或官网、想了解的事情，以及补充的市场背景均为选填项。
+              </span>
+            </p>
+          </article>
+          <article>
+            <h3>
+              <span data-copy="privacy-delivery-title" data-lang="en">How it is delivered</span>
+              <span data-copy="privacy-delivery-title" data-lang="zh" lang="zh-CN" hidden>
+                信息如何送达
+              </span>
+            </h3>
+            <p>
+              <span data-copy="privacy-delivery-body" data-lang="en">
+                Your email application prepares the request and sends it only when you choose to
+                send the draft to the Yonaris recipient mailbox.
+              </span>
+              <span data-copy="privacy-delivery-body" data-lang="zh" lang="zh-CN" hidden>
+                你的邮件应用负责准备这次请求；只有当你选择发送草稿后，信息才会送达 Yonaris 收件邮箱。
+              </span>
+            </p>
+          </article>
+          <article>
+            <h3>
+              <span data-copy="privacy-use-title" data-lang="en">How it is used</span>
+              <span data-copy="privacy-use-title" data-lang="zh" lang="zh-CN" hidden>
+                信息怎么使用
+              </span>
+            </h3>
+            <p>
+              <span data-copy="privacy-use-body" data-lang="en">
+                Yonaris uses the information to understand the request, reply, and continue the
+                follow-up you asked for. Draft contents are not displayed on public pages.
+              </span>
+              <span data-copy="privacy-use-body" data-lang="zh" lang="zh-CN" hidden>
+                Yonaris 使用这些信息来理解、回复并继续你申请的沟通。草稿内容不会显示在公开页面。
+              </span>
+            </p>
+          </article>
+          <article>
+            <h3>
+              <span data-copy="privacy-retention-title" data-lang="en">Retention and deletion</span>
+              <span data-copy="privacy-retention-title" data-lang="zh" lang="zh-CN" hidden>
+                保存与删除
+              </span>
+            </h3>
+            <p>
+              <span data-copy="privacy-retention-body" data-lang="en">
+                Information is retained only as reasonably needed for follow-up and applicable
+                record-keeping duties. Privacy requests are reviewed manually.
+              </span>
+              <span data-copy="privacy-retention-body" data-lang="zh" lang="zh-CN" hidden>
+                信息仅在后续沟通和合理记录所需的时间内保存；隐私请求由 Yonaris 人工处理。
+              </span>
+            </p>
+          </article>
         </div>
-        <div class="wipe-line" aria-hidden="true"><span>↔</span></div>
-        <label class="sr-only" for="wipe-control" data-i18n="wipeLabel">Move between Human and Agent readings</label><input id="wipe-control" class="wipe-control" type="range" min="8" max="92" value="50" step="1" data-wipe-control>
+
+        <a href="mailto:hello@yonaris.com?subject=Privacy%20request">
+          <span data-copy="privacy-action" data-lang="en">Submit a privacy request</span>
+          <span data-copy="privacy-action" data-lang="zh" lang="zh-CN" hidden>
+            提交隐私请求
+          </span>
+        </a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="#top" aria-label="Yonaris home">
+        <img
+          src="/public/brand/yonaris-wordmark-white.png"
+          alt="Yonaris"
+          width="290"
+          height="64"
+        >
+      </a>
+      <nav aria-label="Footer navigation">
+        <a href="#human-agent">
+          <span data-copy="footer-human-agent" data-lang="en">Human / Agent</span>
+          <span data-copy="footer-human-agent" data-lang="zh" lang="zh-CN" hidden>
+            Human / Agent
+          </span>
+        </a>
+        <a href="#markets">
+          <span data-copy="footer-markets" data-lang="en">Markets &amp; languages</span>
+          <span data-copy="footer-markets" data-lang="zh" lang="zh-CN" hidden>
+            市场与语言
+          </span>
+        </a>
+        <a href="#privacy">
+          <span data-copy="footer-privacy" data-lang="en">Privacy</span>
+          <span data-copy="footer-privacy" data-lang="zh" lang="zh-CN" hidden>
+            隐私说明
+          </span>
+        </a>
+        <a href="#contact">
+          <span data-copy="footer-contact" data-lang="en">Contact</span>
+          <span data-copy="footer-contact" data-lang="zh" lang="zh-CN" hidden>
+            联系 Yonaris
+          </span>
+        </a>
+      </nav>
+      <div class="language-switcher" role="group" aria-label="Language">
+        <button type="button" lang="en" aria-pressed="true" data-language-toggle="en">
+          English
+        </button>
+        <button type="button" lang="zh-CN" aria-pressed="false" data-language-toggle="zh">
+          中文
+        </button>
       </div>
-      <div class="shell wipe-caption"><span>Human</span><p data-i18n="sameMeaning">Same fact, source, scope and boundary.</p><span>Agent</span></div>
-    </section>
-
-    <section class="casework" id="casework">
-      <div class="shell case-heading reveal"><p class="eyebrow eyebrow-light" data-i18n="navCasework">Casework</p><h2 data-i18n="caseTitle">See one full<br>casework</h2><p data-i18n="caseBody">Follow the path from first answer to later review, including what changed and what still cannot be claimed.</p></div>
-      <div class="shell case-stage reveal" data-case-stage data-state="before" tabindex="0" aria-label="Before and after casework comparison" data-i18n-aria="caseStageLabel">
-        <div class="case-switch" role="group" aria-label="Casework state" data-i18n-aria="caseStateLabel"><button type="button" data-case-button="before" aria-pressed="true" data-i18n="before">Before</button><button type="button" data-case-button="after" aria-pressed="false" data-i18n="after">After</button></div>
-        <div class="case-canvas">
-          <div class="case-reason"><span data-i18n="selectionReason">Selection reason</span><h3><b data-i18n="capability">Multi-market capability</b><i aria-hidden="true"></i><em data-case-reason data-i18n="reasonMissing">No inspectable reason</em></h3></div>
-          <div class="case-source"><span data-i18n="publicEvidence">Public evidence</span><i aria-hidden="true"></i><p data-case-source data-i18n="sourceDisconnected">Published capability · relationship missing</p></div>
-          <div class="case-order"><span data-i18n="recommendationOrder">Recommendation order</span><ol><li><b>01</b><span data-i18n="alternativeA">Alternative A</span></li><li><b>02</b><span data-i18n="yourCompany">Your company</span></li></ol><p data-i18n="orderSame">Recommendation order stays the same</p></div>
-        </div>
-        <footer><p data-i18n="caseDisclosure">Representative casework—not a customer performance claim.</p><p data-i18n="boundary">Change observed; cause not established.</p></footer>
-      </div>
-    </section>
-
-    <section class="closing" id="contact">
-      <div class="shell closing-inner reveal"><p class="eyebrow" data-i18n="startHere">Start here</p><h2 data-i18n="ctaTitle">One question<br>is enough</h2><p data-i18n="ctaBody">You do not need a full brief. Bring the question you want to understand, and start there.</p><a href="mailto:hello@yonaris.com"><span>hello@yonaris.com</span><i aria-hidden="true">↗</i></a></div>
-    </section>
-  </main>
-
-  <footer class="site-footer"><div class="shell footer-main"><a href="#top" class="footer-brand"><img src="public/brand/yonaris-wordmark-white.png" width="170" height="39" alt="Yonaris"></a><p data-i18n="brandLine">AI-native MarTech infrastructure</p><nav aria-label="Footer navigation" data-i18n-aria="footerNavLabel"><a href="#product" data-i18n="navProduct">Product</a><a href="#human-agent">Human / Agent</a><a href="#casework" data-i18n="navCasework">Casework</a></nav></div><div class="shell footer-base"><span>© 2026 YONARIS</span><a href="mailto:hello@yonaris.com">hello@yonaris.com</a></div></footer>
-</body>
+      <p>
+        <span data-copy="footer-positioning" data-lang="en">
+          AI-Native MarTech Infrastructure
+        </span>
+        <span data-copy="footer-positioning" data-lang="zh" lang="zh-CN" hidden>
+          AI 原生营销科技基础设施
+        </span>
+      </p>
+    </footer>
+  </body>
 </html>
