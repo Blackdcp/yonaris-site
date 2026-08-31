@@ -25,6 +25,29 @@
     en: "Focus a source to keep its exact note in view. Press Escape to clear it.",
     zh: "聚焦一份来源可固定查看其准确说明；按 Escape 清除固定。",
   };
+  const supportedPairs = Object.freeze([
+    Object.freeze({
+      market: "apac",
+      locale: "en",
+      profile: "apac:en",
+      marketLabel: { en: "APAC", zh: "亚太" },
+      localeLabel: { en: "English", zh: "英语" },
+    }),
+    Object.freeze({
+      market: "china",
+      locale: "zh",
+      profile: "china:zh",
+      marketLabel: { en: "Mainland China", zh: "中国大陆" },
+      localeLabel: { en: "Simplified Chinese", zh: "简体中文" },
+    }),
+    Object.freeze({
+      market: "japan",
+      locale: "ja",
+      profile: "japan:ja",
+      marketLabel: { en: "Japan", zh: "日本" },
+      localeLabel: { en: "Japanese", zh: "日语" },
+    }),
+  ]);
 
   const conditionData = Object.freeze({
     "apac:en": {
@@ -227,17 +250,54 @@
     },
   });
 
+  ensureConditionOptions();
   const savedPreferences = readPreferences();
-  const initialMarket = validControlValue("market", savedPreferences.market) || validControlValue("market", "uk") || "uk";
-  const initialLocale = validControlValue("language", savedPreferences.locale) || validControlValue("language", "en") || "en";
+  const initialPair = normalizePair(savedPreferences.market, savedPreferences.locale);
   const state = {
     language: savedPreferences.language === "zh" ? "zh" : "en",
-    market: initialMarket,
-    locale: initialLocale,
+    market: initialPair.market,
+    locale: initialPair.locale,
     formationState: "question",
     pinnedSource: null,
     menuOpen: false,
   };
+
+  function ensureConditionOptions() {
+    conditionControls.forEach((control) => {
+      let definitions = [];
+      if (control.dataset.condition === "market") {
+        definitions = supportedPairs.map((pair) => ({ value: pair.market, label: pair.marketLabel }));
+      }
+      if (control.dataset.condition === "language") {
+        definitions = supportedPairs.map((pair) => ({ value: pair.locale, label: pair.localeLabel }));
+      }
+      if (!definitions.length) return;
+
+      const options = definitions.map((definition) => {
+        const option = [...control.options].find((item) => item.value === definition.value)
+          || document.createElement("option");
+        option.value = definition.value;
+        option.dataset.labelEn = definition.label.en;
+        option.dataset.labelZh = definition.label.zh;
+        option.textContent = definition.label.en;
+        return option;
+      });
+      control.replaceChildren(...options);
+    });
+  }
+
+  function normalizePair(market, locale, changedCondition = "initial") {
+    if (changedCondition === "market") {
+      return supportedPairs.find((pair) => pair.market === market) || supportedPairs[0];
+    }
+    if (changedCondition === "language") {
+      return supportedPairs.find((pair) => pair.locale === locale) || supportedPairs[0];
+    }
+    return supportedPairs.find((pair) => pair.market === market && pair.locale === locale)
+      || supportedPairs.find((pair) => pair.market === market)
+      || supportedPairs.find((pair) => pair.locale === locale)
+      || supportedPairs[0];
+  }
 
   function readPreferences() {
     try {
@@ -256,17 +316,10 @@
     }
   }
 
-  function validControlValue(condition, candidate) {
-    if (!candidate) return "";
-    const isValid = conditionControls.some((control) => control.dataset.condition === condition
-      && [...control.options].some((option) => option.value === candidate));
-    return isValid ? candidate : "";
-  }
-
   function activeProfileKey() {
-    if (state.market === "japan" || state.locale === "ja") return "japan:ja";
-    if (state.market === "china" && state.locale === "zh") return "china:zh";
-    return "apac:en";
+    const pair = supportedPairs.find((item) => item.market === state.market && item.locale === state.locale);
+    if (!pair || !conditionData[pair.profile]) throw new Error("Unsupported market and locale pair");
+    return pair.profile;
   }
 
   function activeProfile() {
@@ -296,12 +349,16 @@
     return `${selectedLabel("market", state.market, language)} · ${selectedLabel("language", state.locale, language)}`;
   }
 
+  function syncConditionControls() {
+    conditionControls.forEach((control) => {
+      if (control.dataset.condition === "market") control.value = state.market;
+      if (control.dataset.condition === "language") control.value = state.locale;
+    });
+  }
+
   function renderConditions({ announce = true } = {}) {
     const profile = activeProfile();
-    conditionControls.forEach((control) => {
-      if (control.dataset.condition === "market" && validControlValue("market", state.market)) control.value = state.market;
-      if (control.dataset.condition === "language" && validControlValue("language", state.locale)) control.value = state.locale;
-    });
+    syncConditionControls();
 
     sourceFragments.forEach((fragment) => {
       const source = profile.sources[fragment.dataset.source];
@@ -387,11 +444,21 @@
   }
 
   function syncMenu() {
-    header?.classList.toggle("menu-open", state.menuOpen);
-    document.body.classList.toggle("menu-open", state.menuOpen);
-    menuToggle?.setAttribute("aria-expanded", String(state.menuOpen));
-    if (mobileQuery?.matches) mobileNav?.setAttribute("aria-hidden", String(!state.menuOpen));
-    else mobileNav?.removeAttribute("aria-hidden");
+    const isMobile = Boolean(mobileQuery?.matches);
+    const isOpen = isMobile && state.menuOpen;
+    header?.classList.toggle("menu-open", isOpen);
+    document.body.classList.toggle("menu-open", isOpen);
+    menuToggle?.setAttribute("aria-expanded", String(isOpen));
+    if (!mobileNav) return;
+    if (isMobile) {
+      mobileNav.hidden = !isOpen;
+      mobileNav.inert = !isOpen;
+      mobileNav.setAttribute("aria-hidden", String(!isOpen));
+    } else {
+      mobileNav.hidden = false;
+      mobileNav.inert = false;
+      mobileNav.removeAttribute("aria-hidden");
+    }
   }
 
   function openMenu() {
@@ -492,9 +559,19 @@
 
   conditionControls.forEach((control) => {
     control.addEventListener("change", () => {
-      if (control.dataset.condition === "market") state.market = control.value;
-      if (control.dataset.condition === "language") state.locale = control.value;
-      renderConditions();
+      if (control.dataset.condition === "market" || control.dataset.condition === "language") {
+        const pair = normalizePair(
+          control.dataset.condition === "market" ? control.value : state.market,
+          control.dataset.condition === "language" ? control.value : state.locale,
+          control.dataset.condition,
+        );
+        state.market = pair.market;
+        state.locale = pair.locale;
+        syncConditionControls();
+        savePreferences();
+        renderConditions();
+        return;
+      }
       savePreferences();
     });
   });
@@ -550,6 +627,8 @@
 
   syncMarketQuestionFields();
   syncMenu();
+  syncConditionControls();
+  savePreferences();
   applyLanguage(state.language, { persist: false });
   formation?.setAttribute("data-formation-state", state.formationState);
   requestScrollUpdate();
