@@ -1,7 +1,4 @@
-import type { SiteRouteDefinition } from "@/content/site/types";
-import { SITE_MANIFEST } from "./site-manifest";
-
-const siteRoutes: readonly SiteRouteDefinition[] = SITE_MANIFEST;
+import { PUBLIC_PAGE_MANIFEST } from "@/site/public-page-manifest";
 
 export interface SitemapEntry {
 	path: string;
@@ -10,22 +7,11 @@ export interface SitemapEntry {
 }
 
 export function buildSitemapEntries(): readonly SitemapEntry[] {
-	return siteRoutes.flatMap((route) => {
-		const sitemap = route.sitemap;
-		if (route.indexPolicy !== "index,follow" || sitemap === false) return [];
-
-		return (["en", "zh"] as const).flatMap((locale) => {
-			const path = route.canonicals[locale];
-			if (!path) return [];
-			return [
-				{
-					path,
-					priority: sitemap.priority,
-					...(sitemap.lastVerified ? { lastVerified: sitemap.lastVerified } : {}),
-				},
-			];
-		});
-	});
+	return PUBLIC_PAGE_MANIFEST.flatMap((route) => (["global-en", "zh-cn"] as const).map((edition) => ({
+		path: route.paths[edition],
+		priority: route.sitemap.priority,
+		lastVerified: route.sitemap.lastVerified,
+	})));
 }
 
 function normalizeOrigin(origin: string): string {

@@ -90,11 +90,14 @@ describe("Site 1.0 shell", () => {
 		expect(chinesePrimary).toContain('href="/zh/casework" aria-current="page"');
 	});
 
-	it("keeps Human / Agent prominent in the reading control and footer but outside primary navigation", () => {
+	it("keeps Human / Agent in the footer but nowhere in the header", () => {
 		const markup = renderShell("global-en", "product", englishCopy);
+		const header = markup.match(/<header[\s\S]*?<\/header>/)?.[0] ?? "";
 		const primary = markup.match(/<nav[^>]+data-site-v1-primary-navigation[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? "";
 		expect(primary).not.toContain("Human / Agent");
-		expect(markup).toContain('data-site-v1-reading-control="human-agent"');
+		expect(header).not.toContain("Human / Agent");
+		expect(header).not.toContain('href="/human-agent"');
+		expect(markup).not.toContain('data-site-v1-reading-control="human-agent"');
 		expect(markup).toContain('href="/human-agent"');
 		expect(markup).toContain("Human / Agent");
 		expect(markup).toContain("One canonical fact, two readers");

@@ -1,212 +1,65 @@
-import {
-	type CanonicalPageFact,
-	type CanonicalReadingFact,
-	EN_READING_RECORDS,
-	PAGE_FACTS,
-	ZH_READING_RECORDS,
-} from "./canonical-public-facts";
-import { CHINA_COPY } from "./china-copy";
-import { GLOBAL_COPY } from "./global-copy";
-import {
-	type AgentFact,
-	type AgentQuestion,
-	type AgentTopic,
-	type ExperienceLocale,
-	HUMAN_PAGE_KEYS,
-	type HumanPageKey,
-} from "./types";
+import { COMPANY_FACTS } from "@/content/public-site/canonical/company-facts";
+import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
+import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
+import { GLOBAL_EN_CASEWORK_PAGE } from "@/content/public-site/global-en/pages/casework";
+import { GLOBAL_EN_COMPANY_PAGE } from "@/content/public-site/global-en/pages/company";
+import { GLOBAL_EN_CONTACT_PAGE } from "@/content/public-site/global-en/pages/contact";
+import { GLOBAL_EN_HOME_PAGE } from "@/content/public-site/global-en/pages/home";
+import { GLOBAL_EN_HUMAN_AGENT_PAGE } from "@/content/public-site/global-en/pages/human-agent";
+import { GLOBAL_EN_PRIVACY_PAGE } from "@/content/public-site/global-en/pages/privacy";
+import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
+import { ZH_CN_BUYER_QUESTION } from "@/content/public-site/zh-cn/buyer-question";
+import { ZH_CN_CASEWORK_PAGE } from "@/content/public-site/zh-cn/pages/casework";
+import { ZH_CN_COMPANY_PAGE } from "@/content/public-site/zh-cn/pages/company";
+import { ZH_CN_CONTACT_PAGE } from "@/content/public-site/zh-cn/pages/contact";
+import { ZH_CN_HOME_PAGE } from "@/content/public-site/zh-cn/pages/home";
+import { ZH_CN_HUMAN_AGENT_PAGE } from "@/content/public-site/zh-cn/pages/human-agent";
+import { ZH_CN_PRIVACY_PAGE } from "@/content/public-site/zh-cn/pages/privacy";
+import { ZH_CN_PRODUCT_PAGE } from "@/content/public-site/zh-cn/pages/product";
+import { PUBLIC_PAGE_KEYS } from "@/site/public-page-manifest";
+import { getAgentPath, getMarkdownPath, getPublicPagePath } from "@/site/route-selectors";
+import type { PublicPageKey, SiteEdition } from "@/site/route-types";
+import type { AgentFact, AgentQuestion, AgentTopic, ExperienceLocale } from "./types";
 
-type RegionalAgentFacts = Readonly<Record<HumanPageKey, AgentTopic>>;
+const LAST_REVIEWED = "2026-08-30";
+const SOURCE_ID = "yonaris.source.approved-public-site.2026-08-30";
+const pages = {
+	"global-en": { home: GLOBAL_EN_HOME_PAGE, product: GLOBAL_EN_PRODUCT_PAGE, casework: GLOBAL_EN_CASEWORK_PAGE, company: GLOBAL_EN_COMPANY_PAGE, "human-agent": GLOBAL_EN_HUMAN_AGENT_PAGE, contact: GLOBAL_EN_CONTACT_PAGE, privacy: GLOBAL_EN_PRIVACY_PAGE },
+	"zh-cn": { home: ZH_CN_HOME_PAGE, product: ZH_CN_PRODUCT_PAGE, casework: ZH_CN_CASEWORK_PAGE, company: ZH_CN_COMPANY_PAGE, "human-agent": ZH_CN_HUMAN_AGENT_PAGE, contact: ZH_CN_CONTACT_PAGE, privacy: ZH_CN_PRIVACY_PAGE },
+} as const;
+const limitations = {
+	"global-en": ["Records cover only their stated question, market, language, source and review conditions.", "A source supports only the fact and scope it states.", "No record guarantees ranking, indexing, retrieval, citation, recommendation or a commercial result."],
+	"zh-cn": ["记录只覆盖明确写出的客户问题、市场、语言、来源和复核条件。", "一项来源只能支持它明确写出的事实与适用范围。", "任何记录都不保证排名、收录、检索、引用、推荐或商业结果。"],
+} as const;
 
-const LAST_REVIEWED = "2026-08-27";
-
-const EN_LIMITATIONS = [
-	"Observations are bounded by the selected question, market, language, review time and AI surface.",
-	"A public source supports only the fact and conditions it states.",
-	"No record promises ranking, inclusion, retrieval, citation or a commercial outcome.",
-] as const;
-
-const ZH_LIMITATIONS = [
-	"观察结果只覆盖选定的问题、市场、语言、核对时间和 AI 界面。",
-	"一项公开来源只能支持它明确写出的事实与适用条件。",
-	"任何记录都不承诺排名、收录、检索、引用或商业结果。",
-] as const;
-
-function humanPath(locale: ExperienceLocale, key: HumanPageKey): string {
-	if (locale === "en") return key === "home" ? "/" : `/${key}`;
-	return key === "home" ? "/zh" : `/zh/${key}`;
-}
-
-function agentPath(locale: ExperienceLocale, key: HumanPageKey): string {
-	const prefix = locale === "zh" ? "/zh" : "";
-	return key === "home" ? `${prefix}/agent` : `${prefix}/agent/${key}`;
-}
-
-function markdownPath(locale: ExperienceLocale, key: HumanPageKey): string {
-	const prefix = locale === "zh" ? "/zh" : "";
-	return key === "home" ? `${prefix}/agent/index.md` : `${prefix}/agent/${key}.md`;
-}
-
-function fromReadingFact(record: CanonicalReadingFact, path: string): AgentFact {
-	return {
-		id: record.stableId,
-		value: record.fact,
-		evidenceUrl: `${path}#${record.stableId}`,
-		source: record.evidence,
-		boundary: record.boundary,
-		sourceId: record.sourceId,
-		scope: record.scope,
-		lastReviewed: record.lastReviewed,
-	};
-}
-
-function fromPageFact(record: CanonicalPageFact, path: string): AgentFact {
-	return {
-		id: record.id,
-		value: record.value,
-		evidenceUrl: `${path}#${record.id}`,
-		source: record.source,
-		boundary: record.boundary,
-	};
-}
-
-function factsFor(locale: ExperienceLocale, key: HumanPageKey): readonly AgentFact[] {
-	const path = humanPath(locale, key);
-	if (key === "home" || key === "company") {
-		const records = locale === "en" ? EN_READING_RECORDS : ZH_READING_RECORDS;
-		return records.map((record) => fromReadingFact(record, path));
+function localizedFact(edition: SiteEdition, key: PublicPageKey): AgentFact {
+	const zh = edition === "zh-cn";
+	const humanPath = getPublicPagePath(edition, key);
+	if (key === "home" || key === "human-agent") {
+		const fact = PRODUCT_FACTS.category;
+		return { id: fact.id, value: fact.value[edition], evidenceUrl: `${humanPath}#${fact.id}`, source: fact.source.label[edition], sourceId: fact.source.id, scope: fact.scope[edition], lastReviewed: fact.lastReviewed, boundary: fact.boundary[edition] };
 	}
-	const pageFacts = locale === "en" ? PAGE_FACTS.en : PAGE_FACTS.zh;
-	const fact = pageFacts[key as keyof typeof pageFacts];
-	return fact ? [fromPageFact(fact, path)] : [];
+	if (key === "product") {
+		const fact = PRODUCT_FACTS.capability;
+		return { id: fact.id, value: fact.value[edition], evidenceUrl: `${humanPath}#${fact.id}`, source: fact.source.label[edition], sourceId: fact.source.id, scope: fact.scope[edition], lastReviewed: fact.lastReviewed, boundary: fact.boundary[edition] };
+	}
+	if (key === "company") return { id: COMPANY_FACTS.publicName.id, value: COMPANY_FACTS.publicName.value, evidenceUrl: `${humanPath}#${COMPANY_FACTS.publicName.id}`, source: zh ? "Yonaris 已批准的公司公开声明" : COMPANY_FACTS.publicName.source.label, sourceId: COMPANY_FACTS.publicName.source.id, scope: zh ? "Yonaris 的公开公司名称。" : COMPANY_FACTS.publicName.scope, lastReviewed: COMPANY_FACTS.publicName.lastReviewed, boundary: zh ? "名称本身不代表产品能力或结果。" : COMPANY_FACTS.publicName.boundary };
+	if (key === "casework") {
+		const record = zh ? ZH_CN_BUYER_QUESTION : GLOBAL_EN_BUYER_QUESTION;
+		return { id: record.id, value: record.question, evidenceUrl: `${humanPath}#${record.id}`, source: record.disclosure.sourceLabel, sourceId: record.disclosure.sourceId, scope: zh ? "选定渠道与固定观测条件下的代表性案例。" : "A representative case under selected channels and fixed observation conditions.", lastReviewed: LAST_REVIEWED, boundary: record.disclosure.boundary };
+	}
+	const page = pages[edition][key];
+	return { id: `yonaris.${key}.approved-public-statement`, value: page.metadata.description, evidenceUrl: humanPath, source: zh ? "Yonaris 已批准的公开页面" : "Yonaris approved public page", sourceId: SOURCE_ID, scope: zh ? "该页面公开说明的范围。" : "The scope stated on the corresponding public page.", lastReviewed: LAST_REVIEWED, boundary: zh ? "该说明不构成排名、收录、引用或结果保证。" : "This statement does not guarantee ranking, indexing, citation or outcomes." };
 }
 
-const groupTitles = {
-	en: {
-		home: "Category, purpose and scope",
-		product: "Platform scope",
-		approach: "Evidence discipline",
-		geo: "Market context",
-		company: "Category, purpose and scope",
-		diagnostic: "Contact fields",
-		privacy: "Contact request",
-	},
-	zh: {
-		home: "品类、目的与范围",
-		product: "系统范围",
-		approach: "证据纪律",
-		geo: "市场语境",
-		company: "品类、目的与范围",
-		diagnostic: "联系信息",
-		privacy: "咨询信息",
-	},
-} as const;
-
-const topicScope = {
-	en: {
-		home: "Public category, purpose and scope statements for Yonaris.",
-		product: "The public platform statement and the boundary attached to it.",
-		approach: "The public evidence record and the conditions required for a meaningful retest.",
-		geo: "The market, language, category, alternatives and evidence conditions around one decision.",
-		company: "The same public category, purpose and scope records available on the Human page.",
-		diagnostic: "The three visible English contact fields and the purpose of the request.",
-		privacy: "The public purpose and boundary of contact-request data.",
-	},
-	zh: {
-		home: "本主题提供 Yonaris 的公开品类、目的与系统范围说明。",
-		product: "本主题说明中文系统覆盖的业务连接，以及当前公开能力边界。",
-		approach: "本主题说明公开证据记录，以及一次复核成立所需的可比较条件。",
-		geo: "同一道决定旁边保留的市场、语言、品类、替代选择与证据条件。",
-		company: "本主题提供与中文官网一致的品类、目的与系统范围记录。",
-		diagnostic: "本主题说明中文联系表单的三项可见字段，以及这次咨询的用途。",
-		privacy: "本主题说明联系申请信息的公开用途、可见范围与适用边界。",
-	},
-} as const;
-
-const primaryQuestions = {
-	en: {
-		home: "What is Yonaris?",
-		product: "What does the platform make inspectable?",
-		approach: "What remains in a reviewable record?",
-		geo: "What changes across markets?",
-		company: "How does one company remain clear to both readers?",
-		diagnostic: "What does the contact form request?",
-		privacy: "How is contact-request data used?",
-	},
-	zh: {
-		home: "Yonaris 是什么？",
-		product: "系统把哪些环节接在一起？",
-		approach: "一次可复核拆解保留什么？",
-		geo: "跨市场判断要保留哪些条件？",
-		company: "同一事实怎样同时给人和 Agent 阅读？",
-		diagnostic: "预约需要填写什么？",
-		privacy: "咨询信息如何使用？",
-	},
-} as const;
-
-function questionsFor(
-	locale: ExperienceLocale,
-	key: HumanPageKey,
-	facts: readonly AgentFact[],
-): readonly AgentQuestion[] {
-	const primary: AgentQuestion = {
-		id: `${key}.overview`,
-		title: primaryQuestions[locale][key],
-		factIds: facts.map((fact) => fact.id),
-	};
-	if (key !== "home" && key !== "company") return [primary];
-	return [
-		primary,
-		{
-			id: `${key}.purpose`,
-			title: locale === "en" ? "What does Yonaris connect?" : "Yonaris 把哪些业务要素接在一起？",
-			factIds: ["yonaris.purpose.decision-system"],
-		},
-		{
-			id: `${key}.scope`,
-			title: locale === "en" ? "What conditions bound an observation?" : "一次观测受哪些条件约束？",
-			factIds: ["yonaris.scope.martech-system"],
-		},
-	];
+function buildTopic(edition: SiteEdition, key: PublicPageKey): AgentTopic {
+	const locale: ExperienceLocale = edition === "global-en" ? "en" : "zh";
+	const page = pages[edition][key];
+	const fact = localizedFact(edition, key);
+	const question: AgentQuestion = { id: `${key}.overview`, title: edition === "zh-cn" ? "这份记录说明什么？" : "What does this record state?", factIds: [fact.id] };
+	return { id: `${locale}.${key}`, locale, language: edition === "global-en" ? "en" : "zh-CN", title: page.metadata.title, summary: page.metadata.description, humanPath: getPublicPagePath(edition, key), agentPath: getAgentPath(edition, key), markdownPath: getMarkdownPath(edition, key), lastReviewed: LAST_REVIEWED, reviewedBy: "Yonaris", scope: edition === "zh-cn" ? "与对应中文公开页一致的结构化事实记录。" : "A structured fact record aligned with the corresponding public page.", limitations: limitations[edition], questions: [question], groups: [{ id: `yonaris.${key}.facts`, title: edition === "zh-cn" ? "可核对的公开事实" : "Verifiable public facts", facts: [fact] }] };
 }
 
-function buildRegion(locale: ExperienceLocale): RegionalAgentFacts {
-	const copy = locale === "en" ? GLOBAL_COPY : CHINA_COPY;
-	const limitations = locale === "en" ? EN_LIMITATIONS : ZH_LIMITATIONS;
-	return Object.fromEntries(
-		HUMAN_PAGE_KEYS.map((key) => {
-			const path = humanPath(locale, key);
-			const facts = factsFor(locale, key);
-			return [
-				key,
-				{
-					id: `${locale}.${key}`,
-					locale,
-					language: locale === "en" ? "en" : "zh-CN",
-					title: copy[key].title,
-					summary: copy[key].lead,
-					humanPath: path,
-					agentPath: agentPath(locale, key),
-					markdownPath: markdownPath(locale, key),
-					lastReviewed: LAST_REVIEWED,
-					reviewedBy: "Yonaris",
-					scope: topicScope[locale][key],
-					limitations,
-					questions: questionsFor(locale, key, facts),
-					groups: [
-						{
-							id: `yonaris.${key}.facts`,
-							title: groupTitles[locale][key],
-							facts,
-						},
-					],
-				} satisfies AgentTopic,
-			] as const;
-		}),
-	) as unknown as RegionalAgentFacts;
-}
-
-export const AGENT_FACTS = {
-	global: buildRegion("en"),
-	zh: buildRegion("zh"),
-} as const satisfies Readonly<Record<"global" | "zh", RegionalAgentFacts>>;
+type Region = Readonly<Record<PublicPageKey, AgentTopic>>;
+function buildRegion(edition: SiteEdition): Region { return Object.fromEntries(PUBLIC_PAGE_KEYS.map((key) => [key, buildTopic(edition, key)])) as Region; }
+export const AGENT_FACTS = { global: buildRegion("global-en"), zh: buildRegion("zh-cn") } as const;

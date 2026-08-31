@@ -8,6 +8,32 @@ export const WORKSPACE_VIEW_IDS = [
 
 export type WorkspaceViewId = (typeof WORKSPACE_VIEW_IDS)[number];
 
+export const WORKSPACE_OBJECT_KINDS = [
+	"question",
+	"answers",
+	"reasons",
+	"evidence",
+	"gap",
+	"action",
+	"review",
+	"conditions",
+] as const;
+
+export type WorkspaceObjectKind = (typeof WORKSPACE_OBJECT_KINDS)[number];
+export type WorkspaceObjectEmphasis = "primary" | "supporting" | "ambient";
+
+const EMPHASIS_BY_VIEW: Record<WorkspaceViewId, Readonly<Partial<Record<WorkspaceObjectKind, Exclude<WorkspaceObjectEmphasis, "ambient">>>>> = {
+	"buyer-questions": { question: "primary", conditions: "supporting", answers: "supporting" },
+	"current-answers": { answers: "primary", reasons: "supporting", question: "supporting" },
+	"sources-gaps": { evidence: "primary", reasons: "supporting", gap: "supporting" },
+	"actions-under-review": { action: "primary", gap: "supporting", evidence: "supporting" },
+	"outcome-review": { review: "primary", action: "supporting", conditions: "supporting" },
+};
+
+export function getWorkspaceObjectEmphasis(view: WorkspaceViewId, object: WorkspaceObjectKind): WorkspaceObjectEmphasis {
+	return EMPHASIS_BY_VIEW[view][object] ?? "ambient";
+}
+
 export interface WorkspaceState {
 	readonly activeView: WorkspaceViewId;
 }

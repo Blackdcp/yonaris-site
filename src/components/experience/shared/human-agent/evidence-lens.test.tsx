@@ -28,6 +28,19 @@ function lens() {
 	);
 }
 
+function signatureLens() {
+	return (
+		<EvidenceLens
+			copy={GLOBAL_EN_HUMAN_AGENT_PAGE}
+			edition="global-en"
+			fact={fact}
+			ringLabels={GLOBAL_EN_HOME_PAGE.humanAgent.layers}
+			agentHref={agentHref}
+			presentation="signature"
+		/>
+	);
+}
+
 function staticDocument() {
 	return new DOMParser().parseFromString(renderToStaticMarkup(lens()), "text/html");
 }
@@ -99,6 +112,16 @@ afterEach(async () => {
 });
 
 describe("Human / Agent evidence lens", () => {
+	it("offers a compact Home presentation without changing the full default contract", () => {
+		const full = staticDocument();
+		const signature = new DOMParser().parseFromString(renderToStaticMarkup(signatureLens()), "text/html");
+		expect(full.querySelector("[data-human-agent-lens]")?.getAttribute("data-presentation")).toBe("full");
+		expect(signature.querySelector("[data-human-agent-lens]")?.getAttribute("data-presentation")).toBe("signature");
+		expect(signature.querySelectorAll("[data-lens-ring-control]")).toHaveLength(3);
+		expect(signature.querySelectorAll("[data-human-agent-projection]")).toHaveLength(3);
+		expect(signature.querySelector("[data-lens-optics] svg path[d]")).not.toBeNull();
+	});
+
 	it("renders three directly operable spatial rings and every projection in SSR", () => {
 		const document = staticDocument();
 		const controls = [...document.querySelectorAll<HTMLButtonElement>("[data-lens-ring-control]")];

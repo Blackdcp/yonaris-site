@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type { HumanPageKey } from "@/content/experience/types";
+import type { PublicPageKey } from "@/site/route-types";
 import { agentDocumentLinks, agentMarkdownPath, renderCoreMarkdown } from "@/lib/machine-documents";
 import { machineDocumentResponse } from "@/lib/machine-response";
 
-const pageKeys = new Map<string, HumanPageKey>([
+const pageKeys = new Map<string, PublicPageKey>([
 	["index", "home"],
 	["product", "product"],
-	["approach", "approach"],
-	["geo", "geo"],
+	["casework", "casework"],
 	["company", "company"],
-	["diagnostic", "diagnostic"],
+	["human-agent", "human-agent"],
+	["contact", "contact"],
 	["privacy", "privacy"],
 ]);
 

@@ -88,9 +88,11 @@ describe("mounted progressive header", () => {
 		}));
 		expect(ssr).toContain("data-site-v1-primary-navigation");
 		expect(utilityLinks).toEqual([
-			{ href: "/human-agent", label: "Human / Agent" },
 			{ href: "/zh/product", label: "中文" },
 		]);
+		const primaryLabels = [...ssrHost.querySelectorAll<HTMLAnchorElement>("[data-site-v1-primary-navigation] a")].map((link) => link.textContent);
+		expect(primaryLabels).toEqual(["Product", "Casework", "Company", "Talk to Yonaris"]);
+		expect(ssrHost.querySelector(".site-v1-header a[href='/human-agent']")).toBeNull();
 		expect(ssr).not.toContain("data-site-v1-enhanced");
 		expect(header().getAttribute("data-site-v1-enhanced")).toBe("true");
 	});

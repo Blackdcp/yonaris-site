@@ -1,14 +1,15 @@
-import { type ExperienceLocale, HUMAN_PAGE_KEYS, type HumanPageKey } from "@/content/experience/types";
+import type { ExperienceLocale } from "@/content/experience/types";
+import { PUBLIC_PAGE_KEYS } from "@/site/public-page-manifest";
+import type { PublicPageKey } from "@/site/route-types";
+import { getAgentPath, getPublicPagePath } from "@/site/route-selectors";
 import { agentCatalogPath, getAgentTopic } from "@/lib/machine-documents";
 import "@/styles/experience/agent.css";
-import { HumanAgentLink } from "../shared/human-agent-link";
-import { LocaleSwitchLink } from "../shared/locale-switch-link";
 import { OrbitField } from "../shared/orbit-field";
 import { AgentDirectory, AgentReadingPreview } from "./agent-directory";
 
 export { commitAgentFactNavigation, resolveAgentDirectorySelection } from "./agent-directory";
 
-function agentPath(locale: ExperienceLocale, pageKey: HumanPageKey): string {
+function agentPath(locale: ExperienceLocale, pageKey: PublicPageKey): string {
 	return getAgentTopic(locale, pageKey).agentPath;
 }
 
@@ -33,11 +34,11 @@ const interfaceCopy = {
 		innerOrbitLabel: "Stable fact geometry",
 		pageLabels: {
 			home: "Overview",
-			product: "Platform",
-			approach: "Evidence",
-			geo: "Across markets",
-			company: "Human + Agent",
-			diagnostic: "Contact",
+			product: "Product",
+			casework: "Casework",
+			company: "Company",
+			"human-agent": "Human / Agent",
+			contact: "Contact",
 			privacy: "Privacy",
 		},
 	},
@@ -61,11 +62,11 @@ const interfaceCopy = {
 		innerOrbitLabel: "稳定事实关系",
 		pageLabels: {
 			home: "概览",
-			product: "系统",
-			approach: "证据",
-			geo: "跨市场",
-			company: "人类与 Agent",
-			diagnostic: "联系",
+			product: "产品",
+			casework: "案例过程",
+			company: "公司",
+			"human-agent": "Human / Agent",
+			contact: "联系",
 			privacy: "隐私",
 		},
 	},
@@ -84,10 +85,11 @@ function HumanReturn({ locale, href, label }: { locale: ExperienceLocale; href: 
 	);
 }
 
-export function AgentPage({ locale, pageKey }: { locale: ExperienceLocale; pageKey: HumanPageKey }) {
+export function AgentPage({ locale, pageKey }: { locale: ExperienceLocale; pageKey: PublicPageKey }) {
 	const topic = getAgentTopic(locale, pageKey);
 	const copy = interfaceCopy[locale];
-	const homePath = locale === "en" ? "/" : "/zh";
+	const edition = locale === "en" ? "global-en" : "zh-cn";
+	const homePath = getPublicPagePath(edition, "home");
 	const firstFact = topic.groups[0]?.facts[0];
 
 	return (
@@ -110,20 +112,13 @@ export function AgentPage({ locale, pageKey }: { locale: ExperienceLocale; pageK
 					<code>{copy.format}</code>
 				</div>
 				<div className="agent-experience__actions">
-					<HumanAgentLink locale={locale} pageKey={pageKey} mode="agent" className="agent-experience__mode-desktop" />
-					<HumanAgentLink
-						locale={locale}
-						pageKey={pageKey}
-						mode="agent"
-						className="agent-experience__mode-mobile"
-						compact
-					/>
-					<LocaleSwitchLink locale={locale} pageKey={pageKey} surface="agent" />
+					<a href={getPublicPagePath(edition, pageKey)}>{copy.returnHuman}</a>
+					<a href={getAgentPath(locale === "en" ? "zh-cn" : "global-en", pageKey)} hrefLang={locale === "en" ? "zh-CN" : "en"}>{locale === "en" ? "中文" : "English"}</a>
 				</div>
 			</header>
 
 			<nav className="agent-experience__topics" aria-label={copy.topics}>
-				{HUMAN_PAGE_KEYS.map((key) => (
+				{PUBLIC_PAGE_KEYS.map((key) => (
 					<a key={key} href={agentPath(locale, key)} aria-current={key === pageKey ? "page" : undefined}>
 						{copy.pageLabels[key]}
 					</a>

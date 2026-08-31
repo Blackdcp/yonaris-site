@@ -25,7 +25,7 @@
 
 .site-v1-header__inner {
 	display: grid;
-	grid-template-columns: minmax(8rem, 0.5fr) minmax(0, 1.5fr) auto auto;
+	grid-template-columns: minmax(8rem, 0.5fr) minmax(0, 1.5fr) auto;
 	align-items: center;
 	gap: var(--site-v1-space-3);
 	width: min(100% - 2 * var(--site-v1-space-4), var(--site-v1-content-max));
@@ -190,7 +190,7 @@
 		padding-bottom: var(--site-v1-space-2);
 	}
 
-	.site-v1-header__utilities {
+.site-v1-header__utilities {
 		justify-self: end;
 	}
 

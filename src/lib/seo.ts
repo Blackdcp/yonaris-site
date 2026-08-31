@@ -1,5 +1,6 @@
 import { EN_CATEGORY } from "@/content/experience/canonical-public-facts";
-import type { ExperienceLocale, HumanPageKey } from "@/content/experience/types";
+import type { ExperienceLocale } from "@/content/experience/types";
+import type { PublicPageKey } from "@/site/route-types";
 import { agentCatalogPath, agentMarkdownPath, buildAgentEntityGraph, getAgentTopic } from "./machine-documents";
 import { getMarketingOgImage } from "./og";
 import { canonicalUrl, SITE_URL, siteHref } from "./site-origin";
@@ -63,7 +64,7 @@ export function organizationJsonLd() {
 
 export function publicEntityGraph(options: {
 	locale: ExperienceLocale;
-	pageKey: HumanPageKey;
+	pageKey: PublicPageKey;
 	publicMetadata?: PageMetadata;
 	canonicalPath?: string;
 	factIds?: readonly string[];
@@ -105,7 +106,7 @@ export function publicFactDiscoveryLinks(locale: ExperienceLocale, factId: strin
 	] as const;
 }
 
-export function machineDiscoveryLinks(locale: ExperienceLocale, pageKey: HumanPageKey) {
+export function machineDiscoveryLinks(locale: ExperienceLocale, pageKey: PublicPageKey) {
 	return [
 		{ rel: "alternate", type: "text/markdown", href: siteHref(agentMarkdownPath(locale, pageKey)) },
 		{ rel: "alternate", type: "application/ld+json", href: siteHref(agentCatalogPath(locale)) },
@@ -113,7 +114,7 @@ export function machineDiscoveryLinks(locale: ExperienceLocale, pageKey: HumanPa
 	] as const;
 }
 
-export function agentPageHead(locale: ExperienceLocale, pageKey: HumanPageKey) {
+export function agentPageHead(locale: ExperienceLocale, pageKey: PublicPageKey) {
 	const topic = getAgentTopic(locale, pageKey);
 	return {
 		meta: [{ title: topic.title }, { name: "robots", content: "noindex,follow" }],

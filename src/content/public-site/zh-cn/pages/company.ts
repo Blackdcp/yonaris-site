@@ -3,7 +3,30 @@ import type { CompanyPageCopy } from "../../contracts/pages/company";
 export const ZH_CN_COMPANY_PAGE = {
 	edition: "zh-cn",
 	page: "company",
-	siteV1: null,
+	siteV1: {
+		aperture: {
+			ariaLabel: "Yonaris 五项工作原则",
+			instruction: "选择一项原则，看看它如何改变判断口径，以及需要附带什么证据和边界。",
+			evidenceLabel: "对应的公开依据",
+			boundaryLabel: "不能越过的边界",
+			principles: [
+				{ id: "why", label: "为什么要做 Yonaris" },
+				{ id: "audience", label: "谁最需要它" },
+				{ id: "markets", label: "面对不同市场" },
+				{ id: "human-judgement", label: "哪些必须由人判断" },
+				{ id: "non-promises", label: "我们明确不承诺什么" },
+			],
+		},
+		verifiedFacts: {
+			heading: "可核对的公开事实",
+			labels: ["产品品类", "公开名称", "官方网站", "联系入口", "隐私说明"],
+			sourceLabel: "来源",
+			scopeLabel: "适用范围",
+			reviewedLabel: "最近复核",
+			boundaryLabel: "边界",
+		},
+		closingLabel: "继续了解 Yonaris",
+	},
 	metadata: {
 		title: "关于 Yonaris",
 		description: "了解 Yonaris 为何构建 AI 原生营销科技基础设施，帮助团队应对由人作出、同时受 Agent 影响的市场决策。",

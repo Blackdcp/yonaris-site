@@ -34,49 +34,49 @@ function percentage(value: number) {
 	return `${Math.round(value * 10000) / 100}%`;
 }
 
-function publicFactAttachments(): Readonly<Record<CompanyPrincipleKey, PublicFactAttachment>> {
+function publicFactAttachments(edition: "global-en" | "zh-cn"): Readonly<Record<CompanyPrincipleKey, PublicFactAttachment>> {
 	const category = PRODUCT_FACTS.category;
 	const capability = PRODUCT_FACTS.capability;
 	return {
 		why: {
 			id: category.id,
-			value: category.value["global-en"],
-			source: category.source.label["global-en"],
-			scope: category.scope["global-en"],
+			value: category.value[edition],
+			source: category.source.label[edition],
+			scope: category.scope[edition],
 			reviewed: category.lastReviewed,
-			boundary: category.boundary["global-en"],
+			boundary: category.boundary[edition],
 		},
 		audience: {
 			id: capability.id,
-			value: capability.value["global-en"],
-			source: capability.source.label["global-en"],
-			scope: capability.scope["global-en"],
+			value: capability.value[edition],
+			source: capability.source.label[edition],
+			scope: capability.scope[edition],
 			reviewed: capability.lastReviewed,
-			boundary: capability.boundary["global-en"],
+			boundary: capability.boundary[edition],
 		},
 		markets: {
 			id: category.id,
-			value: category.value["global-en"],
-			source: category.source.label["global-en"],
-			scope: category.scope["global-en"],
+			value: category.value[edition],
+			source: category.source.label[edition],
+			scope: category.scope[edition],
 			reviewed: category.lastReviewed,
-			boundary: category.boundary["global-en"],
+			boundary: category.boundary[edition],
 		},
 		"human-judgement": {
 			id: capability.id,
-			value: capability.value["global-en"],
-			source: capability.source.label["global-en"],
-			scope: capability.scope["global-en"],
+			value: capability.value[edition],
+			source: capability.source.label[edition],
+			scope: capability.scope[edition],
 			reviewed: capability.lastReviewed,
-			boundary: capability.boundary["global-en"],
+			boundary: capability.boundary[edition],
 		},
 		"non-promises": {
 			id: category.id,
-			value: category.value["global-en"],
-			source: category.source.label["global-en"],
-			scope: category.scope["global-en"],
+			value: category.value[edition],
+			source: category.source.label[edition],
+			scope: category.scope[edition],
 			reviewed: category.lastReviewed,
-			boundary: category.boundary["global-en"],
+			boundary: category.boundary[edition],
 		},
 	};
 }
@@ -99,10 +99,12 @@ function destination(index: number, key: string) {
 	return undefined;
 }
 
-export function CompanyAperture({ copy, labels, asset }: {
+export function CompanyAperture({ copy, labels, asset, edition = "global-en", imageAlt = asset.alt }: {
 	readonly copy: CompanyPageCopy;
 	readonly labels: CompanySiteV1Copy;
 	readonly asset: SiteV1Asset;
+	readonly edition?: "global-en" | "zh-cn";
+	readonly imageAlt?: string;
 }) {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const [enhanced, setEnhanced] = useState(false);
@@ -110,7 +112,7 @@ export function CompanyAperture({ copy, labels, asset }: {
 	const motionPreference = useMotionPreference();
 	const sources = pictureSources(asset);
 	const bodies = principleBodies(copy);
-	const attachments = publicFactAttachments();
+	const attachments = publicFactAttachments(edition);
 	const geometry = APERTURE_GEOMETRY[activeIndex] ?? APERTURE_GEOMETRY[0];
 
 	useEffect(() => setEnhanced(true), []);
@@ -153,7 +155,7 @@ export function CompanyAperture({ copy, labels, asset }: {
 				<picture>
 					<source type="image/avif" srcSet={sources.avif} sizes="100vw" />
 					<source type="image/webp" srcSet={sources.webp} sizes="100vw" />
-					<img src={asset.master.src} alt={asset.alt} width={asset.master.width} height={asset.master.height} fetchPriority="high" />
+					<img src={asset.master.src} alt={imageAlt} width={asset.master.width} height={asset.master.height} fetchPriority="high" />
 				</picture>
 			</div>
 			<div className="site-v1-company-aperture__wash" aria-hidden="true" />

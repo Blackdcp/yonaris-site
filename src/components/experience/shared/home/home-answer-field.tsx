@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { HomePageCopy, HomeSiteV1Copy } from "@/content/public-site/contracts/pages/home";
 import { useBuyerQuestionRecord } from "../buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../buyer-question/representative-disclosure";
 import { SceneOrchestrator } from "../motion/scene-orchestrator";
+import { useActiveControlRail } from "../use-active-control-rail";
 import { useRovingTabs } from "../use-roving-tabs";
-import { AnswerEnvironment } from "./answer-environment";
+import { CausalAnswerScene } from "./causal-answer-scene";
 
 type HeroEventCopy = HomePageCopy["heroEvent"];
 
@@ -20,24 +21,29 @@ export function HomeAnswerField({ copy, disclosure, motionLabels }: HomeAnswerFi
 	const record = useBuyerQuestionRecord();
 	const channelIds = record.channelAnswers.map((answer) => answer.id);
 	const [activeId, setActiveId] = useState(channelIds[0] ?? "");
+	const [activeReasonId, setActiveReasonId] = useState(record.channelAnswers[0]?.reasonIds[0] ?? "");
 	const [traceOpen, setTraceOpen] = useState(false);
+	const [enhanced, setEnhanced] = useState(false);
+	useEffect(() => setEnhanced(true), []);
 	const activeAnswer = record.channelAnswers.find((answer) => answer.id === activeId) ?? record.channelAnswers[0];
 	if (!activeAnswer) return null;
-	const activeReasons = activeAnswer.reasonIds
-		.map((reasonId) => record.comparisonReasons.find((reason) => reason.id === reasonId))
-		.filter((reason) => reason !== undefined);
-	const activeEvidence = record.evidence.filter((item) => activeAnswer.evidenceIds.includes(item.id));
+	const changeAnswer = (next: string) => {
+		setActiveId(next);
+		setActiveReasonId(record.channelAnswers.find((answer) => answer.id === next)?.reasonIds[0] ?? "");
+		setTraceOpen(false);
+	};
 	const tabs = useRovingTabs({
 		items: channelIds,
 		active: activeId,
-		onChange: (next) => {
-			setActiveId(next);
-			setTraceOpen(false);
-		},
+		onChange: changeAnswer,
 		idPrefix: "home-answer-environment",
 	});
-	const traceLabel = copy.inspectionLabels[2] ?? "";
-	const sourceLabel = copy.inspectionLabels[3] ?? "";
+	const rail = useActiveControlRail({ items: channelIds, active: activeId });
+	const activeIndex = channelIds.indexOf(activeId);
+	const previousId = activeIndex > 0 ? channelIds[activeIndex - 1] : undefined;
+	const nextId = activeIndex < channelIds.length - 1 ? channelIds[activeIndex + 1] : undefined;
+	const previousLabel = record.channelAnswers.find((answer) => answer.id === previousId)?.environment ?? activeAnswer.environment;
+	const nextLabel = record.channelAnswers.find((answer) => answer.id === nextId)?.environment ?? activeAnswer.environment;
 
 	return (
 		<SceneOrchestrator ariaLabel={copy.question} pauseLabel={motionLabels.pauseScene} resumeLabel={motionLabels.resumeScene} controlPlacement="flow">
@@ -46,6 +52,7 @@ export function HomeAnswerField({ copy, disclosure, motionLabels }: HomeAnswerFi
 				data-home-answer-field="true"
 				data-record-id={record.id}
 				data-v1-state={activeAnswer.id}
+				data-enhanced={enhanced ? "true" : undefined}
 				data-representative-record="answer-field"
 			>
 				<div className="site-v1-answer-field__atmosphere" aria-hidden="true"><i /><i /><i /></div>
@@ -53,42 +60,29 @@ export function HomeAnswerField({ copy, disclosure, motionLabels }: HomeAnswerFi
 					<span>{record.market}</span>
 					<h2>{copy.question}</h2>
 				</header>
-				<div className="site-v1-answer-field__channel-tabs" role="tablist" aria-label={copy.question} aria-orientation="horizontal">
+				<div ref={rail.railRef} className="site-v1-answer-field__channel-tabs" role="tablist" aria-label={copy.question} aria-orientation="horizontal">
 					{record.channelAnswers.map((answer, index) => (
-						<button key={answer.id} type="button" aria-label={answer.environment} {...tabs.getTabProps(answer.id, index)}>
+						<button ref={rail.getControlRef(answer.id)} key={answer.id} type="button" aria-label={answer.environment} {...tabs.getTabProps(answer.id, index)}>
 							<span>{String(index + 1).padStart(2, "0")}</span>{answer.environment}
 						</button>
 					))}
 				</div>
-				<div className="site-v1-answer-field__environments" aria-live="polite">
-					{record.channelAnswers.map((answer, index) => (
-						<AnswerEnvironment key={answer.id} answer={answer} active={answer.id === activeId} position={index} panelProps={tabs.getPanelProps(answer.id)} />
-					))}
+				<div className="site-v1-answer-field__rail-status" aria-live="polite">
+					<button type="button" disabled={!previousId} aria-label={previousLabel} onClick={() => previousId && changeAnswer(previousId)}>{"<"}</button>
+					<output data-channel-progress>{rail.position} / {rail.total}</output>
+					<button type="button" disabled={!nextId} aria-label={nextLabel} data-channel-continuation onClick={() => nextId && changeAnswer(nextId)}>{">"}</button>
 				</div>
-				<div className="site-v1-answer-field__reasons">
-					{activeReasons.map((reason) => (
-						<article key={reason.id} data-comparison-reason={reason.id} data-active="true">
-							<span>{reason.disposition === "included" ? copy.inspectionLabels[0] : copy.inspectionLabels[1]}</span>
-							<h3>{reason.subject}</h3>
-							<p>{reason.reason}</p>
-						</article>
-					))}
-				</div>
-				<div className="site-v1-answer-field__trace-control">
-					<button type="button" aria-expanded={traceOpen} aria-controls="home-evidence-trace" onClick={() => setTraceOpen((open) => !open)}>
-						{traceLabel}
-					</button>
-					<div id="home-evidence-trace" className="site-v1-answer-field__trace" data-evidence-trace hidden={!traceOpen}>
-						{activeEvidence.map((evidence) => (
-							<article key={evidence.id} data-evidence-id={evidence.id}>
-								<span>{sourceLabel}</span>
-								<h3>{evidence.sourceLabel}</h3>
-								<p>{evidence.trace}</p>
-								<small>{evidence.boundary}</small>
-							</article>
-						))}
-					</div>
-				</div>
+				<CausalAnswerScene
+					record={record}
+					activeAnswerId={activeId}
+					activeReasonId={activeReasonId}
+					enhanced={enhanced}
+					traceOpen={traceOpen}
+					inspectionLabels={copy.inspectionLabels}
+					getPanelProps={tabs.getPanelProps}
+					onReasonSelect={setActiveReasonId}
+					onTraceToggle={() => setTraceOpen((open) => !open)}
+				/>
 				<p className="site-v1-answer-field__resolution">{copy.resolvingStatement}</p>
 				<RepresentativeDisclosure>{disclosure}</RepresentativeDisclosure>
 			</section>

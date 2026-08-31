@@ -3,6 +3,6 @@ import { AgentPage } from "@/components/experience/agent/agent-pages";
 import { agentPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/agent/diagnostic")({
-	head: () => agentPageHead("en", "diagnostic"),
-	component: () => <AgentPage locale="en" pageKey="diagnostic" />,
+	head: () => agentPageHead("en", "contact"),
+	component: () => <AgentPage locale="en" pageKey="contact" />,
 });

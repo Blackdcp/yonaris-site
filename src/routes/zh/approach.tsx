@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChinaApproachPage } from "@/components/experience/china/china-pages";
-import { zhPageHead } from "@/editions/zh-cn/edition";
+import { permanentRedirectHandlers } from "@/lib/permanent-redirect";
+import { getRedirect } from "@/lib/site-manifest";
 
-export const Route = createFileRoute("/zh/approach")({
-	head: () => zhPageHead("approach"),
-	component: ChinaApproachPage,
-});
+const redirect = getRedirect("/zh/approach");
+if (!redirect) throw new Error("Missing manifest redirect for /zh/approach");
+
+export const Route = createFileRoute("/zh/approach")({ server: { handlers: permanentRedirectHandlers(redirect.to) } });

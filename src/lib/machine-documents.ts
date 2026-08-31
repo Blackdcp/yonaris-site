@@ -1,20 +1,21 @@
 import { AGENT_FACTS } from "@/content/experience/agent-facts";
 import { EN_CATEGORY, ZH_CATEGORY } from "@/content/experience/canonical-public-facts";
-import { type AgentTopic, type ExperienceLocale, HUMAN_PAGE_KEYS, type HumanPageKey } from "@/content/experience/types";
-import type { AgentPageKey } from "@/content/site/types";
+import { type AgentTopic, type ExperienceLocale } from "@/content/experience/types";
+import { PUBLIC_PAGE_KEYS } from "@/site/public-page-manifest";
+import type { PublicPageKey } from "@/site/route-types";
+import { getMarkdownPath } from "@/site/route-selectors";
 import type { MachineLinkSet } from "./machine-response";
 import { siteHref } from "./site-origin";
 
-export function agentMarkdownPath(locale: ExperienceLocale, key: HumanPageKey): string {
-	const localePrefix = locale === "zh" ? "/zh" : "";
-	return key === "home" ? `${localePrefix}/agent/index.md` : `${localePrefix}/agent/${key}.md`;
+export function agentMarkdownPath(locale: ExperienceLocale, key: PublicPageKey): string {
+	return getMarkdownPath(locale === "en" ? "global-en" : "zh-cn", key);
 }
 
 export function agentCatalogPath(locale: ExperienceLocale): "/agent/catalog.json" | "/zh/agent/catalog.json" {
 	return locale === "en" ? "/agent/catalog.json" : "/zh/agent/catalog.json";
 }
 
-export function agentDocumentLinks(locale: ExperienceLocale, key: HumanPageKey): MachineLinkSet {
+export function agentDocumentLinks(locale: ExperienceLocale, key: PublicPageKey): MachineLinkSet {
 	const topic = getAgentTopic(locale, key);
 	const peerLocale = locale === "en" ? "zh" : "en";
 	return [
@@ -46,7 +47,7 @@ export function agentCatalogLinks(locale: ExperienceLocale): MachineLinkSet {
 	];
 }
 
-export function getAgentTopic(locale: ExperienceLocale, key: HumanPageKey): AgentTopic {
+export function getAgentTopic(locale: ExperienceLocale, key: PublicPageKey): AgentTopic {
 	return locale === "en" ? AGENT_FACTS.global[key] : AGENT_FACTS.zh[key];
 }
 
@@ -134,7 +135,7 @@ function renderMetadata(topic: AgentTopic): string {
 	].join("\n");
 }
 
-export function renderCoreMarkdown(key: HumanPageKey, locale: ExperienceLocale): string {
+export function renderCoreMarkdown(key: PublicPageKey, locale: ExperienceLocale): string {
 	const topic = getAgentTopic(locale, key);
 	const labels = documentLabels[locale];
 	const limitations = topic.limitations.map((limitation) => `- ${limitation}`).join("\n");
@@ -168,16 +169,16 @@ ${related}
 `;
 }
 
-export function renderAgentDocument(key: AgentPageKey): string {
+export function renderAgentDocument(key: PublicPageKey): string {
 	return renderCoreMarkdown(key, "en");
 }
 
-export function renderZhAgentDocument(key: AgentPageKey): string {
+export function renderZhAgentDocument(key: PublicPageKey): string {
 	return renderCoreMarkdown(key, "zh");
 }
 
 function topicDirectory(locale: ExperienceLocale, linkTo: "agent" | "markdown"): string {
-	return HUMAN_PAGE_KEYS.map((key) => {
+	return PUBLIC_PAGE_KEYS.map((key) => {
 		const topic = getAgentTopic(locale, key);
 		const path = linkTo === "agent" ? topic.agentPath : topic.markdownPath;
 		return `- [${topic.title}](${siteHref(path)}): ${topic.summary}`;
@@ -240,12 +241,12 @@ ${topicDirectory("zh", "markdown")}
 export function renderLlmsFull(): string {
 	return `# Yonaris — public facts
 
-${HUMAN_PAGE_KEYS.flatMap((key) => (["en", "zh"] as const).map((locale) => renderCoreMarkdown(key, locale))).join("\n\n---\n\n")}`;
+${PUBLIC_PAGE_KEYS.flatMap((key) => (["en", "zh"] as const).map((locale) => renderCoreMarkdown(key, locale))).join("\n\n---\n\n")}`;
 }
 
 type HrefBuilder = (path: string) => string;
 type PublicPageMetadata = { readonly title: string; readonly description: string };
-type PublicPageMetadataByKey = Readonly<Partial<Record<HumanPageKey, PublicPageMetadata>>>;
+type PublicPageMetadataByKey = Readonly<Partial<Record<PublicPageKey, PublicPageMetadata>>>;
 
 function organizationNode(locale: ExperienceLocale, href: HrefBuilder) {
 	return {
@@ -326,7 +327,7 @@ function topicNodes(topic: AgentTopic, href: HrefBuilder, publicMetadata?: Publi
 
 export function buildAgentEntityGraph(
 	locale: ExperienceLocale,
-	pageKeys: readonly HumanPageKey[],
+	pageKeys: readonly PublicPageKey[],
 	href: HrefBuilder = siteHref,
 	publicMetadataByKey?: PublicPageMetadataByKey,
 ) {
@@ -340,6 +341,6 @@ export function buildAgentEntityGraph(
 export function renderAgentCatalog(locale: ExperienceLocale): string {
 	return JSON.stringify({
 		"@context": "https://schema.org",
-		"@graph": buildAgentEntityGraph(locale, HUMAN_PAGE_KEYS),
+		"@graph": buildAgentEntityGraph(locale, PUBLIC_PAGE_KEYS),
 	});
 }

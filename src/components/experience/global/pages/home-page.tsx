@@ -3,12 +3,14 @@ import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
 import { getSiteV1Asset } from "@/content/public-site/assets";
 import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
 import { GLOBAL_EN_HOME_PAGE } from "@/content/public-site/global-en/pages/home";
+import { GLOBAL_EN_HUMAN_AGENT_PAGE } from "@/content/public-site/global-en/pages/human-agent";
 import { resolveNavigationTarget, getAgentPath, getPublicPagePath } from "@/site/route-selectors";
 import type { NavigationTarget } from "@/site/route-types";
 import { BuyerQuestionProvider } from "../../shared/buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../../shared/buyer-question/representative-disclosure";
 import { HomeAnswerField } from "../../shared/home/home-answer-field";
 import { ProductRecordPreview } from "../../shared/home/product-record-preview";
+import { EvidenceLens } from "../../shared/human-agent/evidence-lens";
 import { EnglishSiteShell } from "../english-site-shell";
 
 const copy = GLOBAL_EN_HOME_PAGE;
@@ -46,26 +48,23 @@ function HeroPicture() {
 	);
 }
 
-function HumanAgentSignature() {
+function HomeEvidenceLens() {
 	const fact = PRODUCT_FACTS.category;
 	return (
-		<section className="site-v1-human-agent-signature" data-home-section="human-agent" data-human-agent-bridge="home" data-fact-id={fact.id}>
+		<section className="site-v1-home-human-agent" data-home-section="human-agent" data-human-agent-bridge="home" data-fact-id={fact.id}>
 			<header>
-				<span>{fact.id}</span>
+				<span>{copy.humanAgent.layers.join(" / ")}</span>
 				<h2>{copy.humanAgent.headline}</h2>
 				<p>{copy.humanAgent.body}</p>
 			</header>
-			<div className="site-v1-human-agent-signature__lens" aria-label={copy.humanAgent.headline}>
-				{copy.humanAgent.layers.map((layer, index) => (
-					<article key={layer} data-lens-layer={index + 1} data-bridge-layer={(["human", "evidence", "agent"] as const)[index]}>
-						<span>{layer}</span>
-						{index === 0 ? <strong>{fact.value["global-en"]}</strong> : null}
-						{index === 1 ? <p><code>{fact.source.id}</code> · {fact.source.label["global-en"]} · {fact.scope["global-en"]}</p> : null}
-						{index === 2 ? <code>{fact.id} · {fact.lastReviewed}</code> : null}
-					</article>
-				))}
-			</div>
-			<p className="site-v1-human-agent-signature__boundary">{fact.boundary["global-en"]}</p>
+			<EvidenceLens
+				copy={GLOBAL_EN_HUMAN_AGENT_PAGE}
+				edition="global-en"
+				fact={fact}
+				ringLabels={copy.humanAgent.layers}
+				agentHref={`${getAgentPath("global-en", "home")}#${fact.id}`}
+				presentation="signature"
+			/>
 			<div className="site-v1-home-actions">
 				<a className="site-v1-home-action" href={getPublicPagePath("global-en", "human-agent")}>{copy.humanAgent.actions[0].label}</a>
 				<a className="site-v1-home-action site-v1-home-action--quiet" href={`${getAgentPath("global-en", "home")}#${fact.id}`}>{copy.humanAgent.actions[1].label}</a>
@@ -90,7 +89,7 @@ function CaseworkPreview() {
 			data-record-id={record.id}
 			data-representative-record="casework-preview"
 		>
-			<header><span>{record.id}</span><h2>{copy.casework.headline}</h2><p>{record.question}</p></header>
+			<header><span>{copy.casework.stateLabels.initialAnswer}</span><h2>{copy.casework.headline}</h2><p>{record.question}</p></header>
 			<div className="site-v1-casework-preview__trace">
 				{caseworkStateLabels.map((label, index) => <article key={label} data-casework-state={index}><span>{String(index + 1).padStart(2, "0")}</span><h3>{label}</h3><p>{content[index]}</p></article>)}
 			</div>
@@ -128,7 +127,7 @@ export function HomePage() {
 							stateLabels={copy.casework.stateLabels}
 						/>
 					</div>
-					<HumanAgentSignature />
+					<HomeEvidenceLens />
 					<CaseworkPreview />
 					<section className="site-v1-home-closing" data-home-section="closing">
 						<div><h2>{copy.closing.headline}</h2><p>{copy.closing.body}</p></div>

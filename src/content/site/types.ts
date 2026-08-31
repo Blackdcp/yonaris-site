@@ -4,7 +4,7 @@ import type { HumanPageKey } from "@/content/experience/types";
 export type Locale = "en" | "zh";
 export type CorePageKey = PublicPageKey;
 /** @deprecated Legacy machine-document key contract. */
-export type AgentPageKey = Exclude<HumanPageKey, "home">;
+export type AgentPageKey = Exclude<PublicPageKey, "home">;
 
 export type SiteRouteClass = "core" | "utility" | "legacy" | "machine";
 export type IndexPolicy = "index,follow" | "noindex,follow";

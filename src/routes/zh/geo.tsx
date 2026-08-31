@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChinaGeoPage } from "@/components/experience/china/china-pages";
-import { zhPageHead } from "@/editions/zh-cn/edition";
+import { permanentRedirectHandlers } from "@/lib/permanent-redirect";
+import { getRedirect } from "@/lib/site-manifest";
 
-export const Route = createFileRoute("/zh/geo")({ head: () => zhPageHead("geo"), component: ChinaGeoPage });
+const redirect = getRedirect("/zh/geo");
+if (!redirect) throw new Error("Missing manifest redirect for /zh/geo");
+
+export const Route = createFileRoute("/zh/geo")({ server: { handlers: permanentRedirectHandlers(redirect.to) } });

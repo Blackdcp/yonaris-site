@@ -10,6 +10,7 @@ import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
 export function buildPageHead(edition: SiteEdition, page: PublicPageKey, legacyContentPage?: HumanPageKey, publicMetadata?: PageMetadata) {
 	const isCanonicalHumanAgent = page === "human-agent" && legacyContentPage === undefined;
 	const humanPage = isCanonicalHumanAgent ? "home" : (legacyContentPage ?? PUBLIC_PAGE_TO_HUMAN_PAGE[page]);
+	const machinePage = page;
 	const copy = edition === "global-en" ? GLOBAL_COPY[humanPage] : CHINA_COPY[humanPage];
 	const title = publicMetadata?.title ?? copy.metaTitle;
 	const description = publicMetadata?.description ?? copy.metaDescription;
@@ -30,11 +31,11 @@ export function buildPageHead(edition: SiteEdition, page: PublicPageKey, legacyC
 			{ rel: "alternate", hrefLang: "x-default", href: siteHref(isGlobal ? canonicalPath : alternatePath) },
 			...(isCanonicalHumanAgent
 				? publicFactDiscoveryLinks(isGlobal ? "en" : "zh", PRODUCT_FACTS.category.id)
-				: machineDiscoveryLinks(isGlobal ? "en" : "zh", humanPage)),
+				: machineDiscoveryLinks(isGlobal ? "en" : "zh", machinePage)),
 		],
 		scripts: [publicEntityGraph({
 			locale: isGlobal ? "en" : "zh",
-			pageKey: humanPage,
+			pageKey: machinePage,
 			publicMetadata,
 			canonicalPath: publicMetadata || isCanonicalHumanAgent ? canonicalPath : undefined,
 			factIds: isCanonicalHumanAgent ? [PRODUCT_FACTS.category.id] : undefined,

@@ -1,5 +1,7 @@
 import type { PublicPageKey } from "@/site/route-types";
 
+export type AgentTopicKey = PublicPageKey;
+
 /** @deprecated Legacy Human-page contract. Remove only after Task 11. */
 export const HUMAN_PAGE_KEYS = ["home", "product", "approach", "geo", "company", "diagnostic", "privacy"] as const;
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { HomeCaseworkStateLabels, HomePageCopy, HomeSiteV1Copy } from "@/content/public-site/contracts/pages/home";
 import { useBuyerQuestionRecord } from "../buyer-question/buyer-question-provider";
 import { RepresentativeDisclosure } from "../buyer-question/representative-disclosure";
+import { useActiveControlRail } from "../use-active-control-rail";
 import { useRovingTabs } from "../use-roving-tabs";
 
 const VIEW_IDS = ["buyer-question", "current-answer", "comparison-evidence", "reviewed-action", "later-review"] as const;
@@ -23,6 +24,10 @@ export function ProductRecordPreview({ copy, disclosure, recordLabels, stateLabe
 	const [enhanced, setEnhanced] = useState(false);
 	useEffect(() => setEnhanced(true), []);
 	const tabs = useRovingTabs({ items: VIEW_IDS, active, onChange: setActive, idPrefix: "home-product-record" });
+	const rail = useActiveControlRail({ items: VIEW_IDS, active });
+	const activeIndex = VIEW_IDS.indexOf(active);
+	const previous = activeIndex > 0 ? VIEW_IDS[activeIndex - 1] : undefined;
+	const next = activeIndex < VIEW_IDS.length - 1 ? VIEW_IDS[activeIndex + 1] : undefined;
 	const initialAnswer = record.channelAnswers[0];
 	const initialReasons = initialAnswer?.reasonIds
 		.map((reasonId) => record.comparisonReasons.find((reason) => reason.id === reasonId))
@@ -87,12 +92,16 @@ export function ProductRecordPreview({ copy, disclosure, recordLabels, stateLabe
 			data-representative-record="product-preview"
 		>
 			<header>
-				<span>{record.id}</span>
 				<h2>{copy.headline}</h2>
 				<p data-buyer-question>{record.question}</p>
 			</header>
-			<div className="site-v1-product-preview__tabs" role="tablist" aria-label={copy.headline} aria-orientation="horizontal">
-				{VIEW_IDS.map((id, index) => <button key={id} type="button" {...tabs.getTabProps(id, index)}>{copy.workingViews[index]}</button>)}
+			<div ref={rail.railRef} className="site-v1-product-preview__tabs" role="tablist" aria-label={copy.headline} aria-orientation="horizontal">
+				{VIEW_IDS.map((id, index) => <button ref={rail.getControlRef(id)} key={id} type="button" {...tabs.getTabProps(id, index)}>{copy.workingViews[index]}</button>)}
+			</div>
+			<div className="site-v1-product-preview__rail-status" aria-live="polite">
+				<button type="button" disabled={!previous} aria-label={copy.workingViews[Math.max(0, activeIndex - 1)]} onClick={() => previous && setActive(previous)}>{"<"}</button>
+				<output data-record-progress>{rail.position} / {rail.total}</output>
+				<button type="button" disabled={!next} aria-label={copy.workingViews[Math.min(VIEW_IDS.length - 1, activeIndex + 1)]} data-record-continuation onClick={() => next && setActive(next)}>{">"}</button>
 			</div>
 			<div className="site-v1-product-preview__stage" aria-live="polite">
 				<div className="site-v1-product-preview__identity" aria-hidden="true"><i /><i /><i /><i /></div>

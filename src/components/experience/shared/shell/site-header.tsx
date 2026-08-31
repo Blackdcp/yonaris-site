@@ -98,14 +98,16 @@ export function SiteHeader({ edition, pageKey, copy }: { edition: SiteEdition; p
 				</a>
 				<PrimaryNavigation edition={edition} pageKey={pageKey} copy={copy} />
 				<div className="site-v1-header__utilities">
-					<a
-						className="site-v1-header__reading-control"
-						data-site-v1-reading-control="human-agent"
-						href={getPublicPagePath(edition, "human-agent")}
-						aria-current={pageKey === "human-agent" ? "page" : undefined}
-					>
-						{copy.labels["human-agent"]}
-					</a>
+					{edition === "zh-cn" ? (
+						<a
+							className="site-v1-header__reading-control"
+							data-site-v1-reading-control="human-agent"
+							href={getPublicPagePath(edition, "human-agent")}
+							aria-current={pageKey === "human-agent" ? "page" : undefined}
+						>
+							{copy.labels["human-agent"]}
+						</a>
+					) : null}
 					<EditionLink
 						edition={edition}
 						pageKey={pageKey}

@@ -5,7 +5,15 @@ import { ZH_CN_BUYER_QUESTION } from "../buyer-question";
 export const ZH_CN_HOME_PAGE = {
 	edition: "zh-cn",
 	page: "home",
-	siteV1: null,
+	siteV1: {
+		motionControls: { pauseScene: "暂停动效", resumeScene: "继续动效" },
+		productRecord: {
+			audience: "谁在做判断",
+			market: "市场条件",
+			language: "使用语言",
+			humanReviewed: "已由团队审阅",
+		},
+	},
 	metadata: {
 		title: "Yonaris｜看清客户听到了什么",
 		description: "看清 AI 和数字渠道如何呈现与比较品牌，找到影响客户选择的证据与下一步行动。",

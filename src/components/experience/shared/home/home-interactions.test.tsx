@@ -46,6 +46,35 @@ async function remount(node: ReactNode) {
 }
 
 describe("mounted Home answer field", () => {
+	it("keeps one hydrated answer in a causal scene and turns trace into an attached reason-to-evidence path", async () => {
+		const scene = host.querySelector<HTMLElement>("[data-causal-answer-scene]");
+		if (!scene) throw new Error("Causal answer scene not mounted");
+		expect(scene.querySelectorAll("[data-causal-interactive] [data-active-answer]")).toHaveLength(1);
+		expect(scene.querySelectorAll("[data-causal-interactive] .site-v1-answer-environment__answer")).toHaveLength(1);
+		expect(scene.querySelectorAll("[data-causal-interactive] [data-answer-edge-label]")).toHaveLength(3);
+		expect(scene.querySelector("svg[data-causal-connectors] path[d]")).not.toBeNull();
+
+		const reasons = [...scene.querySelectorAll<HTMLButtonElement>("button[data-comparison-reason]")];
+		const reason = reasons[1] ?? reasons[0];
+		if (!reason) throw new Error("Selectable reason not mounted");
+		const connectorBefore = scene.querySelector("[data-causal-connection='answer-reason']")?.getAttribute("d");
+		await act(async () => reason.click());
+		expect(scene.querySelector("[data-causal-connection='answer-reason']")?.getAttribute("d")).not.toBe(connectorBefore);
+		await act(async () => button("Trace the reason").click());
+		expect(scene.dataset.trace).toBe("open");
+		expect(scene.querySelector("[data-causal-evidence][data-active='true']")).not.toBeNull();
+		expect(scene.querySelector("svg[data-causal-connectors] path[data-causal-connection='reason-evidence'][data-active='true']")).not.toBeNull();
+		expect(scene.nextElementSibling?.hasAttribute("data-evidence-trace")).not.toBe(true);
+	});
+
+	it("keeps a linear answer-reason-evidence reading in the no-JS scene", () => {
+		const linear = host.querySelector<HTMLElement>("[data-causal-linear]");
+		if (!linear) throw new Error("No-JS causal reading missing");
+		expect(linear.querySelectorAll("[data-linear-answer]")).toHaveLength(4);
+		expect(linear.textContent).toContain("Alternative A was recommended");
+		expect(linear.textContent).toContain("Source attached");
+	});
+
 	it("renders pause and resume controls from injected typed Home copy", async () => {
 		await remount(
 			<BuyerQuestionProvider record={GLOBAL_EN_BUYER_QUESTION}>
@@ -156,9 +185,16 @@ describe("mounted Home answer field", () => {
 			await act(async () => button(scenario.label).click());
 			expect(field.dataset.v1State).toBe(scenario.state);
 			expect(field.querySelectorAll("[data-comparison-reason]")).toHaveLength(scenario.reasons.length);
-			expect([...field.querySelectorAll<HTMLElement>('[data-comparison-reason][data-active="true"]')].map((node) => node.dataset.comparisonReason)).toEqual(scenario.reasons);
+			expect([...field.querySelectorAll<HTMLElement>("[data-comparison-reason]")].map((node) => node.dataset.comparisonReason)).toEqual(scenario.reasons);
+			expect(field.querySelector<HTMLElement>('[data-comparison-reason][data-active="true"]')?.dataset.comparisonReason).toBe(scenario.reasons[0]);
 			await act(async () => button("Trace the reason").click());
-			expect([...field.querySelectorAll<HTMLElement>("[data-evidence-trace] [data-evidence-id]")].map((node) => node.dataset.evidenceId)).toEqual(scenario.evidence);
+			expect([...field.querySelectorAll<HTMLElement>("[data-evidence-trace] [data-evidence-id]")].map((node) => node.dataset.evidenceId)).toEqual([scenario.evidence[0]]);
+			if (scenario.reasons[1]) {
+				const alternate = field.querySelector<HTMLButtonElement>(`[data-comparison-reason="${scenario.reasons[1]}"]`);
+				if (!alternate) throw new Error("Alternate reason control missing");
+				await act(async () => alternate.click());
+				expect([...field.querySelectorAll<HTMLElement>("[data-evidence-trace] [data-evidence-id]")].map((node) => node.dataset.evidenceId)).toEqual([scenario.evidence[1]]);
+			}
 		}
 	});
 
@@ -206,6 +242,15 @@ describe("mounted Home answer field", () => {
 });
 
 describe("mounted five-view stable record", () => {
+	it("publishes record progress and continuation while centring the active control", async () => {
+		const preview = host.querySelector<HTMLElement>("[data-product-record-preview]");
+		if (!preview) throw new Error("Product record preview not mounted");
+		expect(preview.querySelector("[data-record-progress]")?.textContent).toContain("1 / 5");
+		expect(preview.querySelector("[data-record-continuation]")?.textContent).toBeTruthy();
+		await act(async () => button("What changed afterwards").click());
+		expect(preview.querySelector("[data-record-progress]")?.textContent).toContain("5 / 5");
+	});
+
 	it("transforms central record geometry through keyboard input without changing identity", async () => {
 		const preview = host.querySelector<HTMLElement>("[data-product-record-preview]");
 		if (!preview) throw new Error("Product record preview not mounted");

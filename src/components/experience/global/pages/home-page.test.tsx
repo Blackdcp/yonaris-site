@@ -127,7 +127,7 @@ describe("English Site 1.0 Home route", () => {
 		}
 	});
 
-	it("uses the local responsive hero asset and canonical Human / Agent fact routes", () => {
+	it("uses the local hero asset and the real operable EvidenceLens on Home", () => {
 		const html = renderToStaticMarkup(<HomeRouteComponent />);
 		const document = new DOMParser().parseFromString(html, "text/html");
 		const bridge = document.querySelector<HTMLElement>("[data-human-agent-bridge='home']");
@@ -138,9 +138,9 @@ describe("English Site 1.0 Home route", () => {
 		expect(html).toContain("--hero-mobile-crop:center right");
 		expect(html).toContain("AI-Native MarTech Infrastructure");
 		expect(bridge?.dataset.factId).toBe("yonaris.category.ai-native-martech");
-		expect(bridge?.querySelectorAll("[data-bridge-layer]")).toHaveLength(3);
+		expect(bridge?.querySelector("[data-human-agent-lens][data-presentation='signature']")).not.toBeNull();
+		expect(bridge?.querySelectorAll("[data-lens-ring-control]")).toHaveLength(3);
 		expect(bridge?.querySelector('a[href="/human-agent"]')).not.toBeNull();
 		expect(bridge?.querySelector('a[href="/agent#yonaris.category.ai-native-martech"]')).not.toBeNull();
-		expect(bridge?.querySelector("[data-human-agent-lens], button")).toBeNull();
 	});
 });

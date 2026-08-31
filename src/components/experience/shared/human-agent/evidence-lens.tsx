@@ -61,12 +61,13 @@ function destination(index: number, key: string) {
 	return undefined;
 }
 
-export function EvidenceLens({ copy, edition, fact, ringLabels, agentHref }: {
+export function EvidenceLens({ copy, edition, fact, ringLabels, agentHref, presentation = "full" }: {
 	readonly copy: HumanAgentPageCopy;
 	readonly edition: SiteEdition;
 	readonly fact: BilingualPublicFact;
 	readonly ringLabels: readonly [string, string, string];
 	readonly agentHref: string;
+	readonly presentation?: "full" | "signature";
 }) {
 	const [activeLayer, setActiveLayer] = useState<HumanAgentLayer>("human");
 	const [enhanced, setEnhanced] = useState(false);
@@ -100,6 +101,7 @@ export function EvidenceLens({ copy, edition, fact, ringLabels, agentHref }: {
 		<section
 			className="site-v1-evidence-lens"
 			data-human-agent-lens="true"
+			data-presentation={presentation}
 			data-fact-id={fact.id}
 			data-v1-state={activeLayer}
 			data-lens-geometry={activeGeometry.name}

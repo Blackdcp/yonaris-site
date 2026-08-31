@@ -1,19 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChinaDiagnosticPage } from "@/components/experience/china/china-pages";
-import { zhPageHead } from "@/editions/zh-cn/edition";
-import {
-	useDiagnosticRequestType,
-	validateDiagnosticRouteSearch,
-} from "@/lib/diagnostic-request-intent";
+import { permanentRedirectHandlers } from "@/lib/permanent-redirect";
+import { getRedirect } from "@/lib/site-manifest";
 
-function ChinaDiagnosticRoutePage() {
-	const search = Route.useSearch();
-	const requestType = useDiagnosticRequestType(search);
-	return <ChinaDiagnosticPage requestType={requestType} />;
-}
+const redirect = getRedirect("/zh/diagnostic");
+if (!redirect) throw new Error("Missing manifest redirect for /zh/diagnostic");
 
 export const Route = createFileRoute("/zh/diagnostic")({
-	validateSearch: validateDiagnosticRouteSearch,
-	head: () => zhPageHead("diagnostic"),
-	component: ChinaDiagnosticRoutePage,
+	server: { handlers: permanentRedirectHandlers(redirect.to) },
 });

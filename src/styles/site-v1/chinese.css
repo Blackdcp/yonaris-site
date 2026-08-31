@@ -1,0 +1,50 @@
+.site-v1-root[data-edition="zh-cn"] {
+	font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Geist", sans-serif;
+	font-kerning: normal;
+}
+
+.site-v1-root[data-edition="zh-cn"] h1,
+.site-v1-root[data-edition="zh-cn"] h2,
+.site-v1-root[data-edition="zh-cn"] h3 {
+	font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Geist", sans-serif;
+	font-weight: 650;
+	letter-spacing: -0.035em;
+}
+
+.site-v1-home--zh .site-v1-home-hero__copy h1 { max-width: 10.5em; line-height: 1.04; }
+.site-v1-home--zh .site-v1-home-hero__copy > p:nth-of-type(2) { max-width: 39em; line-height: 1.68; }
+.site-v1-home--zh .site-v1-answer-field__question h2 { max-width: 24em; line-height: 1.35; }
+.site-v1-home--zh .site-v1-answer-field__resolution { font-weight: 560; line-height: 1.7; }
+.site-v1-home--zh .site-v1-product-preview > header h2,
+.site-v1-home--zh .site-v1-home-human-agent > header h2,
+.site-v1-home--zh .site-v1-casework-preview > header h2 { max-width: 15em; line-height: 1.12; }
+
+.site-v1-product--zh .site-v1-product-hero__copy h1 { max-width: 9.5em; line-height: 1.05; }
+.site-v1-product--zh .site-v1-product-hero__copy > p:nth-of-type(2) { max-width: 42em; line-height: 1.68; }
+.site-v1-product--zh .site-v1-product-hero__signal,
+.site-v1-root[data-edition="zh-cn"] .site-v1-product-workspace__identity span,
+.site-v1-root[data-edition="zh-cn"] .site-v1-product-workspace__identity small { letter-spacing: 0; text-transform: none; }
+.site-v1-product--zh .site-v1-workspace-object--question blockquote { max-width: 26em; line-height: 1.45; }
+.site-v1-product--zh .site-v1-workspace-object p,
+.site-v1-product--zh .site-v1-workspace-object dd { line-height: 1.58; }
+
+/* The shared Home preview keeps stable enums in data attributes. Chinese readers see the reviewed meaning, not implementation labels. */
+.site-v1-root[data-edition="zh-cn"] .site-v1-record-geometry--evidence li > span { display: none; }
+.site-v1-root[data-edition="zh-cn"] .site-v1-record-geometry--action strong[data-human-reviewer] { font-size: 0; }
+.site-v1-root[data-edition="zh-cn"] .site-v1-record-geometry--action strong[data-human-reviewer]::before {
+	color: inherit;
+	font-size: 0.72rem;
+	content: "已由团队审阅";
+}
+
+.site-v1-root[data-edition="zh-cn"] .site-v1-evidence-lens__ring button strong,
+.site-v1-root[data-edition="zh-cn"] .site-v1-human-agent-projection p,
+.site-v1-root[data-edition="zh-cn"] .site-v1-human-agent-projection dd { line-height: 1.55; }
+
+@media (max-width: 44rem) {
+	.site-v1-home--zh .site-v1-home-hero__copy h1,
+	.site-v1-product--zh .site-v1-product-hero__copy h1 { font-size: clamp(2.65rem, 13vw, 4rem); }
+	.site-v1-root[data-edition="zh-cn"] .site-v1-answer-field__channel-tabs button,
+	.site-v1-root[data-edition="zh-cn"] .site-v1-product-preview__tabs button,
+	.site-v1-root[data-edition="zh-cn"] .site-v1-product-workspace__controls button { min-width: 9.5rem; }
+}

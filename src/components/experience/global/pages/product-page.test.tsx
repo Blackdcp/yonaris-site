@@ -10,10 +10,14 @@ import { Route } from "@/routes/product";
 
 const ProductRouteComponent = Route.options.component as ComponentType;
 
+function renderProduct() {
+	const html = renderToStaticMarkup(<ProductRouteComponent />);
+	return { html, document: new DOMParser().parseFromString(html, "text/html") };
+}
+
 describe("English Site 1.0 Product route", () => {
 	it("uses the approved Product shell, copy record and central route metadata", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
-		const document = new DOMParser().parseFromString(html, "text/html");
+		const { html, document } = renderProduct();
 		expect(document.querySelector('[data-generation="site-v1"][data-page="product"]')).not.toBeNull();
 		expect(document.querySelector('a[href="/product"][aria-current="page"]')).not.toBeNull();
 		expect(document.querySelector("h1")?.textContent).toBe(GLOBAL_EN_PRODUCT_PAGE.hero.headline);
@@ -27,63 +31,49 @@ describe("English Site 1.0 Product route", () => {
 		expect(webPage?.description).toBe(GLOBAL_EN_PRODUCT_PAGE.metadata.description);
 	});
 
-	it("answers input, system work, team use and later review before interaction", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
-		const document = new DOMParser().parseFromString(html, "text/html");
-		const firstViewport = document.querySelector<HTMLElement>("[data-product-first-viewport]");
-		expect(firstViewport).not.toBeNull();
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.input.headline);
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[0]);
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[3]);
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.teamOutput.headline);
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence[5]);
-		expect(firstViewport?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.review.unchanged[0]?.statement);
+	it("reduces Product to one cinematic hero, one continuous working surface and one close", () => {
+		const { document } = renderProduct();
+		const product = document.querySelector<HTMLElement>(".site-v1-product");
+		expect(product?.querySelectorAll(":scope > section")).toHaveLength(3);
+		expect(product?.querySelector(":scope > [data-product-first-viewport]")).not.toBeNull();
+		expect(product?.querySelector(":scope > #product-theatre")).not.toBeNull();
+		expect(product?.querySelector(":scope > [data-product-closing]")).not.toBeNull();
+		expect(product?.querySelector(".site-v1-product-hero__primer, .site-v1-product-method, .site-v1-product-markets, .site-v1-product-human-agent")).toBeNull();
 	});
 
-	it("keeps every typed system phrase in an editorial field instead of a numbered six-cell flow", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
-		const document = new DOMParser().parseFromString(html, "text/html");
-		const method = document.querySelector<HTMLElement>("#how-it-works");
-		expect(method).not.toBeNull();
-		expect(method?.querySelector("ol, li, [role='list']")).toBeNull();
-		const phrases = [...(method?.querySelectorAll(".site-v1-product-method__field > p") ?? [])].map((node) => node.textContent);
-		expect(phrases).toEqual([...GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence]);
-		for (const inputLabel of GLOBAL_EN_PRODUCT_PAGE.input.labels) expect(method?.textContent).toContain(inputLabel);
-		expect(method?.textContent).not.toMatch(/01\s*Observe|02\s*Compare|03\s*Trace|04\s*Put|05\s*Record|06\s*Review/);
+	it("keeps method, markets and Human / Agent inside the same record surface", () => {
+		const { document } = renderProduct();
+		const theatre = document.querySelector<HTMLElement>("#product-theatre");
+		expect(theatre?.querySelector("#how-it-works")).not.toBeNull();
+		expect(theatre?.querySelector("#markets-languages")).not.toBeNull();
+		expect(theatre?.querySelector("[data-product-evidence-lens] [data-human-agent-lens]")).not.toBeNull();
+		expect(theatre?.querySelector<HTMLElement>("[data-workspace-record-inspector]")?.dataset.recordId).toBe(GLOBAL_EN_BUYER_QUESTION.id);
+		for (const phrase of GLOBAL_EN_PRODUCT_PAGE.systemWork.sequence) expect(theatre?.textContent).toContain(phrase);
+		for (const output of GLOBAL_EN_PRODUCT_PAGE.teamOutput.items) expect(theatre?.textContent).toContain(output);
+		for (const value of [GLOBAL_EN_BUYER_QUESTION.market, GLOBAL_EN_BUYER_QUESTION.language, ...GLOBAL_EN_BUYER_QUESTION.observationConditions.channels]) {
+			expect(theatre?.textContent).toContain(value);
+		}
 	});
 
-	it("uses the original responsive Product image and exposes the three canonical anchors", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
+	it("uses the original responsive Product image and concise approved actions", () => {
+		const { html, document } = renderProduct();
 		expect(html).toContain("/assets/site-v1/product-observation-room-640.avif");
 		expect(html).toContain("/assets/site-v1/product-observation-room-1600.webp");
 		expect(html).toMatch(/src="\/assets\/site-v1\/product-observation-room\.png"[^>]+width="1672" height="941"/);
-		for (const anchor of ["product-theatre", "how-it-works", "markets-languages"]) expect(html).toContain(`id="${anchor}"`);
-	});
-
-	it("treats markets and language as attributes of the same record and closes with concise bridges", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
-		const document = new DOMParser().parseFromString(html, "text/html");
-		const markets = document.querySelector<HTMLElement>("#markets-languages");
-		expect(markets?.dataset.recordId).toBe(GLOBAL_EN_BUYER_QUESTION.id);
-		for (const value of [GLOBAL_EN_BUYER_QUESTION.market, GLOBAL_EN_BUYER_QUESTION.language, ...GLOBAL_EN_BUYER_QUESTION.observationConditions.channels]) {
-			expect(markets?.textContent).toContain(value);
-		}
-		const bridge = document.querySelector<HTMLElement>("[data-human-agent-bridge='product']");
-		expect(bridge?.textContent).toContain(GLOBAL_EN_PRODUCT_PAGE.humanAgent.headline);
-		expect(bridge?.dataset.factId).toBe("yonaris.category.ai-native-martech");
-		expect(bridge?.querySelectorAll("[data-bridge-layer]")).toHaveLength(3);
-		expect(bridge?.querySelector('a[href="/human-agent"]')).not.toBeNull();
-		expect(bridge?.querySelector('a[href="/agent#yonaris.category.ai-native-martech"]')).not.toBeNull();
-		expect(bridge?.querySelector("[data-human-agent-lens], button")).toBeNull();
+		expect(document.querySelector('[data-product-first-viewport] a[href="/product#product-theatre"]')).not.toBeNull();
+		expect(document.querySelector('[data-product-first-viewport] a[href="/contact"]')).not.toBeNull();
 		expect(document.querySelector('[data-product-closing] a[href="/casework"]')).not.toBeNull();
 		expect(document.querySelector('[data-product-closing] a[href="/contact"]')).not.toBeNull();
 	});
 
-	it("places a readable representative disclosure next to the workspace in SSR", () => {
-		const html = renderToStaticMarkup(<ProductRouteComponent />);
-		const document = new DOMParser().parseFromString(html, "text/html");
+	it("places the representative boundary and raw record identities in inspectable disclosure", () => {
+		const { document } = renderProduct();
 		const theatre = document.querySelector<HTMLElement>("#product-theatre");
 		expect(theatre?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.disclosure.boundary);
 		expect(theatre?.querySelector(".site-v1-representative-disclosure")).not.toBeNull();
+		const details = theatre?.querySelector<HTMLDetailsElement>("details[data-inspect-record]");
+		expect(details?.hasAttribute("open")).toBe(false);
+		expect(details?.textContent).toContain(GLOBAL_EN_BUYER_QUESTION.id);
+		for (const evidence of GLOBAL_EN_BUYER_QUESTION.evidence) expect(details?.textContent).toContain(evidence.id);
 	});
 });

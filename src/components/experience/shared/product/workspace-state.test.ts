@@ -22,4 +22,14 @@ describe("product workspace state", () => {
 		expect(workspace.workspaceStateReducer(state, { type: "next" }).activeView).toBe("buyer-questions");
 		expect(workspace.workspaceStateReducer(state, { type: "select", view: "sources-gaps" }).activeView).toBe("sources-gaps");
 	});
+
+	it("gives each view one primary object while keeping the rest in the same record", async () => {
+		const workspace = await import("./workspace-state");
+		const expectedPrimary = ["question", "answers", "evidence", "action", "review"] as const;
+		workspace.WORKSPACE_VIEW_IDS.forEach((view, index) => {
+			const emphasis = workspace.WORKSPACE_OBJECT_KINDS.map((object) => workspace.getWorkspaceObjectEmphasis(view, object));
+			expect(emphasis.filter((value) => value === "primary")).toHaveLength(1);
+			expect(workspace.getWorkspaceObjectEmphasis(view, expectedPrimary[index])).toBe("primary");
+		});
+	});
 });

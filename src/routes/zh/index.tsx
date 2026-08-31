@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChinaHomePage } from "@/components/experience/china/china-pages";
+import { ChinaHomePage } from "@/components/experience/china-v1/pages/home-page";
 import { zhPageHead } from "@/editions/zh-cn/edition";
 
 export const Route = createFileRoute("/zh/")({ head: () => zhPageHead("home"), component: ChinaHomePage });

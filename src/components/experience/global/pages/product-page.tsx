@@ -2,8 +2,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { getSiteV1Asset } from "@/content/public-site/assets";
 import { PRODUCT_FACTS } from "@/content/public-site/canonical/product-facts";
 import { GLOBAL_EN_BUYER_QUESTION } from "@/content/public-site/global-en/buyer-question";
-import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
 import { GLOBAL_EN_HUMAN_AGENT_PAGE } from "@/content/public-site/global-en/pages/human-agent";
+import { GLOBAL_EN_PRODUCT_PAGE } from "@/content/public-site/global-en/pages/product";
 import { getAgentPath, resolveNavigationTarget } from "@/site/route-selectors";
 import type { NavigationTarget } from "@/site/route-types";
 import { BuyerQuestionProvider } from "../../shared/buyer-question/buyer-question-provider";
@@ -48,59 +48,63 @@ function FirstViewport() {
 					<ActionLink target={copy.hero.actions[1].target} quiet>{copy.hero.actions[1].label}</ActionLink>
 				</div>
 			</header>
-			<div className="site-v1-product-hero__primer" aria-label={copy.hero.headline}>
-				<article><span>01</span><h2>{copy.input.headline}</h2><p>{record.question}</p></article>
-				<article><span>02</span><h2>{copy.systemWork.sequence[0]}</h2><p>{copy.systemWork.sequence[3]}</p></article>
-				<article><span>03</span><h2>{copy.teamOutput.headline}</h2><p>{copy.teamOutput.items[2]}</p></article>
-				<article><span>04</span><h2>{copy.systemWork.sequence[5]}</h2><p>{record.review.unchanged[0]?.statement}</p></article>
-			</div>
+			<p className="site-v1-product-hero__signal" aria-hidden="true">
+				<span>{copy.systemWork.sequence[0]}</span>
+				<i />
+				<span>{copy.systemWork.sequence[3]}</span>
+				<i />
+				<span>{copy.systemWork.sequence[5]}</span>
+			</p>
 		</section>
 	);
 }
 
-function HowItWorks() {
+function ProductTheatre() {
 	return (
-		<section id="how-it-works" className="site-v1-product-method" data-record-id={record.id}>
-			<header><span>{copy.input.labels[1]}</span><h2>{copy.systemWork.headline}</h2><p>{record.question}</p></header>
-			<div className="site-v1-product-method__field">
-				{copy.systemWork.sequence.map((item) => <p key={item}>{item}</p>)}
-			</div>
-			<div className="site-v1-product-method__inputs">
-				{copy.input.labels.map((label) => <span key={label}>{label}</span>)}
-			</div>
+		<section id="product-theatre" className="site-v1-product-theatre" data-fact-id={categoryFact.id}>
+			<header>
+				<span>{copy.hero.eyebrow} / working record</span>
+				<h2>{copy.systemWork.headline}</h2>
+				<p>{copy.teamOutput.items[0]}</p>
+			</header>
+			<ProductQuestionWorkspace
+				copy={copy}
+				labels={{
+					workingRecord: "Working record",
+					inspectRecord: "Inspect record",
+					machineFields: {
+						record: "Record",
+						answers: "Answers",
+						reasons: "Reasons",
+						evidence: "Evidence",
+						gaps: "Gaps",
+						actions: "Actions",
+						review: "Review",
+					},
+				}}
+				evidenceLens={{
+					copy: GLOBAL_EN_HUMAN_AGENT_PAGE,
+					edition: "global-en",
+					fact: categoryFact,
+					ringLabels: [
+						GLOBAL_EN_HUMAN_AGENT_PAGE.humanViewLabels[0],
+						GLOBAL_EN_HUMAN_AGENT_PAGE.evidenceViewLabels[0],
+						GLOBAL_EN_HUMAN_AGENT_PAGE.agentViewLabels[0],
+					],
+					agentHref: `${getAgentPath("global-en", "home")}#${categoryFact.id}`,
+				}}
+			/>
 		</section>
 	);
 }
 
-function MarketsLanguages() {
-	const alternatives = [...new Set(record.comparisonReasons.map((reason) => reason.subject))];
+function Closing() {
 	return (
-		<section id="markets-languages" className="site-v1-product-markets" data-record-id={record.id}>
-			<header><span>{record.id}</span><h2>{copy.markets.headline}</h2><p>{copy.markets.body}</p></header>
-			<dl>
-				<div><dt>{copy.input.labels[0]}</dt><dd>{record.market}<br />{record.audience}</dd></div>
-				<div><dt>{copy.input.labels[4]}</dt><dd>{record.language}</dd></div>
-				<div><dt>{copy.input.labels[2]}</dt><dd>{categoryFact.value["global-en"]}<br />{categoryFact.scope["global-en"]}</dd></div>
-				<div><dt>{copy.input.labels[5]}</dt><dd>{alternatives.join(" · ")}</dd></div>
-				<div><dt>{copy.input.labels[3]}</dt><dd>{record.observationConditions.channels.join(" · ")}<br />{record.evidence.slice(0, 3).map((item) => item.sourceLabel).join(" · ")}</dd></div>
-			</dl>
-			<p>{record.observationConditions.boundary}</p>
-		</section>
-	);
-}
-
-function HumanAgentBridge() {
-	return (
-		<section className="site-v1-product-human-agent" data-product-human-agent data-human-agent-bridge="product" data-fact-id={categoryFact.id}>
-			<div><span>{categoryFact.id}</span><h2>{copy.humanAgent.headline}</h2><p>{copy.humanAgent.body}</p></div>
-			<div className="site-v1-product-human-agent__projection" aria-label={copy.humanAgent.headline}>
-				<article data-bridge-layer="human"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[0]}</span><strong>{categoryFact.value["global-en"]}</strong><small>{categoryFact.scope["global-en"]}</small></article>
-				<article data-bridge-layer="evidence"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[1]}</span><code>{categoryFact.source.id}</code><p>{categoryFact.source.label["global-en"]}</p></article>
-				<article data-bridge-layer="agent"><span>{GLOBAL_EN_HUMAN_AGENT_PAGE.transformationLabels[2]}</span><code>{categoryFact.id} · {categoryFact.lastReviewed}</code><small>{categoryFact.boundary["global-en"]}</small></article>
-			</div>
+		<section className="site-v1-product-closing" data-product-closing>
+			<h2>{copy.closing.headline}</h2>
 			<div className="site-v1-product-actions">
-				<ActionLink target={copy.humanAgent.action.target}>{copy.humanAgent.action.label}</ActionLink>
-				<a className="site-v1-product-action site-v1-product-action--quiet" href={`${getAgentPath("global-en", "home")}#${categoryFact.id}`}>{GLOBAL_EN_HUMAN_AGENT_PAGE.actions[0].label}</a>
+				<ActionLink target={copy.closing.actions[0].target}>{copy.closing.actions[0].label}</ActionLink>
+				<ActionLink target={copy.closing.actions[1].target} quiet>{copy.closing.actions[1].label}</ActionLink>
 			</div>
 		</section>
 	);
@@ -112,20 +116,8 @@ export function ProductPage() {
 			<BuyerQuestionProvider record={record}>
 				<div className="site-v1-product">
 					<FirstViewport />
-					<HowItWorks />
-					<section id="product-theatre" className="site-v1-product-theatre">
-						<header><span>{record.id}</span><h2>{copy.teamOutput.headline}</h2><p>{copy.teamOutput.items.join(" · ")}</p></header>
-						<ProductQuestionWorkspace copy={copy} />
-					</section>
-					<MarketsLanguages />
-					<HumanAgentBridge />
-					<section className="site-v1-product-closing" data-product-closing>
-						<h2>{copy.closing.headline}</h2>
-						<div className="site-v1-product-actions">
-							<ActionLink target={copy.closing.actions[0].target}>{copy.closing.actions[0].label}</ActionLink>
-							<ActionLink target={copy.closing.actions[1].target} quiet>{copy.closing.actions[1].label}</ActionLink>
-						</div>
-					</section>
+					<ProductTheatre />
+					<Closing />
 				</div>
 			</BuyerQuestionProvider>
 		</EnglishSiteShell>

@@ -52,7 +52,6 @@
 
 .site-v1-home-hero__copy > p:first-child,
 .site-v1-product-preview > header > span,
-.site-v1-human-agent-signature > header > span,
 .site-v1-casework-preview > header > span {
 	color: var(--site-v1-orange-400);
 	font-family: "Geist Mono", monospace;
@@ -114,8 +113,7 @@
 }
 
 .site-v1-product-preview,
-.site-v1-casework-preview,
-.site-v1-human-agent-signature {
+.site-v1-casework-preview {
 	max-width: var(--site-v1-content-max);
 	margin-inline: auto;
 	padding: var(--site-v1-space-6) var(--site-v1-space-4);
@@ -131,7 +129,6 @@
 
 .site-v1-product-preview > header { align-self: start; }
 .site-v1-product-preview > header h2,
-.site-v1-human-agent-signature h2,
 .site-v1-casework-preview h2,
 .site-v1-home-closing h2 {
 	max-width: 15ch;
@@ -254,54 +251,6 @@
 .site-v1-record-geometry--review p { margin-top: var(--site-v1-space-2); color: var(--site-v1-ivory-100); }
 .site-v1-record-geometry--review footer { grid-column: 1 / -1; min-height: 7rem; border-top: 1px solid rgb(240 122 61 / 35%); }
 
-.site-v1-human-agent-signature {
-	display: grid;
-	grid-template-columns: minmax(18rem, 0.7fr) minmax(0, 1.3fr);
-	grid-template-rows: auto 1fr auto;
-	column-gap: var(--site-v1-space-5);
-	min-height: 96vh;
-	align-items: center;
-}
-
-.site-v1-human-agent-signature__lens {
-	position: relative;
-	display: grid;
-	grid-column: 2;
-	grid-row: 1 / span 3;
-	place-items: center;
-	min-height: min(70vw, 48rem);
-}
-
-.site-v1-human-agent-signature__lens::before,
-.site-v1-human-agent-signature__lens::after {
-	position: absolute;
-	width: 74%;
-	aspect-ratio: 1;
-	border: 1px solid var(--site-v1-hairline-dark);
-	border-radius: 50%;
-	content: "";
-}
-.site-v1-human-agent-signature__lens::after { width: 48%; border-color: rgb(240 122 61 / 35%); }
-
-.site-v1-human-agent-signature__lens article {
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-	width: min(24rem, 52%);
-	padding: 1rem;
-	border: 1px solid var(--site-v1-hairline-dark);
-	background: rgb(11 27 42 / 82%);
-	backdrop-filter: blur(1rem);
-}
-.site-v1-human-agent-signature__lens article:nth-child(1) { transform: translate(-34%, -80%); }
-.site-v1-human-agent-signature__lens article:nth-child(2) { transform: translate(40%, 5%); }
-.site-v1-human-agent-signature__lens article:nth-child(3) { transform: translate(-25%, 105%); }
-.site-v1-human-agent-signature__lens article span { color: var(--site-v1-orange-400); font-family: "Geist Mono", monospace; font-size: var(--site-v1-text-label); text-transform: uppercase; }
-.site-v1-human-agent-signature__lens code { overflow-wrap: anywhere; color: var(--site-v1-optical-300); }
-.site-v1-human-agent-signature__boundary { align-self: end; color: var(--site-v1-optical-300); font-size: 0.9rem; }
-.site-v1-human-agent-signature > .site-v1-home-actions { align-self: start; }
-
 .site-v1-casework-preview {
 	max-width: none;
 	border-block: 1px solid var(--site-v1-hairline-dark);
@@ -338,17 +287,15 @@
 	.site-v1-home-hero { grid-template-columns: 1fr; grid-template-rows: auto auto; }
 	.site-v1-home-hero__copy { min-height: 80vh; padding-inline: var(--site-v1-space-4); }
 	.site-v1-home-hero__picture img { object-position: var(--hero-mobile-crop, center right); }
-	.site-v1-product-preview,
-	.site-v1-human-agent-signature { grid-template-columns: 1fr; }
+	.site-v1-product-preview { grid-template-columns: 1fr; }
 	.site-v1-product-preview__stage { grid-column: 1; grid-row: auto; min-height: 30rem; }
-	.site-v1-human-agent-signature__lens { grid-column: 1; grid-row: auto; min-height: 42rem; }
 }
 
 @media (max-width: 44rem) {
 	.site-v1-home-hero__copy,
 	.site-v1-home-hero__field,
 	.site-v1-product-preview,
-	.site-v1-human-agent-signature,
+	.site-v1-home-human-agent,
 	.site-v1-casework-preview,
 	.site-v1-home-closing { padding-inline: var(--site-v1-space-3); }
 	.site-v1-home-hero__copy { min-height: 74vh; padding-top: var(--site-v1-space-6); }
@@ -376,11 +323,68 @@
 	.site-v1-record-geometry--review section,
 	.site-v1-record-geometry--review footer { min-height: 6rem; transform: none !important; }
 	.site-v1-record-geometry--review footer { grid-column: 1; }
-	.site-v1-human-agent-signature { min-height: auto; }
-	.site-v1-human-agent-signature__lens { min-height: 34rem; }
-	.site-v1-human-agent-signature__lens article { width: 64%; }
 	.site-v1-home-closing { flex-direction: column; align-items: flex-start; min-height: 46vh; }
 	.site-v1-casework-preview__trace { grid-template-columns: 1fr; overflow-x: visible; }
 	.site-v1-casework-preview__trace article { min-height: 0; }
 	.site-v1-casework-preview__trace h3 { margin-top: var(--site-v1-space-3); }
+}
+
+/* Home reuses the canonical EvidenceLens instead of maintaining a decorative imitation. */
+.site-v1-home-human-agent {
+	display: grid;
+	grid-template-columns: minmax(18rem, 0.58fr) minmax(0, 1.42fr);
+	gap: var(--site-v1-space-4) var(--site-v1-space-5);
+	align-content: center;
+	min-height: 100svh;
+	max-width: var(--site-v1-content-max);
+	margin-inline: auto;
+	padding: var(--site-v1-space-6) var(--site-v1-space-4);
+}
+
+.site-v1-home-human-agent > header {
+	display: grid;
+	align-content: end;
+	gap: var(--site-v1-space-2);
+}
+.site-v1-home-human-agent > header > span { color: var(--site-v1-orange-400); font-family: "Geist Mono", monospace; font-size: var(--site-v1-text-label); letter-spacing: 0.1em; text-transform: uppercase; }
+.site-v1-home-human-agent > header h2 { max-width: 12ch; font-size: var(--site-v1-text-title); }
+.site-v1-home-human-agent > header p { max-width: 33ch; color: var(--site-v1-optical-300); }
+.site-v1-home-human-agent > .site-v1-evidence-lens { grid-column: 2; grid-row: 1 / span 2; }
+.site-v1-home-human-agent > .site-v1-home-actions { align-self: start; margin-top: 0; }
+
+.site-v1-product-preview__rail-status {
+	grid-column: 1;
+	align-self: start;
+	color: var(--site-v1-navy-950);
+}
+.site-v1-product-preview:not([data-enhanced="true"]) .site-v1-product-preview__tabs,
+.site-v1-product-preview:not([data-enhanced="true"]) .site-v1-product-preview__rail-status { display: none; }
+.site-v1-product-preview .site-v1-product-preview__rail-status button { border-color: var(--site-v1-hairline-light); color: var(--site-v1-navy-950); }
+.site-v1-product-preview .site-v1-product-preview__rail-status output { color: #596978; }
+.site-v1-product-preview__stage { grid-row: 1 / span 3; }
+
+@media (max-width: 60rem) {
+	.site-v1-home-human-agent { grid-template-columns: minmax(0, 1fr); }
+	.site-v1-home-human-agent > .site-v1-evidence-lens { grid-column: 1; grid-row: auto; }
+	.site-v1-product-preview__rail-status { grid-column: 1; }
+	.site-v1-product-preview__stage { grid-row: auto; }
+}
+
+@media (max-width: 44rem) {
+	.site-v1-home-human-agent { min-height: 0; padding-inline: var(--site-v1-space-3); }
+	.site-v1-product-preview__tabs {
+		display: flex;
+		gap: 0.35rem;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: calc(50% - 4.5rem);
+	}
+	.site-v1-product-preview__tabs button {
+		flex: 0 0 9rem;
+		min-height: var(--site-v1-target);
+		padding-inline: 0.4rem;
+		scroll-snap-align: center;
+	}
+	.site-v1-product-preview__rail-status { width: 100%; }
+	.site-v1-product-preview__stage { min-height: 24rem; }
+	.site-v1-product-preview__stage article { min-height: 24rem; }
 }

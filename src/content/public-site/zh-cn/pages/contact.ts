@@ -1,4 +1,24 @@
 import type { ContactPageCopy } from "../../contracts/pages/contact";
+import type { ContactFormUiCopy } from "../../contracts/contact-form-ui";
+
+export const ZH_CN_CONTACT_FORM_UI = {
+	fieldsetLegend: "先从一件好奇的事开始",
+	botFieldLabel: "请不要填写此项",
+	sendingLabel: "正在提交…",
+	retryLabel: "重新提交",
+	privacySubmitLabel: "提交隐私请求",
+	unconfirmedMessage: "暂时无法确认是否送达。你填写的内容还在，可以重新提交。",
+	conflictMessage: "提交前表单内容发生了变化，请再提交一次。",
+	privacyBoundary: "这会进入人工隐私处理流程，不会自动删除任何记录。",
+	disclosure: "这些信息只用于回复本次咨询。",
+	privacyLinkLabel: "查看隐私说明",
+	validation: {
+		workEmailRequired: "请填写工作邮箱。",
+		workEmailInvalid: "请填写有效的工作邮箱。",
+		fieldTooLong: "内容有点长，请精简后再提交。",
+		formInvalid: "请检查表单后再提交。",
+	},
+} as const satisfies ContactFormUiCopy;
 
 export const ZH_CN_CONTACT_PAGE = {
 	edition: "zh-cn",

@@ -1,8 +1,10 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import type { ReactNode } from "react";
 import type { ContactFormResult } from "@/lib/contact-schema";
-import type { ContactNativeRenderContext } from "@/lib/contact-delivery.server";
-import { GLOBAL_EN_CONTACT_PAGE } from "@/content/public-site/global-en/pages/contact";
+import type { ContactNativeRenderContext, ContactServerUiCopy } from "@/lib/contact-delivery.server";
+import { GLOBAL_EN_CONTACT_FORM_UI, GLOBAL_EN_CONTACT_PAGE } from "@/content/public-site/global-en/pages/contact";
+import { ZH_CN_CONTACT_FORM_UI, ZH_CN_CONTACT_PAGE } from "@/content/public-site/zh-cn/pages/contact";
+import { ChineseContactPage } from "../../china-v1/pages/contact-page";
 import { ContactPage } from "./contact-page";
 
 const nativeStyles = `
@@ -31,15 +33,37 @@ export function createContactNativeDocumentRenderer(
 	};
 }
 
-export const renderContactNativeDocument = createContactNativeDocumentRenderer(() => ({
-	htmlLang: "en",
-	title: GLOBAL_EN_CONTACT_PAGE.metadata.title,
-	canonicalUrl: "https://yonaris.com/contact",
-	renderPage: ({ result, submissionId, context }) => (
-		<ContactPage
-			requestType={context.requestType}
-			initialResult={result}
-			initialSubmissionId={submissionId}
-		/>
-	),
-}));
+export function resolveContactServerUiCopy(context: ContactNativeRenderContext): ContactServerUiCopy {
+	return context.locale === "zh-CN" ? ZH_CN_CONTACT_FORM_UI : GLOBAL_EN_CONTACT_FORM_UI;
+}
+
+export function resolveContactNativeDocumentEdition(context: ContactNativeRenderContext): ContactNativeDocumentEdition {
+	if (context.locale === "zh-CN") {
+		return {
+			htmlLang: "zh-CN",
+			title: ZH_CN_CONTACT_PAGE.metadata.title,
+			canonicalUrl: "https://yonaris.com/zh/contact",
+			renderPage: ({ result, submissionId, context: renderContext }) => (
+				<ChineseContactPage
+					requestType={renderContext.requestType}
+					initialResult={result}
+					initialSubmissionId={submissionId}
+				/>
+			),
+		};
+	}
+	return {
+		htmlLang: "en",
+		title: GLOBAL_EN_CONTACT_PAGE.metadata.title,
+		canonicalUrl: "https://yonaris.com/contact",
+		renderPage: ({ result, submissionId, context: renderContext }) => (
+			<ContactPage
+				requestType={renderContext.requestType}
+				initialResult={result}
+				initialSubmissionId={submissionId}
+			/>
+		),
+	};
+}
+
+export const renderContactNativeDocument = createContactNativeDocumentRenderer(resolveContactNativeDocumentEdition);

@@ -564,3 +564,40 @@
 		transition: none !important;
 	}
 }
+
+.site-v1-evidence-lens[data-presentation="signature"] {
+	grid-template-columns: minmax(23rem, 0.9fr) minmax(26rem, 1.1fr);
+	min-height: min(72rem, 76svh);
+	border-block: 1px solid var(--site-v1-hairline-dark);
+	background: radial-gradient(circle at 38% 48%, rgb(240 122 61 / 8%), transparent 42%);
+}
+
+.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__optics { min-height: min(44rem, 68svh); }
+.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__projections { min-height: min(37rem, 62svh); }
+.site-v1-evidence-lens[data-presentation="signature"][data-v1-state="human"] .site-v1-evidence-lens__core,
+.site-v1-evidence-lens[data-presentation="signature"][data-v1-state="human"] .site-v1-human-agent-projection header code,
+.site-v1-evidence-lens[data-presentation="signature"][data-v1-state="human"] .site-v1-human-agent-projection__attachment { opacity: 0; visibility: hidden; }
+.site-v1-evidence-lens[data-presentation="signature"] .site-v1-human-agent-projection__attachment,
+.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__core,
+.site-v1-evidence-lens[data-presentation="signature"] .site-v1-human-agent-projection header code { transition: opacity var(--site-v1-duration-state) var(--site-v1-ease-standard), visibility 0s linear var(--site-v1-duration-state); }
+
+@media (max-width: 68rem) {
+	.site-v1-evidence-lens[data-presentation="signature"] { grid-template-columns: minmax(20rem, 0.82fr) minmax(23rem, 1.18fr); }
+}
+
+@media (max-width: 54rem) {
+	.site-v1-evidence-lens[data-presentation="signature"] { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__optics { min-height: 31rem; }
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__projections { min-height: 31rem; }
+}
+
+@media (max-width: 44rem) {
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__optics { min-height: 23rem; }
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__projections { min-height: 29rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-human-agent-projection__attachment,
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-evidence-lens__core,
+	.site-v1-evidence-lens[data-presentation="signature"] .site-v1-human-agent-projection header code { transition: none; }
+}
