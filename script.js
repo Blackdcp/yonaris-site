@@ -379,15 +379,22 @@
     setLocalizedText(relevance, profile.comparison.relevanceCopy);
     setLocalizedText(alignment, profile.comparison.alignmentCopy);
     setLocalizedText(interpretation, profile.comparison.interpretationCopy);
+    setLocalizedText(document.querySelector('[data-record-field="scope"]'), {
+      en: `${conditionLabel("en")} · enterprise analytics`,
+      zh: `${conditionLabel("zh")} · 企业分析`,
+    });
     relevance.dataset.relevance = profile.comparison.relevance;
     alignment.dataset.alignment = profile.comparison.alignment;
 
-    if (announce) {
-      setLocalizedText(document.querySelector("[data-condition-announcement]"), {
+    setLocalizedText(document.querySelector("[data-condition-announcement]"), announce
+      ? {
         en: `Conditions updated: ${conditionLabel("en")}. Interpretation and evidence alignment have been reviewed against this selection.`,
         zh: `条件已更新：${conditionLabel("zh")}。当前判断与证据对齐情况已按此选择更新。`,
+      }
+      : {
+        en: `Conditions: ${conditionLabel("en")}.`,
+        zh: `当前条件：${conditionLabel("zh")}。`,
       });
-    }
     renderSourceNote();
   }
 
