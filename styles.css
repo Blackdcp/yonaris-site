@@ -1598,6 +1598,7 @@ main > section {
 
 @media (max-width: 52rem) {
   .site-header {
+    position: static;
     grid-template-columns: 1fr auto auto;
   }
 
@@ -1608,19 +1609,21 @@ main > section {
   }
 
   .site-header nav {
-    position: fixed;
-    z-index: -1;
-    top: 5.2rem;
-    right: 0;
-    left: 0;
-    display: grid;
+    position: static;
+    z-index: auto;
+    display: none;
+    grid-column: 1 / -1;
     gap: 0;
-    padding: var(--edge);
+    width: calc(100% + var(--edge) + var(--edge));
+    margin-right: calc(0rem - var(--edge));
+    margin-bottom: -0.75rem;
+    margin-left: calc(0rem - var(--edge));
+    padding: 0 var(--edge) var(--edge);
     border-top: 1px solid var(--rule-light);
     border-bottom: 1px solid var(--mist);
     background: var(--ink);
-    transform: translateY(calc(-100% - 6rem));
-    transition: transform 180ms ease;
+    transform: none;
+    transition: none;
   }
 
   .site-header nav a {
@@ -1633,8 +1636,7 @@ main > section {
   .site-header.menu-open [data-mobile-nav],
   .menu-open .site-header nav,
   .menu-open .site-header [data-mobile-nav] {
-    z-index: 0;
-    transform: translateY(0);
+    display: grid;
   }
 
   .hero {
@@ -1852,10 +1854,6 @@ main > section {
     min-height: 4.5rem;
     padding-right: 0.75rem;
     padding-left: 0.75rem;
-  }
-
-  .site-header nav {
-    top: 4.45rem;
   }
 
   .brand-link {
