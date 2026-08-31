@@ -9,6 +9,7 @@
   const sourceNote = document.querySelector("[data-source-note] p");
   const sourceFragments = [...document.querySelectorAll("[data-source]")];
   const conditionControls = [...document.querySelectorAll("[data-condition]")];
+  const conditionAnnouncement = document.querySelector("[data-condition-announcement]");
   const contactForm = document.querySelector("[data-contact-form]");
   const marketQuestionToggle = document.querySelector("[data-market-question-toggle]");
   const marketQuestionFields = document.querySelector("[data-market-question-fields]");
@@ -386,12 +387,15 @@
     relevance.dataset.relevance = profile.comparison.relevance;
     alignment.dataset.alignment = profile.comparison.alignment;
 
-    if (announce) {
-      setLocalizedText(document.querySelector("[data-condition-announcement]"), {
+    setLocalizedText(conditionAnnouncement, announce
+      ? {
         en: `Conditions updated: ${conditionLabel("en")}. Interpretation and evidence alignment have been reviewed against this selection.`,
         zh: `条件已更新：${conditionLabel("zh")}。当前判断与证据对齐情况已按此选择更新。`,
+      }
+      : {
+        en: `Conditions: ${conditionLabel("en")}.`,
+        zh: `当前条件：${conditionLabel("zh")}。`,
       });
-    }
     renderSourceNote();
   }
 
@@ -634,6 +638,7 @@
   syncConditionControls();
   savePreferences();
   applyLanguage(state.language, { persist: false });
+  conditionAnnouncement?.setAttribute("aria-live", "polite");
   formation?.setAttribute("data-formation-state", state.formationState);
   requestScrollUpdate();
 })();
