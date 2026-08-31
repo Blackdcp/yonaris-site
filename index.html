@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en" data-language="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Yonaris shows marketing teams what AI and digital channels are telling buyers, why, and what to review next.">
+  <meta name="theme-color" content="#071c27">
+  <title>Yonaris — AI-Native MarTech Infrastructure</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <header class="site-header" data-header>
+    <div class="nav-shell">
+      <a class="brand" href="#top" aria-label="Yonaris home">
+        <img src="public/brand/yonaris-wordmark-white.png" alt="Yonaris" width="154" height="35">
+      </a>
+      <nav class="desktop-nav" aria-label="Primary navigation" data-i18n-aria="navLabel">
+        <a href="#product" data-i18n="navProduct">Product</a>
+        <a href="#casework" data-i18n="navCasework">Casework</a>
+        <a href="#company" data-i18n="navCompany">Company</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="language-switch" type="button" data-language-toggle aria-label="切换到中文">中文</button>
+        <a class="button button-small button-light" href="#contact" data-i18n="navTalk">Talk to Yonaris</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+          <span class="sr-only" data-i18n="openMenu">Open menu</span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-menu" aria-label="Mobile navigation" data-i18n-aria="mobileNavLabel" data-mobile-nav hidden>
+      <a href="#product" data-i18n="navProduct">Product</a>
+      <a href="#casework" data-i18n="navCasework">Casework</a>
+      <a href="#company" data-i18n="navCompany">Company</a>
+      <a href="#contact" data-i18n="navTalk">Talk to Yonaris</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-dark" id="top">
+      <div class="hero-grid shell">
+        <div class="hero-copy reveal">
+          <p class="eyebrow eyebrow-bright" data-i18n="brandPosition">AI-Native MarTech Infrastructure</p>
+          <h1 data-i18n="heroTitle">Know what buyers are being told—and what to change.</h1>
+          <p class="hero-lede" data-i18n="heroBody">Yonaris shows marketing teams what AI and digital channels are telling buyers, which evidence is shaping the shortlist, what action can change it, and what actually changed afterwards.</p>
+          <div class="hero-actions">
+            <a class="button button-acid" href="#product" data-i18n="heroPrimary">See Yonaris in action</a>
+            <a class="text-link text-link-light" href="#contact"><span data-i18n="heroSecondary">Talk to Yonaris</span><span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-meta" aria-label="Workflow summary" data-i18n-aria="workflowSummary">
+            <span data-i18n="metaObserve">Observe</span><i></i>
+            <span data-i18n="metaTrace">Trace</span><i></i>
+            <span data-i18n="metaReview">Review</span><i></i>
+            <span data-i18n="metaRecheck">Recheck</span>
+          </div>
+        </div>
+
+        <div class="record-console reveal" aria-label="Representative market record" data-i18n-aria="recordLabel">
+          <div class="console-bar">
+            <div><span class="status-dot"></span><span data-i18n="recordStatus">Observation ready</span></div>
+            <code>YNS / Q-0481</code>
+          </div>
+          <div class="record-question">
+            <span class="field-label" data-i18n="buyerQuestion">Buyer question</span>
+            <h2 data-i18n="representativeQuestion">Which analytics partner can support an enterprise marketing team across several markets without losing local context or evidence?</h2>
+            <div class="record-context">
+              <span><b data-i18n="marketLabel">Market</b> APAC</span>
+              <span><b data-i18n="languageLabel">Language</b> EN</span>
+              <span><b data-i18n="observedLabel">Observed</b> 28 AUG 2026</span>
+            </div>
+          </div>
+          <div class="signal-stack" role="list" aria-label="Observed channels" data-i18n-aria="channelsLabel">
+            <button class="signal-row is-active" type="button" data-signal="ai" aria-pressed="true">
+              <span class="signal-index">01</span><span data-i18n="channelAi">AI answers</span><em class="tag tag-acid" data-i18n="included">Included because</em>
+            </button>
+            <button class="signal-row" type="button" data-signal="search" aria-pressed="false">
+              <span class="signal-index">02</span><span data-i18n="channelSearch">Search</span><em class="tag" data-i18n="sourceAttached">Source attached</em>
+            </button>
+            <button class="signal-row" type="button" data-signal="editorial" aria-pressed="false">
+              <span class="signal-index">03</span><span data-i18n="channelEditorial">Editorial &amp; reviews</span><em class="tag tag-warn" data-i18n="contextMissing">Context missing</em>
+            </button>
+            <button class="signal-row" type="button" data-signal="owned" aria-pressed="false">
+              <span class="signal-index">04</span><span data-i18n="channelOwned">Company-owned content</span><em class="tag tag-warn" data-i18n="contradiction">Contradiction found</em>
+            </button>
+          </div>
+          <div class="signal-detail" aria-live="polite">
+            <span class="field-label" data-i18n="inspection">Inspection</span>
+            <p data-signal-detail data-i18n="signalAiDetail">Local-market coverage is stated and linked to a public source; conditions remain visible.</p>
+            <button type="button" class="trace-button" data-trace-trigger><span data-i18n="traceReason">Trace the reason</span><span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="hero-rail shell" aria-hidden="true"><span>01</span><i></i><span data-i18n="marketRecordRail">MARKET RECORD / LIVE STRUCTURE</span></div>
+    </section>
+
+    <section class="market-section" id="company">
+      <div class="shell market-grid">
+        <div class="section-intro reveal">
+          <p class="eyebrow" data-i18n="beforeSalesLabel">Before sales begins</p>
+          <h2 data-i18n="marketTitle">The first comparison is already taking shape.</h2>
+          <p data-i18n="marketBody">Buyers can form a first comparison across AI answers, search, public evidence and third-party sources before sales begins. Yonaris makes the information shaping that comparison visible and reviewable.</p>
+        </div>
+        <div class="market-map reveal" aria-label="Evidence relationship map" data-i18n-aria="evidenceMapLabel">
+          <div class="map-head">
+            <span data-i18n="oneQuestion">One buyer question</span>
+            <span>04 <span data-i18n="selectedChannels">selected channels</span></span>
+          </div>
+          <div class="map-body">
+            <div class="map-source"><span>Q</span><strong data-i18n="questionNode">What should enter the shortlist?</strong></div>
+            <div class="connector-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <div class="map-results">
+              <div><span>A1</span><b data-i18n="reasonVisible">Reason visible</b><em data-i18n="evidenceLinked">Evidence linked</em></div>
+              <div><span>S2</span><b data-i18n="mentionedOnly">Mentioned only</b><em data-i18n="scopeMissing">Scope missing</em></div>
+              <div><span>E3</span><b data-i18n="alternativeAdvanced">Alternative advanced</b><em data-i18n="contextAttached">Context attached</em></div>
+              <div><span>O4</span><b data-i18n="claimMismatch">Claim mismatch</b><em data-i18n="reviewRequired">Review required</em></div>
+            </div>
+          </div>
+          <div class="map-foot"><span data-i18n="marketClosing">This is what the market is telling buyers before the sales conversation begins.</span><i></i></div>
+        </div>
+      </div>
+      <div class="shell company-strip reveal">
+        <article><span>01</span><h3 data-i18n="whoTitle">Built for consequential questions</h3><p data-i18n="whoBody">For marketing and commercial teams facing inconsistent answers, unclear evidence, or a difficult next action.</p></article>
+        <article><span>02</span><h3 data-i18n="marketsTitle">One fact. Different conditions.</h3><p data-i18n="marketsBody">Market, language, category terms, alternatives and observation conditions stay attached to every question.</p></article>
+        <article><span>03</span><h3 data-i18n="judgementTitle">Human judgement stays in the loop.</h3><p data-i18n="judgementBody">People decide what is accurate, appropriate and approved—and what the business does next.</p></article>
+      </div>
+    </section>
+
+    <section class="workflow-section section-dark" id="product">
+      <div class="shell">
+        <div class="section-heading-row reveal">
+          <div>
+            <p class="eyebrow eyebrow-bright" data-i18n="productLabel">The Yonaris workflow</p>
+            <h2 data-i18n="productTitle">From one buyer question to the next market action.</h2>
+          </div>
+          <p data-i18n="productIntro">Observe the answer, trace the evidence, put action under review, then ask the same question again.</p>
+        </div>
+        <div class="workflow-shell reveal">
+          <div class="workflow-tabs" role="tablist" aria-label="Product stages" data-i18n-aria="productStagesLabel">
+            <button type="button" role="tab" aria-selected="true" aria-controls="workflow-panel" id="stage-tab-1" data-stage="0"><span>01</span><b data-i18n="stage1Short">Question</b></button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="workflow-panel" id="stage-tab-2" data-stage="1" tabindex="-1"><span>02</span><b data-i18n="stage2Short">Answer</b></button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="workflow-panel" id="stage-tab-3" data-stage="2" tabindex="-1"><span>03</span><b data-i18n="stage3Short">Evidence</b></button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="workflow-panel" id="stage-tab-4" data-stage="3" tabindex="-1"><span>04</span><b data-i18n="stage4Short">Action</b></button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="workflow-panel" id="stage-tab-5" data-stage="4" tabindex="-1"><span>05</span><b data-i18n="stage5Short">Review</b></button>
+          </div>
+          <div class="workflow-panel" id="workflow-panel" role="tabpanel" aria-labelledby="stage-tab-1">
+            <div class="panel-main">
+              <div class="panel-kicker"><span data-stage-number>01</span><span data-i18n="stageMode">INPUT / RECORDED CONDITIONS</span></div>
+              <h3 data-stage-title data-i18n="stage1Title">Buyer questions</h3>
+              <p data-stage-body data-i18n="stage1Body">Start with the question—and the market, audience, language and alternatives around it.</p>
+              <div class="condition-grid" data-stage-visual>
+                <span><b data-i18n="conditionMarket">MARKET</b><em>APAC</em></span>
+                <span><b data-i18n="conditionAudience">AUDIENCE</b><em>Enterprise</em></span>
+                <span><b data-i18n="conditionLanguage">LANGUAGE</b><em>English</em></span>
+                <span><b data-i18n="conditionAlternatives">ALTERNATIVES</b><em>A / B / C</em></span>
+              </div>
+            </div>
+            <aside class="panel-aside">
+              <span class="field-label" data-i18n="recordIntegrity">Record integrity</span>
+              <div class="integrity-meter"><i></i><i></i><i></i><i></i><i></i></div>
+              <dl>
+                <div><dt data-i18n="sourceScope">Source scope</dt><dd data-i18n="attached">Attached</dd></div>
+                <div><dt data-i18n="humanReview">Human review</dt><dd data-i18n="required">Required</dd></div>
+                <div><dt data-i18n="outcomeClaim">Outcome claim</dt><dd data-i18n="bounded">Bounded</dd></div>
+              </dl>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="human-agent-section" id="human-agent">
+      <div class="shell">
+        <div class="section-intro centered reveal">
+          <p class="eyebrow" data-i18n="humanAgentLabel">Human / Agent</p>
+          <h2 data-i18n="humanAgentTitle">One fact. Two readers. No conflicting versions.</h2>
+          <p data-i18n="humanAgentBody">People need context and a useful next move. Agents need a stable claim, source, scope, timestamp and boundary. Both readings come from the same public record.</p>
+        </div>
+        <div class="dual-record reveal">
+          <article class="human-view">
+            <header><span data-i18n="humanView">HUMAN VIEW</span><span class="live-label"><i></i><span data-i18n="reviewed">REVIEWED</span></span></header>
+            <div class="view-body">
+              <p class="field-label" data-i18n="whatHappened">WHAT HAPPENED</p>
+              <h3 data-i18n="humanFinding">A relevant selection reason became visible; the recommendation order did not change.</h3>
+              <div class="human-notes">
+                <div><span>01</span><p><b data-i18n="whyMatters">Why it matters</b><br><span data-i18n="whyMattersBody">Buyers can now inspect why the capability may fit this market.</span></p></div>
+                <div><span>02</span><p><b data-i18n="reviewNext">What to review next</b><br><span data-i18n="reviewNextBody">Whether the same reason appears under recorded conditions.</span></p></div>
+              </div>
+            </div>
+          </article>
+          <div class="record-spine" aria-hidden="true"><span>YNS-F-204</span><i></i><span data-i18n="sameRecord">SAME RECORD</span></div>
+          <article class="agent-view">
+            <header><span data-i18n="agentView">AGENT VIEW</span><code>application/json</code></header>
+            <pre aria-label="Machine-readable record"><code>{
+  <span class="json-key">"claim"</span>: <span class="json-value" data-i18n="jsonClaim">"selection_reason_visible"</span>,
+  <span class="json-key">"stable_id"</span>: <span class="json-value">"YNS-F-204"</span>,
+  <span class="json-key">"market"</span>: <span class="json-value">"APAC"</span>,
+  <span class="json-key">"scope"</span>: <span class="json-value" data-i18n="jsonScope">"observed_channels"</span>,
+  <span class="json-key">"status"</span>: <span class="json-value" data-i18n="jsonStatus">"reviewed"</span>,
+  <span class="json-key">"boundary"</span>: <span class="json-value" data-i18n="jsonBoundary">"non_attributable"</span>
+}</code></pre>
+          </article>
+        </div>
+        <p class="boundary-note reveal"><span data-i18n="boundaryLabel">Boundary</span><span data-i18n="humanAgentBoundary">A structured public record can help a fact be found and checked. It does not guarantee crawling, retrieval, ranking, recommendation or citation.</span></p>
+      </div>
+    </section>
+
+    <section class="casework-section" id="casework">
+      <div class="shell case-grid">
+        <div class="case-sticky reveal">
+          <p class="eyebrow eyebrow-bright" data-i18n="caseLabel">Representative casework</p>
+          <h2 data-i18n="caseTitle">One question, from first answer to review.</h2>
+          <p data-i18n="caseBody">Follow one representative record from the first observation to the reviewed action, the later review, and the limits that remain.</p>
+          <p class="disclosure"><i></i><span data-i18n="caseDisclosure">Representative casework—not a customer performance claim.</span></p>
+        </div>
+        <ol class="case-timeline reveal">
+          <li>
+            <span class="case-number">01</span>
+            <div><p class="field-label" data-i18n="caseStageInitial">INITIAL ANSWER</p><h3 data-i18n="caseInitialTitle">Mentioned, without a reason to advance.</h3><p data-i18n="caseInitialBody">Your company appeared in some observations, but buyers were given no clear reason to advance it into the next comparison.</p></div>
+            <em class="case-status" data-i18n="observedStatus">OBSERVED</em>
+          </li>
+          <li>
+            <span class="case-number">02</span>
+            <div><p class="field-label" data-i18n="caseStageGap">EVIDENCE GAP</p><h3 data-i18n="caseGapTitle">The capability existed. Its selection context did not.</h3><p data-i18n="caseGapBody">The missing piece was a public evidence relationship connecting the capability to the buyer’s selection criterion.</p></div>
+            <em class="case-status case-status-warn" data-i18n="gapStatus">GAP FOUND</em>
+          </li>
+          <li>
+            <span class="case-number">03</span>
+            <div><p class="field-label" data-i18n="caseStageAction">REVIEWED ACTION</p><h3 data-i18n="caseActionTitle">Clarify scope. Attach an inspectable source.</h3><p data-i18n="caseActionBody">The team clarified the capability’s scope and supported markets, then attached a source a buyer could inspect.</p></div>
+            <em class="case-status" data-i18n="approvedStatus">APPROVED</em>
+          </li>
+          <li>
+            <span class="case-number">04</span>
+            <div><p class="field-label" data-i18n="caseStageReview">OUTCOME REVIEW</p><h3 data-i18n="caseReviewTitle">One change. One non-change. No causal claim.</h3><p data-i18n="caseReviewBody">The reason for considering the company became visible. The recommendation order did not change.</p></div>
+            <div class="result-tags"><span data-i18n="changed">CHANGED</span><span data-i18n="unchanged">UNCHANGED</span><span data-i18n="cannotAttribute">CANNOT ATTRIBUTE</span></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="principles-section" aria-labelledby="principles-title">
+      <div class="shell">
+        <div class="section-heading-row reveal">
+          <div><p class="eyebrow" data-i18n="companyLabel">What Yonaris keeps clear</p><h2 id="principles-title" data-i18n="companyTitle">Built for the moment before the sales conversation.</h2></div>
+          <p data-i18n="companyBody">Yonaris builds AI-Native MarTech Infrastructure for teams that need to understand what buyers are being told, which evidence shapes comparison, and what to change next.</p>
+        </div>
+        <div class="principles-grid reveal">
+          <article><span>01</span><h3 data-i18n="principleVisible">Visible</h3><p data-i18n="principleVisibleBody">Observed answers, related evidence and gaps stay connected.</p></article>
+          <article><span>02</span><h3 data-i18n="principleReviewable">Reviewable</h3><p data-i18n="principleReviewableBody">Actions are prioritised for people to approve, adjust or reject.</p></article>
+          <article><span>03</span><h3 data-i18n="principleBounded">Bounded</h3><p data-i18n="principleBoundedBody">Changed, unchanged and non-attributable findings remain separate.</p></article>
+        </div>
+        <div class="promise-boundary reveal">
+          <span data-i18n="notAPromise">NOT A PROMISE OF</span>
+          <p data-i18n="promiseBoundary">Exhaustive coverage, guaranteed ranking, guaranteed citation, autonomous execution, causal proof, or a commercial result from a single change.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section section-dark" id="contact">
+      <div class="shell contact-grid">
+        <div class="contact-copy reveal">
+          <p class="eyebrow eyebrow-bright" data-i18n="contactLabel">Start with the question</p>
+          <h2 data-i18n="contactTitle">Curious where Yonaris could fit?</h2>
+          <p data-i18n="contactBody">You don’t need a brief—or even a clearly defined problem. Tell us what you’re curious about.</p>
+          <a class="email-link" href="mailto:hello@yonaris.com">hello@yonaris.com <span aria-hidden="true">↗</span></a>
+        </div>
+        <form class="contact-form reveal" data-contact-form>
+          <div class="form-head"><span data-i18n="conversationRecord">CONVERSATION / NEW</span><span class="status-dot"></span></div>
+          <label>
+            <span data-i18n="formEmail">Work email *</span>
+            <input type="email" name="email" required autocomplete="email" data-i18n-placeholder="formEmailPlaceholder" placeholder="you@company.com">
+          </label>
+          <label>
+            <span data-i18n="formName">Name</span>
+            <input type="text" name="name" autocomplete="name" data-i18n-placeholder="formNamePlaceholder" placeholder="How should we address you?">
+          </label>
+          <label>
+            <span data-i18n="formCompany">Company or website</span>
+            <input type="text" name="company" autocomplete="organization" data-i18n-placeholder="formCompanyPlaceholder" placeholder="Company / URL">
+          </label>
+          <label>
+            <span data-i18n="formQuestion">What are you curious about?</span>
+            <textarea name="question" rows="3" data-i18n-placeholder="formQuestionPlaceholder" placeholder="A buyer question, market, or something that feels unclear"></textarea>
+          </label>
+          <button class="button button-acid form-submit" type="submit"><span data-i18n="formSubmit">Start a conversation</span><span aria-hidden="true">↗</span></button>
+          <p class="form-note" data-i18n="formNote">This opens your email app. Your message goes to hello@yonaris.com.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-main">
+      <a class="footer-brand" href="#top"><img src="public/brand/yonaris-wordmark-navy.png" alt="Yonaris" width="164" height="37"></a>
+      <p data-i18n="brandPosition">AI-Native MarTech Infrastructure</p>
+      <nav aria-label="Footer navigation" data-i18n-aria="footerNavLabel">
+        <a href="#human-agent">Human / Agent</a>
+        <a href="#product" data-i18n="footerMarkets">Markets &amp; languages</a>
+        <a href="mailto:hello@yonaris.com?subject=Privacy%20request" data-i18n="footerPrivacy">Privacy</a>
+        <a href="#contact" data-i18n="footerContact">Contact</a>
+      </nav>
+    </div>
+    <div class="shell footer-base"><span>© 2026 YONARIS</span><span data-i18n="footerStatement">Built for evidence-aware marketing decisions.</span></div>
+  </footer>
+</body>
+</html>
