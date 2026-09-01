@@ -650,6 +650,37 @@ button { cursor: pointer; }
   box-shadow: 0 2.5rem 6rem rgba(11, 18, 32, .14);
 }
 
+.positioning-theater {
+  margin-top: 4.8rem;
+  border-radius: 24px;
+  box-shadow:
+    0 2.4rem 5.8rem rgba(11, 18, 32, .16),
+    inset 0 0 0 1px rgba(246, 244, 241, .08);
+}
+
+.positioning-theater .question-slip,
+.positioning-theater .outcome-panel {
+  border-radius: 22px;
+  background: rgba(246, 244, 241, .9);
+}
+
+.positioning-theater .reason-lens {
+  background: rgba(11, 18, 32, .82);
+  box-shadow:
+    0 0 0 1px rgba(208, 226, 232, .24),
+    0 0 5.5rem rgba(208, 226, 232, .18);
+}
+
+.positioning-theater .source-chip {
+  border-radius: 18px;
+}
+
+.positioning-theater .question-slip small,
+.positioning-theater .reason-lens small,
+.positioning-theater .outcome-panel small {
+  text-transform: none;
+}
+
 .recommendation-theater:before,
 .recommendation-theater:after {
   position: absolute;
