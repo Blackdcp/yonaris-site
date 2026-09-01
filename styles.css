@@ -379,6 +379,7 @@ button { cursor: pointer; }
 }
 
 .question-slip,
+.product-label,
 .source-chip,
 .reason-lens,
 .outcome-panel {
@@ -389,6 +390,28 @@ button { cursor: pointer; }
   color: var(--ink);
   box-shadow: 0 1.4rem 3.5rem rgba(0, 0, 0, .18);
   backdrop-filter: blur(18px);
+}
+
+.product-label {
+  top: 7%;
+  right: 6%;
+  display: grid;
+  min-width: 17rem;
+  gap: .3rem;
+  padding: .85rem 1rem;
+  background: rgba(11, 18, 32, .54);
+  color: rgba(246, 244, 241, .96);
+  box-shadow: none;
+}
+
+.product-label small {
+  color: rgba(208, 226, 232, .68);
+  font-size: .68rem;
+}
+
+.product-label strong {
+  font-size: .95rem;
+  font-weight: 570;
 }
 
 .question-slip {
@@ -1062,6 +1085,7 @@ button { cursor: pointer; }
   .company,
   .contact-layout { grid-template-columns: 1fr; }
   .question-slip { width: 56%; }
+  .product-label { min-width: 14rem; }
   .outcome-panel { width: 42%; }
   .platform-flow { grid-template-columns: 1fr 1fr; }
   .platform-flow article { min-height: 9.5rem; }
@@ -1093,6 +1117,7 @@ button { cursor: pointer; }
   .product-story { padding-top: 5rem; }
   .recommendation-theater { min-height: 42rem; }
   .question-slip { top: 5%; left: 5%; width: 90%; }
+  .product-label { top: 21%; right: 5%; min-width: 0; width: 70%; }
   .source-chip { min-width: 8.8rem; padding: .65rem .75rem; }
   .source-one { top: 28%; left: 6%; }
   .source-two { left: 7%; bottom: 26%; }
