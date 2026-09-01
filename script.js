@@ -19,8 +19,8 @@
     zh: "Yonaris - AI 原生增长平台",
   };
   const descriptions = {
-    en: "Yonaris helps brands win when buyers ask AI: understand how AI reads the market, why competitors are chosen, and what to do next.",
-    zh: "Yonaris 帮助品牌看清 AI 如何读取市场、为什么推荐某家公司，以及团队下一步该做什么。",
+    en: "Yonaris helps teams see how AI reads a market, forms a preference, and turns public proof into recommendations.",
+    zh: "Yonaris 让团队看见 AI 如何读取市场、形成偏好，并把公开证据转化为推荐。",
   };
 
   let language = "en";
@@ -113,6 +113,7 @@
   function updateMotion() {
     motionFrame = null;
     header?.classList.toggle("scrolled", scrollY > 8);
+    revealVisibleItems();
     motionSurfaces.forEach((surface) => {
       if (surface.hidden) return;
       const rect = surface.getBoundingClientRect();
