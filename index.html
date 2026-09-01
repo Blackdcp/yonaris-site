@@ -67,59 +67,88 @@
 
     <section id="product" class="platform section-pad" aria-labelledby="product-title">
       <header class="platform-heading reveal">
-        <h2 id="product-title"><span data-lang="en">See how AI forms the recommendation.</span><span data-lang="zh" lang="zh-CN" hidden>看见 AI 如何形成推荐。</span></h2>
-        <p><span data-lang="en">One flow: answer, evidence, gap, movement.</span><span data-lang="zh" lang="zh-CN" hidden>一条路径：答案、证据、缺口、变化。</span></p>
+        <h2 id="product-title"><span data-lang="en">See why AI chooses one brand over another.</span><span data-lang="zh" lang="zh-CN" hidden>看清 AI 为什么选择一个品牌，而不是另一个。</span></h2>
+        <p><span data-lang="en">From the answer to the evidence behind it — and the move that changes it.</span><span data-lang="zh" lang="zh-CN" hidden>从答案，到背后的证据，再到真正改变结果的动作。</span></p>
       </header>
 
       <div class="platform-showcase" data-showcase>
-        <div class="platform-tabs" role="tablist" aria-label="Product views" data-aria-en="Product views" data-aria-zh="产品视图">
-          <button type="button" role="tab" aria-selected="true" aria-controls="panel-observe" id="tab-observe" data-view="observe"><span class="active-dot"></span><strong>Answer</strong><small>01</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-trace" id="tab-trace" data-view="trace"><span class="active-dot"></span><strong>Evidence</strong><small>02</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-prioritize" id="tab-prioritize" data-view="prioritize"><span class="active-dot"></span><strong>Gap</strong><small>03</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-review" id="tab-review" data-view="review"><span class="active-dot"></span><strong>Movement</strong><small>04</small></button>
+        <div class="platform-rail">
+          <p class="rail-question"><span data-lang="en">One buyer question.<br>Four moments.</span><span data-lang="zh" lang="zh-CN" hidden>一个客户问题。<br>四个关键时刻。</span></p>
+          <div class="platform-tabs" aria-label="Recommendation story" data-aria-en="Recommendation story" data-aria-zh="推荐形成过程">
+            <button type="button" aria-pressed="true" data-view="observe"><small>01</small><strong>Answer</strong><span data-lang="en">What AI says</span><span data-lang="zh" lang="zh-CN" hidden>AI 怎么说</span></button>
+            <button type="button" aria-pressed="false" data-view="trace"><small>02</small><strong>Evidence</strong><span data-lang="en">Why it says it</span><span data-lang="zh" lang="zh-CN" hidden>为什么这样说</span></button>
+            <button type="button" aria-pressed="false" data-view="prioritize"><small>03</small><strong>Gap</strong><span data-lang="en">What is missing</span><span data-lang="zh" lang="zh-CN" hidden>缺失的关系</span></button>
+            <button type="button" aria-pressed="false" data-view="review"><small>04</small><strong>Movement</strong><span data-lang="en">What changed</span><span data-lang="zh" lang="zh-CN" hidden>结果如何改变</span></button>
+          </div>
         </div>
 
-        <div class="product-canvas reveal" data-motion-surface>
-          <img src="/public/art/yonaris-product-canvas.png" alt="">
-          <div class="browser-window">
-            <div class="browser-bar"><span></span><span></span><span></span><p>record.yonaris.com</p></div>
+        <div class="story-reel">
+          <article id="story-observe" class="story-frame story-answer is-active reveal" data-story="observe" data-motion-surface>
+            <img class="story-texture" src="/public/art/yonaris-product-canvas.png" alt="">
+            <div class="story-meta"><span>01 / Answer</span><span>APAC · EN</span></div>
+            <div class="answer-question">
+              <small><span data-lang="en">Buyer asks</span><span data-lang="zh" lang="zh-CN" hidden>客户提问</span></small>
+              <h3><span data-lang="en">Why is Northstar recommended before us?</span><span data-lang="zh" lang="zh-CN" hidden>为什么竞品先被 AI 推荐？</span></h3>
+            </div>
+            <div class="answer-echo echo-one"><span>ChatGPT</span><p>“Northstar demonstrates stronger local-market proof.”</p></div>
+            <div class="answer-echo echo-two"><span>AI Search</span><p>“Northstar is the more established choice.”</p></div>
+            <div class="answer-echo echo-three"><span>Editorial</span><p>“Northstar leads the comparison.”</p></div>
+            <div class="answer-verdict">
+              <span><span data-lang="en">The answer is clear.</span><span data-lang="zh" lang="zh-CN" hidden>答案很清楚。</span></span>
+              <strong>Northstar</strong>
+              <small><span data-lang="en">recommended first</span><span data-lang="zh" lang="zh-CN" hidden>优先被推荐</span></small>
+            </div>
+            <div class="answer-scan" aria-hidden="true"></div>
+          </article>
 
-            <section id="panel-observe" class="product-view is-active" role="tabpanel" aria-labelledby="tab-observe" data-panel="observe">
-              <header class="ui-header"><div><small><span data-lang="en">Buyer question</span><span data-lang="zh" lang="zh-CN" hidden>客户问题</span></small><h3><span data-lang="en">Why is Northstar recommended before us?</span><span data-lang="zh" lang="zh-CN" hidden>为什么竞品先被 AI 推荐？</span></h3></div><div class="condition-pill">APAC · EN</div></header>
-              <div class="answer-focus"><div class="answer-score"><strong>04</strong><span><span data-lang="en">surfaces observed</span><span data-lang="zh" lang="zh-CN" hidden>个观测表面</span></span></div><div class="answer-summary"><small><span data-lang="en">Current answer</span><span data-lang="zh" lang="zh-CN" hidden>当前答案</span></small><p><span data-lang="en">Northstar advances because its market proof is easier to inspect.</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐，因为它的市场证据更容易被核对。</span></p></div></div>
-              <div class="channel-strip"><span>ChatGPT <b>High</b></span><span>AI Search <b>High</b></span><span>Editorial <b>Medium</b></span><span>Owned Content <b>Gap</b></span></div>
-            </section>
+          <article id="story-trace" class="story-frame story-evidence reveal" data-story="trace" data-motion-surface>
+            <img class="story-texture" src="/public/art/yonaris-contact-canvas.png" alt="">
+            <div class="story-meta"><span>02 / Evidence</span><span>4 sources</span></div>
+            <div class="evidence-title">
+              <small><span data-lang="en">Trace the reason</span><span data-lang="zh" lang="zh-CN" hidden>追溯推荐理由</span></small>
+              <h3><span data-lang="en">AI does not rank claims.<br>It ranks proof it can connect.</span><span data-lang="zh" lang="zh-CN" hidden>AI 不会给主张排序。<br>它会给能连接的证据排序。</span></h3>
+            </div>
+            <div class="evidence-word" aria-hidden="true">PROOF</div>
+            <div class="evidence-source source-one"><small>01</small><span>AI answers</span></div>
+            <div class="evidence-source source-two"><small>02</small><span>Search</span></div>
+            <div class="evidence-source source-three"><small>03</small><span>Public record</span></div>
+            <div class="evidence-source source-four"><small>04</small><span>Owned content</span></div>
+            <svg class="evidence-lines" viewBox="0 0 1000 680" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M70 360 C290 360 320 500 520 400 S760 300 930 346"></path>
+              <path d="M120 520 C290 520 335 438 520 400"></path>
+              <path d="M420 585 C430 515 470 458 520 400"></path>
+              <path class="live-line" d="M520 400 C700 345 760 320 930 346"></path>
+            </svg>
+            <div class="evidence-reason"><span><span data-lang="en">Reason found</span><span data-lang="zh" lang="zh-CN" hidden>找到推荐理由</span></span><strong><span data-lang="en">Local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>本地市场证明</span></strong></div>
+          </article>
 
-            <section id="panel-trace" class="product-view" role="tabpanel" aria-labelledby="tab-trace" data-panel="trace" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Evidence path</span><span data-lang="zh" lang="zh-CN" hidden>证据路径</span></small><h3><span data-lang="en">Recommendation reason: local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>推荐理由：本地市场证明</span></h3></div><div class="condition-pill"><span data-lang="en">4 sources</span><span data-lang="zh" lang="zh-CN" hidden>4 个来源</span></div></header>
-              <div class="trace-map">
-                <div class="trace-node source-a">AI answer</div><div class="trace-node source-b">Search</div><div class="trace-node source-c">Public record</div>
-                <div class="trace-node reason"><span data-lang="en">Market proof</span><span data-lang="zh" lang="zh-CN" hidden>市场证明</span></div>
-                <div class="trace-node outcome"><span data-lang="en">Recommended</span><span data-lang="zh" lang="zh-CN" hidden>被推荐</span></div>
-                <svg viewBox="0 0 800 330" preserveAspectRatio="none" aria-hidden="true"><path d="M115 70 C260 70 250 162 398 162M115 165 C260 165 250 162 398 162M115 260 C260 260 250 162 398 162M500 162 C610 162 620 162 705 162"></path><path class="gap-line" d="M115 260 C260 260 250 250 398 250"></path></svg>
-                <p class="gap-note"><span data-lang="en">Capability stated. Connection missing.</span><span data-lang="zh" lang="zh-CN" hidden>能力存在，连接缺失。</span></p>
-              </div>
-            </section>
+          <article id="story-prioritize" class="story-frame story-gap reveal" data-story="prioritize" data-motion-surface>
+            <div class="story-meta"><span>03 / Gap</span><span><span data-lang="en">Priority 01</span><span data-lang="zh" lang="zh-CN" hidden>优先级 01</span></span></div>
+            <div class="gap-statement">
+              <small><span data-lang="en">Your capability exists.</span><span data-lang="zh" lang="zh-CN" hidden>你的能力真实存在。</span></small>
+              <h3><span data-lang="en">The relationship does not.</span><span data-lang="zh" lang="zh-CN" hidden>缺失的是关系。</span></h3>
+            </div>
+            <div class="gap-left"><span>CAPABILITY</span><strong>Regional delivery</strong><small>Verified internally</small></div>
+            <div class="gap-rift" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="gap-right"><span>CONTEXT</span><strong>APAC buyer need</strong><small>Visible to AI</small></div>
+            <p class="gap-missing"><span data-lang="en">One missing connection keeps real proof out of the answer.</span><span data-lang="zh" lang="zh-CN" hidden>只少了一条连接，真实证据就没有进入答案。</span></p>
+            <div class="gap-action"><span>Yonaris</span><strong><span data-lang="en">Make the reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可以被 AI 核对。</span></strong></div>
+          </article>
 
-            <section id="panel-prioritize" class="product-view" role="tabpanel" aria-labelledby="tab-prioritize" data-panel="prioritize" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Next move</span><span data-lang="zh" lang="zh-CN" hidden>下一步</span></small><h3><span data-lang="en">Make the selection reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可被核对。</span></h3></div><div class="condition-pill priority"><span data-lang="en">First</span><span data-lang="zh" lang="zh-CN" hidden>优先</span></div></header>
-              <div class="priority-stack">
-                <p><span>Gap</span><strong>Proof exists. Relationship missing.</strong></p>
-                <p><span>Action</span><strong>Attach scope, source and market context.</strong></p>
-                <p><span>Publish</span><strong>Place it where AI can inspect.</strong></p>
-              </div>
-              <div class="review-row"><span><i></i><span data-lang="en">Ready for team review</span><span data-lang="zh" lang="zh-CN" hidden>待团队审阅</span></span><button type="button"><span data-lang="en">Prepare record</span><span data-lang="zh" lang="zh-CN" hidden>准备记录</span></button></div>
-            </section>
-
-            <section id="panel-review" class="product-view" role="tabpanel" aria-labelledby="tab-review" data-panel="review" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Review</span><span data-lang="zh" lang="zh-CN" hidden>复核</span></small><h3><span data-lang="en">What changed after the record was updated?</span><span data-lang="zh" lang="zh-CN" hidden>记录更新后，发生了什么变化？</span></h3></div><div class="condition-pill"><span data-lang="en">Same question</span><span data-lang="zh" lang="zh-CN" hidden>同一问题</span></div></header>
-              <div class="movement-board">
-                <p><span>Reason</span><strong>Visible</strong></p>
-                <p><span>Order</span><strong>Watched</strong></p>
-                <p><span>Next gap</span><strong>Queued</strong></p>
-              </div>
-            </section>
-          </div>
+          <article id="story-review" class="story-frame story-movement reveal" data-story="review" data-motion-surface>
+            <div class="story-meta"><span>04 / Movement</span><span><span data-lang="en">Same question · 30 days later</span><span data-lang="zh" lang="zh-CN" hidden>同一问题 · 30 天后</span></span></div>
+            <div class="movement-copy">
+              <small><span data-lang="en">Replay the answer</span><span data-lang="zh" lang="zh-CN" hidden>重新运行答案</span></small>
+              <h3><span data-lang="en">Now the reason travels with you.</span><span data-lang="zh" lang="zh-CN" hidden>现在，推荐理由开始跟随你。</span></h3>
+            </div>
+            <div class="movement-orbit orbit-one" aria-hidden="true"></div>
+            <div class="movement-orbit orbit-two" aria-hidden="true"></div>
+            <div class="movement-before"><span>Before</span><strong>Not selected</strong><small>Proof disconnected</small></div>
+            <div class="movement-brand"><span>Yonaris</span><strong>Your brand</strong><small><span data-lang="en">Reason visible</span><span data-lang="zh" lang="zh-CN" hidden>推荐理由已可见</span></small></div>
+            <div class="movement-after"><span>After</span><strong>Recommended</strong><small>Evidence connected</small></div>
+            <div class="movement-line" aria-hidden="true"><i></i></div>
+            <p class="movement-outcome"><span data-lang="en">The product does not stop at monitoring. It shows what changed the answer.</span><span data-lang="zh" lang="zh-CN" hidden>不只监测结果，更看清什么真正改变了答案。</span></p>
+          </article>
         </div>
       </div>
     </section>

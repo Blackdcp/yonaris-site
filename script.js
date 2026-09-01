@@ -22,10 +22,6 @@
   let siteMode = "human";
   let menuOpen = false;
   let activeView = "observe";
-  let showcaseVisible = false;
-  let showcaseHovered = false;
-  let userPauseUntil = 0;
-  let cycleTimer = null;
   let motionFrame = null;
 
   try {
@@ -99,32 +95,23 @@
     syncMenu();
   }
 
-  function setView(name, focus = false) {
+  function setView(name, focus = false, scroll = false) {
     if (!showcase || !viewOrder.includes(name)) return;
     activeView = name;
     showcase.querySelectorAll("[data-view]").forEach((button) => {
       const active = button.dataset.view === name;
-      button.setAttribute("aria-selected", String(active));
-      button.tabIndex = active ? 0 : -1;
+      button.setAttribute("aria-pressed", String(active));
       if (active && focus) button.focus();
     });
-    showcase.querySelectorAll("[data-panel]").forEach((panel) => {
-      const active = panel.dataset.panel === name;
-      panel.hidden = !active;
-      panel.classList.toggle("is-active", active);
+    showcase.querySelectorAll("[data-story]").forEach((story) => {
+      story.classList.toggle("is-active", story.dataset.story === name);
     });
-  }
-
-  function cycleView() {
-    if (!showcaseVisible || showcaseHovered || document.hidden || Date.now() < userPauseUntil || siteMode === "agent") return;
-    const index = viewOrder.indexOf(activeView);
-    setView(viewOrder[(index + 1) % viewOrder.length]);
-  }
-
-  function startCycle() {
-    clearInterval(cycleTimer);
-    if (reduced.matches) return;
-    cycleTimer = window.setInterval(cycleView, 5200);
+    if (scroll) {
+      showcase.querySelector(`[data-story="${name}"]`)?.scrollIntoView({
+        behavior: reduced.matches ? "auto" : "smooth",
+        block: "start",
+      });
+    }
   }
 
   function updateMotion() {
@@ -178,9 +165,13 @@
 
   function setupShowcaseObserver() {
     if (!showcase || !("IntersectionObserver" in window)) return;
-    new IntersectionObserver(([entry]) => {
-      showcaseVisible = entry.isIntersecting;
-    }, { threshold: 0.3 }).observe(showcase);
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.dataset.story) setView(visible.target.dataset.story);
+    }, { threshold: [.28, .52, .72], rootMargin: "-12% 0px -34%" });
+    showcase.querySelectorAll("[data-story]").forEach((story) => observer.observe(story));
   }
 
   function scrollToAnchor(event) {
@@ -234,21 +225,17 @@
 
   showcase?.querySelectorAll("[data-view]").forEach((button, index, buttons) => {
     button.addEventListener("click", () => {
-      userPauseUntil = Date.now() + 12000;
-      setView(button.dataset.view);
+      setView(button.dataset.view, false, true);
     });
     button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
       event.preventDefault();
-      userPauseUntil = Date.now() + 12000;
-      const step = event.key === "ArrowRight" ? 1 : -1;
+      const step = ["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1;
       const next = (index + step + buttons.length) % buttons.length;
-      setView(buttons[next].dataset.view, true);
+      setView(buttons[next].dataset.view, true, true);
     });
   });
 
-  showcase?.addEventListener("pointerenter", () => { showcaseHovered = true; });
-  showcase?.addEventListener("pointerleave", () => { showcaseHovered = false; });
   leadForm?.addEventListener("submit", composeLeadEmail);
 
   addEventListener("scroll", requestMotionUpdate, { passive: true });
@@ -256,13 +243,9 @@
     if (innerWidth > 900 && menuOpen) closeMenu();
     requestMotionUpdate();
   }, { passive: true });
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) startCycle();
-  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeMenu();
   });
-  reduced.addEventListener?.("change", startCycle);
 
   document.querySelectorAll("[data-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
@@ -275,6 +258,5 @@
   setupReveal();
   setupMotionSurfaces();
   setupShowcaseObserver();
-  startCycle();
   updateMotion();
 })();
