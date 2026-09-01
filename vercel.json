@@ -5,7 +5,7 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/product", "destination": "/#product", "permanent": false },
-    { "source": "/platform", "destination": "/#platform", "permanent": false },
+    { "source": "/platform", "destination": "/#product", "permanent": false },
     { "source": "/teams", "destination": "/#casework", "permanent": false },
     { "source": "/casework", "destination": "/#casework", "permanent": false },
     { "source": "/future", "destination": "/#company", "permanent": false },
