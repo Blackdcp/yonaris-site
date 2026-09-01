@@ -26,17 +26,18 @@
       <a href="#company"><span data-lang="en">Company</span><span data-lang="zh" lang="zh-CN" hidden>公司</span></a>
     </nav>
     <div class="header-actions">
-      <div class="site-mode" role="group" aria-label="Reading mode">
-        <button type="button" data-site-view="human" aria-pressed="true">Human</button>
-        <button type="button" data-site-view="agent" aria-pressed="false">Agent</button>
-      </div>
       <div class="language" role="group" aria-label="Language" data-aria-en="Language" data-aria-zh="语言">
         <button type="button" data-language="en" aria-pressed="true">EN</button>
         <button type="button" data-language="zh" aria-pressed="false">中文</button>
       </div>
-      <a class="header-cta" href="#contact"><span data-lang="en">Start</span><span data-lang="zh" lang="zh-CN" hidden>开始</span></a>
+      <a class="header-cta" href="#contact"><span data-lang="en">Request a demo</span><span data-lang="zh" lang="zh-CN" hidden>预约演示</span></a>
     </div>
   </header>
+
+  <div class="site-mode" role="group" aria-label="Reading mode">
+    <button type="button" data-site-view="human" aria-pressed="true">Human</button>
+    <button type="button" data-site-view="agent" aria-pressed="false">Agent</button>
+  </div>
 
   <main id="main" class="human-site" data-human-site>
     <section id="top" class="hero page-frame" aria-labelledby="hero-title" data-motion-surface>
@@ -46,7 +47,7 @@
         <h1 id="hero-title"><span data-lang="en">When buyers ask AI, the first comparison has begun.</span><span data-lang="zh" lang="zh-CN" hidden>客户问 AI 时，第一轮比较已经开始。</span></h1>
         <p><span data-lang="en">Yonaris shows how AI explains, compares and recommends you, then surfaces what is worth changing first.</span><span data-lang="zh" lang="zh-CN" hidden>Yonaris 让团队看清：AI 如何解释你、比较你、推荐你，以及哪里值得先改。</span></p>
         <div class="hero-actions">
-          <a class="light-button" href="#contact"><span data-lang="en">Start with one question</span><span data-lang="zh" lang="zh-CN" hidden>从一个问题开始</span></a>
+          <a class="light-button" href="#contact"><span data-lang="en">Request a demo</span><span data-lang="zh" lang="zh-CN" hidden>预约演示</span></a>
           <a class="ghost-button" href="#product"><span data-lang="en">View product</span><span data-lang="zh" lang="zh-CN" hidden>查看产品</span></a>
         </div>
       </div>
@@ -66,16 +67,16 @@
 
     <section id="product" class="platform section-pad" aria-labelledby="product-title">
       <header class="platform-heading reveal">
-        <h2 id="product-title"><span data-lang="en">Start with one real question.</span><span data-lang="zh" lang="zh-CN" hidden>从一个真实问题开始。</span></h2>
-        <p><span data-lang="en">Observe the answer. Trace the reason. Prioritize the gap. Review what changed.</span><span data-lang="zh" lang="zh-CN" hidden>观察答案，追溯理由，确定缺口，再复核变化。</span></p>
+        <h2 id="product-title"><span data-lang="en">See how AI forms the recommendation.</span><span data-lang="zh" lang="zh-CN" hidden>看见 AI 如何形成推荐。</span></h2>
+        <p><span data-lang="en">One flow: answer, evidence, gap, movement.</span><span data-lang="zh" lang="zh-CN" hidden>一条路径：答案、证据、缺口、变化。</span></p>
       </header>
 
       <div class="platform-showcase" data-showcase>
         <div class="platform-tabs" role="tablist" aria-label="Product views" data-aria-en="Product views" data-aria-zh="产品视图">
-          <button type="button" role="tab" aria-selected="true" aria-controls="panel-observe" id="tab-observe" data-view="observe"><span class="active-dot"></span><strong>Observe</strong><small><span data-lang="en">See how AI answers.</span><span data-lang="zh" lang="zh-CN" hidden>看 AI 如何回答。</span></small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-trace" id="tab-trace" data-view="trace"><span class="active-dot"></span><strong>Trace</strong><small><span data-lang="en">Find the evidence path.</span><span data-lang="zh" lang="zh-CN" hidden>找到证据路径。</span></small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-prioritize" id="tab-prioritize" data-view="prioritize"><span class="active-dot"></span><strong>Prioritize</strong><small><span data-lang="en">See what to change first.</span><span data-lang="zh" lang="zh-CN" hidden>看哪里先改。</span></small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-review" id="tab-review" data-view="review"><span class="active-dot"></span><strong>Review</strong><small><span data-lang="en">See what moved.</span><span data-lang="zh" lang="zh-CN" hidden>看发生了什么变化。</span></small></button>
+          <button type="button" role="tab" aria-selected="true" aria-controls="panel-observe" id="tab-observe" data-view="observe"><span class="active-dot"></span><strong>Answer</strong><small>01</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-trace" id="tab-trace" data-view="trace"><span class="active-dot"></span><strong>Evidence</strong><small>02</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-prioritize" id="tab-prioritize" data-view="prioritize"><span class="active-dot"></span><strong>Gap</strong><small>03</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-review" id="tab-review" data-view="review"><span class="active-dot"></span><strong>Movement</strong><small>04</small></button>
         </div>
 
         <div class="product-canvas reveal" data-motion-surface>
@@ -102,16 +103,20 @@
 
             <section id="panel-prioritize" class="product-view" role="tabpanel" aria-labelledby="tab-prioritize" data-panel="prioritize" hidden>
               <header class="ui-header"><div><small><span data-lang="en">Next move</span><span data-lang="zh" lang="zh-CN" hidden>下一步</span></small><h3><span data-lang="en">Make the selection reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可被核对。</span></h3></div><div class="condition-pill priority"><span data-lang="en">First</span><span data-lang="zh" lang="zh-CN" hidden>优先</span></div></header>
-              <div class="decision-grid"><article><small><span data-lang="en">Gap</span><span data-lang="zh" lang="zh-CN" hidden>缺口</span></small><p><span data-lang="en">The fact exists, but the public evidence relationship does not.</span><span data-lang="zh" lang="zh-CN" hidden>事实存在，但公开证据关系没有建立。</span></p></article><article><small><span data-lang="en">Action</span><span data-lang="zh" lang="zh-CN" hidden>动作</span></small><p><span data-lang="en">Clarify scope. Attach source. Publish where AI can read.</span><span data-lang="zh" lang="zh-CN" hidden>明确范围，连接来源，发布到 AI 能读取的位置。</span></p></article></div>
+              <div class="priority-stack">
+                <p><span>Gap</span><strong>Proof exists. Relationship missing.</strong></p>
+                <p><span>Action</span><strong>Attach scope, source and market context.</strong></p>
+                <p><span>Publish</span><strong>Place it where AI can inspect.</strong></p>
+              </div>
               <div class="review-row"><span><i></i><span data-lang="en">Ready for team review</span><span data-lang="zh" lang="zh-CN" hidden>待团队审阅</span></span><button type="button"><span data-lang="en">Prepare record</span><span data-lang="zh" lang="zh-CN" hidden>准备记录</span></button></div>
             </section>
 
             <section id="panel-review" class="product-view" role="tabpanel" aria-labelledby="tab-review" data-panel="review" hidden>
               <header class="ui-header"><div><small><span data-lang="en">Review</span><span data-lang="zh" lang="zh-CN" hidden>复核</span></small><h3><span data-lang="en">What changed after the record was updated?</span><span data-lang="zh" lang="zh-CN" hidden>记录更新后，发生了什么变化？</span></h3></div><div class="condition-pill"><span data-lang="en">Same question</span><span data-lang="zh" lang="zh-CN" hidden>同一问题</span></div></header>
-              <div class="review-cards">
-                <article><small><span data-lang="en">Changed</span><span data-lang="zh" lang="zh-CN" hidden>已变化</span></small><strong><span data-lang="en">Reason visible</span><span data-lang="zh" lang="zh-CN" hidden>理由出现</span></strong></article>
-                <article><small><span data-lang="en">Unchanged</span><span data-lang="zh" lang="zh-CN" hidden>未变化</span></small><strong><span data-lang="en">Order</span><span data-lang="zh" lang="zh-CN" hidden>顺序</span></strong></article>
-                <article><small><span data-lang="en">Signal</span><span data-lang="zh" lang="zh-CN" hidden>信号</span></small><strong><span data-lang="en">Next gap</span><span data-lang="zh" lang="zh-CN" hidden>下个缺口</span></strong></article>
+              <div class="movement-board">
+                <p><span>Reason</span><strong>Visible</strong></p>
+                <p><span>Order</span><strong>Watched</strong></p>
+                <p><span>Next gap</span><strong>Queued</strong></p>
               </div>
             </section>
           </div>
@@ -151,16 +156,15 @@
       <img class="canvas-image" src="/public/art/yonaris-contact-canvas.png" alt=""><div class="contact-shade"></div>
       <div class="contact-layout reveal">
         <div class="contact-copy">
-          <h2 id="contact-title"><span data-lang="en">Bring one question.</span><span data-lang="zh" lang="zh-CN" hidden>带来一个客户问题。</span></h2>
-          <p><span data-lang="en">Tell us the market, competitor or AI answer you want to understand.</span><span data-lang="zh" lang="zh-CN" hidden>告诉我们你关心的市场、竞品或 AI 答案，我们从这里开始看。</span></p>
+          <h2 id="contact-title"><span data-lang="en">Request a demo.</span><span data-lang="zh" lang="zh-CN" hidden>预约演示。</span></h2>
+          <p><span data-lang="en">Leave your details. We will show how AI is reading your market.</span><span data-lang="zh" lang="zh-CN" hidden>留下联系方式，我们会演示 AI 正在如何读取你的市场。</span></p>
         </div>
         <form class="lead-form" data-lead-form>
           <label><span data-lang="en">Name</span><span data-lang="zh" lang="zh-CN" hidden>姓名</span><input name="name" autocomplete="name" required></label>
           <label data-region="zh" hidden><span lang="zh-CN">电话</span><input name="phone" autocomplete="tel" disabled></label>
           <label data-region="en"><span>Work email</span><input name="email" type="email" autocomplete="email" required></label>
           <label><span data-lang="en">Company</span><span data-lang="zh" lang="zh-CN" hidden>公司</span><input name="company" autocomplete="organization" required></label>
-          <label class="wide"><span data-lang="en">What question should we start with?</span><span data-lang="zh" lang="zh-CN" hidden>你想看哪个客户问题？</span><textarea name="question" rows="4" required></textarea></label>
-          <button class="form-submit" type="submit"><span data-lang="en">Submit question</span><span data-lang="zh" lang="zh-CN" hidden>提交问题</span></button>
+          <button class="form-submit" type="submit"><span data-lang="en">Request a demo</span><span data-lang="zh" lang="zh-CN" hidden>预约演示</span></button>
           <p class="form-note"><span data-lang="en">Sent to leads@yonaris.com</span><span data-lang="zh" lang="zh-CN" hidden>信息将发送至 leads@yonaris.com</span></p>
         </form>
       </div>
@@ -204,8 +208,8 @@
   ],
   "contact": {
     "recipient": "leads@yonaris.com",
-    "domestic_fields": ["name", "phone", "company", "question"],
-    "international_fields": ["name", "work_email", "company", "question"]
+    "domestic_fields": ["name", "phone", "company"],
+    "international_fields": ["name", "work_email", "company"]
   }
 }</code></pre>
       </div>

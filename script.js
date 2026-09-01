@@ -69,6 +69,7 @@
   }
 
   function setSiteMode(next, persist = true, resetScroll = true) {
+    const previousMode = siteMode;
     siteMode = next === "agent" ? "agent" : "human";
     root.dataset.siteMode = siteMode;
     humanSurfaces.forEach((surface) => { surface.hidden = siteMode === "agent"; });
@@ -77,7 +78,7 @@
       button.setAttribute("aria-pressed", String(button.dataset.siteView === siteMode));
     });
     if (siteMode === "agent") closeMenu();
-    if (resetScroll) window.scrollTo({ top: 0, behavior: "auto" });
+    if (resetScroll && previousMode !== siteMode) window.scrollTo({ top: 0, behavior: "auto" });
     if (persist) {
       try {
         localStorage.setItem("yonaris-site-mode", siteMode);
@@ -199,23 +200,17 @@
     if (!leadForm?.reportValidity()) return;
 
     const formData = new FormData(leadForm);
-    const subject = language === "zh" ? "Yonaris 客户问题咨询" : "Yonaris buyer question";
+    const subject = language === "zh" ? "Yonaris 演示预约" : "Yonaris demo request";
     const lines = language === "zh"
       ? [
           `姓名：${formData.get("name") || ""}`,
           `电话：${formData.get("phone") || ""}`,
           `公司：${formData.get("company") || ""}`,
-          "",
-          "客户问题：",
-          formData.get("question") || "",
         ]
       : [
           `Name: ${formData.get("name") || ""}`,
           `Work email: ${formData.get("email") || ""}`,
           `Company: ${formData.get("company") || ""}`,
-          "",
-          "Question:",
-          formData.get("question") || "",
         ];
 
     const query = new URLSearchParams({ subject, body: lines.join("\n") });
