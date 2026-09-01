@@ -14,8 +14,8 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
   const titles = {
-    en: "Yonaris - AI Visibility & GEO Monitoring",
-    zh: "Yonaris - AI 可见性与 GEO 监测",
+    en: "Yonaris - AI-Native Growth Platform",
+    zh: "Yonaris - AI 原生增长平台",
   };
 
   let language = "en";
