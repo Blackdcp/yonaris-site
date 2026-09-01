@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-language="en">
+<html lang="en" data-language="en" data-site-mode="human">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,10 @@
       <a href="#company"><span data-lang="en">Company</span><span data-lang="zh" lang="zh-CN" hidden>公司</span></a>
     </nav>
     <div class="header-actions">
+      <div class="site-mode" role="group" aria-label="Reading mode">
+        <button type="button" data-site-view="human" aria-pressed="true">Human</button>
+        <button type="button" data-site-view="agent" aria-pressed="false">Agent</button>
+      </div>
       <div class="language" role="group" aria-label="Language" data-aria-en="Language" data-aria-zh="语言">
         <button type="button" data-language="en" aria-pressed="true">EN</button>
         <button type="button" data-language="zh" aria-pressed="false">中文</button>
@@ -34,7 +38,7 @@
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" class="human-site" data-human-site>
     <section id="top" class="hero page-frame" aria-labelledby="hero-title" data-motion-surface>
       <img class="canvas-image" src="/public/art/yonaris-hero-canvas.png" alt="">
       <div class="canvas-shade"></div>
@@ -50,11 +54,13 @@
 
     <section class="positioning section-pad reveal" aria-labelledby="positioning-title">
       <h2 id="positioning-title"><span data-lang="en">It is not whether you have content. It is whether AI reads it as a reason to choose you.</span><span data-lang="zh" lang="zh-CN" hidden>不是你有没有内容，是 AI 有没有把你读成选择理由。</span></h2>
-      <div class="signal-row" aria-label="Common AI recommendation gaps" data-aria-en="Common AI recommendation gaps" data-aria-zh="常见 AI 推荐缺口">
-        <span><span data-lang="en">Competitor recommended</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐</span></span>
-        <span><span data-lang="en">You only mentioned</span><span data-lang="zh" lang="zh-CN" hidden>你只是被提到</span></span>
-        <span><span data-lang="en">Strength missing</span><span data-lang="zh" lang="zh-CN" hidden>优势没有进入答案</span></span>
-        <span><span data-lang="en">Next action unclear</span><span data-lang="zh" lang="zh-CN" hidden>不知道先改哪里</span></span>
+      <div class="comparison-field" data-motion-surface>
+        <img src="/public/art/yonaris-product-canvas.png" alt="">
+        <div class="comparison-path" aria-hidden="true"></div>
+        <p class="signal-a"><span data-lang="en">Competitor recommended</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐</span></p>
+        <p class="signal-b"><span data-lang="en">You only mentioned</span><span data-lang="zh" lang="zh-CN" hidden>你只是被提到</span></p>
+        <p class="signal-c"><span data-lang="en">Strength missing</span><span data-lang="zh" lang="zh-CN" hidden>优势没有进入答案</span></p>
+        <p class="signal-d"><span data-lang="en">Next action unclear</span><span data-lang="zh" lang="zh-CN" hidden>不知道先改哪里</span></p>
       </div>
     </section>
 
@@ -113,46 +119,18 @@
       </div>
     </section>
 
-    <section class="reader section-pad" aria-labelledby="reader-title" data-reader>
-      <div class="reader-copy reveal">
-        <h2 id="reader-title"><span data-lang="en">One company. Two ways to be read.</span><span data-lang="zh" lang="zh-CN" hidden>同一家公司，两种阅读方式。</span></h2>
-        <p><span data-lang="en">A website now speaks to people and to the agents reading on their behalf.</span><span data-lang="zh" lang="zh-CN" hidden>官网现在既要给人看，也要让 AI 和 Agent 读准。</span></p>
-        <div class="reader-switch" role="tablist" aria-label="Website reading mode" data-aria-en="Website reading mode" data-aria-zh="官网阅读模式">
-          <button type="button" role="tab" aria-selected="true" aria-controls="reader-human" id="reader-tab-human" data-reader-view="human">Human view</button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="reader-agent" id="reader-tab-agent" data-reader-view="agent">Agent view</button>
-        </div>
-      </div>
-      <div class="reader-stage reveal" data-motion-surface>
-        <div id="reader-human" class="reader-panel is-active" role="tabpanel" aria-labelledby="reader-tab-human" data-reader-panel="human">
-          <small>Human view</small>
-          <h3><span data-lang="en">Yonaris shows teams why AI recommends one company over another.</span><span data-lang="zh" lang="zh-CN" hidden>Yonaris 帮团队看清 AI 为什么推荐一家公司，而不是另一家。</span></h3>
-          <p><span data-lang="en">Plain language. Market context. A next action the team can judge.</span><span data-lang="zh" lang="zh-CN" hidden>人读到语境、判断和下一步。</span></p>
-        </div>
-        <div id="reader-agent" class="reader-panel agent-record" role="tabpanel" aria-labelledby="reader-tab-agent" data-reader-panel="agent" hidden>
-          <small>Agent view</small>
-          <dl>
-            <div><dt>company</dt><dd>Yonaris</dd></div>
-            <div><dt>category</dt><dd>ai_native_marketing_infrastructure</dd></div>
-            <div><dt>current_capability</dt><dd>ai_recommendation_monitoring</dd></div>
-            <div><dt>inputs</dt><dd>question, market, language, competitors</dd></div>
-            <div><dt>outputs</dt><dd>answers, reasons, evidence_gaps, actions</dd></div>
-            <div><dt>contact</dt><dd>leads@yonaris.com</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
-
-    <section id="platform" class="surface section-pad" aria-labelledby="surface-title">
-      <div class="surface-heading reveal">
+    <section id="platform" class="surface section-pad" aria-labelledby="surface-title" data-motion-surface>
+      <img src="/public/art/yonaris-contact-canvas.png" alt="">
+      <div class="surface-copy reveal">
         <h2 id="surface-title"><span data-lang="en">AI recommendation is the first entry point.</span><span data-lang="zh" lang="zh-CN" hidden>AI 推荐只是第一个入口。</span></h2>
         <p><span data-lang="en">The same evidence layer can move into ads, content, commerce and acquisition.</span><span data-lang="zh" lang="zh-CN" hidden>同一层事实关系，会继续进入广告、内容、交易和获客。</span></p>
       </div>
-      <div class="surface-grid">
-        <article class="surface-card reveal"><span>01</span><h3>AI Recommendation</h3><p><span data-lang="en">See why AI recommends or ignores you.</span><span data-lang="zh" lang="zh-CN" hidden>看清 AI 为什么推荐你或忽略你。</span></p></article>
-        <article class="surface-card reveal"><span>02</span><h3>AI Ads</h3><p><span data-lang="en">Let ads work around questions, intent and evidence.</span><span data-lang="zh" lang="zh-CN" hidden>让广告围绕问题、意图和证据运行。</span></p></article>
-        <article class="surface-card reveal"><span>03</span><h3>Agent Commerce</h3><p><span data-lang="en">Make products easier for agents to read and compare.</span><span data-lang="zh" lang="zh-CN" hidden>让产品和服务更容易被 Agent 理解和比较。</span></p></article>
-        <article class="surface-card reveal"><span>04</span><h3>Content Operations</h3><p><span data-lang="en">Turn evidence gaps into content and account work.</span><span data-lang="zh" lang="zh-CN" hidden>把证据缺口变成内容和账号运营动作。</span></p></article>
-        <article class="surface-card reveal"><span>05</span><h3>Acquisition</h3><p><span data-lang="en">Turn observed intent into outreach and qualified leads.</span><span data-lang="zh" lang="zh-CN" hidden>把被观察到的意图转成触达和线索。</span></p></article>
+      <div class="surface-map" aria-label="Yonaris platform direction" data-aria-en="Yonaris platform direction" data-aria-zh="Yonaris 平台方向">
+        <span class="surface-core">AI Recommendation</span>
+        <span class="surface-node ads">AI Ads</span>
+        <span class="surface-node commerce">Agent Commerce</span>
+        <span class="surface-node content">Content Operations</span>
+        <span class="surface-node acquisition">Acquisition</span>
       </div>
     </section>
 
@@ -189,7 +167,52 @@
     </section>
   </main>
 
-  <footer class="footer section-pad">
+  <main class="agent-site" data-agent-site hidden>
+    <section class="agent-canvas page-frame" data-motion-surface>
+      <img class="canvas-image" src="/public/art/yonaris-hero-canvas.png" alt="">
+      <div class="agent-shade"></div>
+      <div class="agent-shell">
+        <div class="agent-head">
+          <p>agent-readable company record</p>
+          <span>content-type: structured_site_summary</span>
+        </div>
+        <pre><code>{
+  "company": "Yonaris",
+  "category": "AI-native marketing infrastructure",
+  "entry_point": "AI recommendation monitoring",
+  "human_summary": "Yonaris shows teams how AI explains, compares and recommends them.",
+  "primary_question": "Why is one company recommended before another?",
+  "inputs": [
+    "buyer_question",
+    "market",
+    "language",
+    "competitors",
+    "public_sources"
+  ],
+  "outputs": [
+    "observed_answers",
+    "recommendation_reasons",
+    "evidence_gaps",
+    "reviewed_actions"
+  ],
+  "platform_direction": [
+    "AI Recommendation",
+    "AI Ads",
+    "Agent Commerce",
+    "Content Operations",
+    "Acquisition"
+  ],
+  "contact": {
+    "recipient": "leads@yonaris.com",
+    "domestic_fields": ["name", "phone", "company", "question"],
+    "international_fields": ["name", "work_email", "company", "question"]
+  }
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer section-pad" data-human-site>
     <div class="footer-brand"><p>Yonaris</p><span>AI-Native MarTech Infrastructure</span></div>
     <nav aria-label="Footer"><a href="#product">Product</a><a href="#platform">Platform</a><a href="#casework">Casework</a><a href="#contact">Contact</a></nav>
     <details><summary><span data-lang="en">Privacy</span><span data-lang="zh" lang="zh-CN" hidden>隐私说明</span></summary><p><span data-lang="en">We use submitted contact details only to understand and respond to your request.</span><span data-lang="zh" lang="zh-CN" hidden>我们仅使用你提交的联系信息来理解并回复咨询。</span></p></details>

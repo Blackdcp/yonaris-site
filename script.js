@@ -6,8 +6,9 @@
   const menu = document.querySelector("[data-menu]");
   const nav = document.querySelector("[data-nav]");
   const showcase = document.querySelector("[data-showcase]");
-  const reader = document.querySelector("[data-reader]");
   const leadForm = document.querySelector("[data-lead-form]");
+  const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
+  const agentSite = document.querySelector("[data-agent-site]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
@@ -18,6 +19,7 @@
   };
 
   let language = "en";
+  let siteMode = "human";
   let menuOpen = false;
   let activeView = "observe";
   let showcaseVisible = false;
@@ -28,8 +30,9 @@
 
   try {
     language = localStorage.getItem("yonaris-language") === "zh" ? "zh" : "en";
+    siteMode = localStorage.getItem("yonaris-site-mode") === "agent" ? "agent" : "human";
   } catch (_error) {
-    // Language switching still works when local storage is blocked.
+    // The page remains usable when storage is blocked.
   }
 
   function setRegionalFields() {
@@ -61,10 +64,26 @@
     if (persist) {
       try {
         localStorage.setItem("yonaris-language", language);
-      } catch (_error) {
-        // No persistence is required for the page to work.
-      }
+      } catch (_error) {}
     }
+  }
+
+  function setSiteMode(next, persist = true, resetScroll = true) {
+    siteMode = next === "agent" ? "agent" : "human";
+    root.dataset.siteMode = siteMode;
+    humanSurfaces.forEach((surface) => { surface.hidden = siteMode === "agent"; });
+    if (agentSite) agentSite.hidden = siteMode !== "agent";
+    document.querySelectorAll("[data-site-view]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.siteView === siteMode));
+    });
+    if (siteMode === "agent") closeMenu();
+    if (resetScroll) window.scrollTo({ top: 0, behavior: "auto" });
+    if (persist) {
+      try {
+        localStorage.setItem("yonaris-site-mode", siteMode);
+      } catch (_error) {}
+    }
+    requestAnimationFrame(requestMotionUpdate);
   }
 
   function syncMenu() {
@@ -95,20 +114,8 @@
     });
   }
 
-  function setReaderView(name) {
-    if (!reader || !["human", "agent"].includes(name)) return;
-    reader.querySelectorAll("[data-reader-view]").forEach((button) => {
-      button.setAttribute("aria-selected", String(button.dataset.readerView === name));
-    });
-    reader.querySelectorAll("[data-reader-panel]").forEach((panel) => {
-      const active = panel.dataset.readerPanel === name;
-      panel.hidden = !active;
-      panel.classList.toggle("is-active", active);
-    });
-  }
-
   function cycleView() {
-    if (!showcaseVisible || showcaseHovered || document.hidden || Date.now() < userPauseUntil) return;
+    if (!showcaseVisible || showcaseHovered || document.hidden || Date.now() < userPauseUntil || siteMode === "agent") return;
     const index = viewOrder.indexOf(activeView);
     setView(viewOrder[(index + 1) % viewOrder.length]);
   }
@@ -123,6 +130,7 @@
     motionFrame = null;
     header?.classList.toggle("scrolled", scrollY > 8);
     motionSurfaces.forEach((surface) => {
+      if (surface.hidden) return;
       const rect = surface.getBoundingClientRect();
       const distance = (rect.top + rect.height / 2 - innerHeight / 2) / innerHeight;
       surface.style.setProperty("--scroll", String(Math.max(-1, Math.min(1, distance))));
@@ -177,6 +185,7 @@
   function scrollToAnchor(event) {
     const href = event.currentTarget.getAttribute("href");
     if (!href?.startsWith("#")) return;
+    if (siteMode === "agent") setSiteMode("human");
     const target = document.querySelector(href);
     if (!target) return;
     event.preventDefault();
@@ -217,6 +226,10 @@
     button.addEventListener("click", () => setLanguage(button.dataset.language));
   });
 
+  document.querySelectorAll("[data-site-view]").forEach((button) => {
+    button.addEventListener("click", () => setSiteMode(button.dataset.siteView));
+  });
+
   menu?.addEventListener("click", () => {
     menuOpen = !menuOpen;
     syncMenu();
@@ -239,10 +252,6 @@
     });
   });
 
-  reader?.querySelectorAll("[data-reader-view]").forEach((button) => {
-    button.addEventListener("click", () => setReaderView(button.dataset.readerView));
-  });
-
   showcase?.addEventListener("pointerenter", () => { showcaseHovered = true; });
   showcase?.addEventListener("pointerleave", () => { showcaseHovered = false; });
   leadForm?.addEventListener("submit", composeLeadEmail);
@@ -263,10 +272,11 @@
   document.querySelectorAll("[data-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
   });
+
   setLanguage(language, false);
   syncMenu();
   setView("observe");
-  setReaderView("human");
+  setSiteMode(siteMode, false, false);
   setupReveal();
   setupMotionSurfaces();
   setupShowcaseObserver();
