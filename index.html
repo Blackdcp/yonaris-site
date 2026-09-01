@@ -67,44 +67,60 @@
 
     <section id="product" class="platform section-pad" aria-labelledby="product-title">
       <header class="platform-heading reveal">
-        <h2 id="product-title"><span data-lang="en">See why AI chooses one brand over another.</span><span data-lang="zh" lang="zh-CN" hidden>看清 AI 为什么选择一个品牌，而不是另一个。</span></h2>
-        <p><span data-lang="en">From the answer to the evidence behind it — and the move that changes it.</span><span data-lang="zh" lang="zh-CN" hidden>从答案，到背后的证据，再到真正改变结果的动作。</span></p>
+        <h2 id="product-title"><span data-lang="en">See how AI forms the recommendation.</span><span data-lang="zh" lang="zh-CN" hidden>看见 AI 如何形成推荐。</span></h2>
+        <p><span data-lang="en">One flow: answer, evidence, gap, movement.</span><span data-lang="zh" lang="zh-CN" hidden>一条路径：答案、证据、缺口、变化。</span></p>
       </header>
 
-      <div id="recommendation-film" class="concept-film reveal" data-concept-film data-motion-surface aria-label="How an AI recommendation changes" data-aria-en="How an AI recommendation changes" data-aria-zh="AI 推荐如何发生变化">
-        <img class="film-art" src="/public/art/yonaris-recommendation-film.png" alt="">
-        <div class="film-tone" aria-hidden="true"></div>
-
-        <div class="film-question">
-          <small><span data-lang="en">A buyer asks AI</span><span data-lang="zh" lang="zh-CN" hidden>客户向 AI 提问</span></small>
-          <p><span data-lang="en">Who should we choose for APAC?</span><span data-lang="zh" lang="zh-CN" hidden>亚太市场，我们应该选择谁？</span></p>
+      <div class="platform-showcase" data-showcase>
+        <div class="platform-tabs" role="tablist" aria-label="Product views" data-aria-en="Product views" data-aria-zh="产品视图">
+          <button type="button" role="tab" aria-selected="true" aria-controls="panel-observe" id="tab-observe" data-view="observe"><span class="active-dot"></span><strong>Answer</strong><small>01</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-trace" id="tab-trace" data-view="trace"><span class="active-dot"></span><strong>Evidence</strong><small>02</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-prioritize" id="tab-prioritize" data-view="prioritize"><span class="active-dot"></span><strong>Gap</strong><small>03</small></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="panel-review" id="tab-review" data-view="review"><span class="active-dot"></span><strong>Movement</strong><small>04</small></button>
         </div>
 
-        <div class="film-fragment fragment-answer"><span>AI answer</span><strong>Northstar</strong><small>recommended first</small></div>
-        <div class="film-fragment fragment-search"><span>Search</span><strong>Regional proof</strong><small>well connected</small></div>
-        <div class="film-fragment fragment-record"><span>Public record</span><strong>Your brand</strong><small>capability found</small></div>
-        <div class="film-fragment fragment-context"><span>Missing link</span><strong>Market context</strong><small>not yet connected</small></div>
+        <div class="product-canvas reveal" data-motion-surface>
+          <img src="/public/art/yonaris-product-canvas.png" alt="">
+          <div class="browser-window">
+            <div class="browser-bar"><span></span><span></span><span></span><p>record.yonaris.com</p></div>
 
-        <svg class="film-routes" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M150 530 C420 530 500 440 790 468"></path>
-          <path d="M250 680 C480 670 560 540 790 468"></path>
-          <path d="M460 250 C570 300 650 410 790 468"></path>
-          <path class="route-live" d="M790 468 C1010 470 1125 510 1450 500"></path>
-        </svg>
+            <section id="panel-observe" class="product-view is-active" role="tabpanel" aria-labelledby="tab-observe" data-panel="observe">
+              <header class="ui-header"><div><small><span data-lang="en">Buyer question</span><span data-lang="zh" lang="zh-CN" hidden>客户问题</span></small><h3><span data-lang="en">Why is Northstar recommended before us?</span><span data-lang="zh" lang="zh-CN" hidden>为什么竞品先被 AI 推荐？</span></h3></div><div class="condition-pill">APAC · EN</div></header>
+              <div class="answer-focus"><div class="answer-score"><strong>04</strong><span><span data-lang="en">surfaces observed</span><span data-lang="zh" lang="zh-CN" hidden>个观测表面</span></span></div><div class="answer-summary"><small><span data-lang="en">Current answer</span><span data-lang="zh" lang="zh-CN" hidden>当前答案</span></small><p><span data-lang="en">Northstar advances because its market proof is easier to inspect.</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐，因为它的市场证据更容易被核对。</span></p></div></div>
+              <div class="channel-strip"><span>ChatGPT <b>High</b></span><span>AI Search <b>High</b></span><span>Editorial <b>Medium</b></span><span>Owned Content <b>Gap</b></span></div>
+            </section>
 
-        <div class="film-lens">
-          <img src="/public/brand/yonaris-icon.svg" alt="">
-          <span><span data-lang="en">Selection reason</span><span data-lang="zh" lang="zh-CN" hidden>选择理由</span></span>
-          <strong><span data-lang="en">Local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>本地市场证明</span></strong>
+            <section id="panel-trace" class="product-view" role="tabpanel" aria-labelledby="tab-trace" data-panel="trace" hidden>
+              <header class="ui-header"><div><small><span data-lang="en">Evidence path</span><span data-lang="zh" lang="zh-CN" hidden>证据路径</span></small><h3><span data-lang="en">Recommendation reason: local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>推荐理由：本地市场证明</span></h3></div><div class="condition-pill"><span data-lang="en">4 sources</span><span data-lang="zh" lang="zh-CN" hidden>4 个来源</span></div></header>
+              <div class="trace-map">
+                <div class="trace-node source-a">AI answer</div><div class="trace-node source-b">Search</div><div class="trace-node source-c">Public record</div>
+                <div class="trace-node reason"><span data-lang="en">Market proof</span><span data-lang="zh" lang="zh-CN" hidden>市场证明</span></div>
+                <div class="trace-node outcome"><span data-lang="en">Recommended</span><span data-lang="zh" lang="zh-CN" hidden>被推荐</span></div>
+                <svg viewBox="0 0 800 330" preserveAspectRatio="none" aria-hidden="true"><path d="M115 70 C260 70 250 162 398 162M115 165 C260 165 250 162 398 162M115 260 C260 260 250 162 398 162M500 162 C610 162 620 162 705 162"></path><path class="gap-line" d="M115 260 C260 260 250 250 398 250"></path></svg>
+                <p class="gap-note"><span data-lang="en">Capability stated. Connection missing.</span><span data-lang="zh" lang="zh-CN" hidden>能力存在，连接缺失。</span></p>
+              </div>
+            </section>
+
+            <section id="panel-prioritize" class="product-view" role="tabpanel" aria-labelledby="tab-prioritize" data-panel="prioritize" hidden>
+              <header class="ui-header"><div><small><span data-lang="en">Next move</span><span data-lang="zh" lang="zh-CN" hidden>下一步</span></small><h3><span data-lang="en">Make the selection reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可被核对。</span></h3></div><div class="condition-pill priority"><span data-lang="en">First</span><span data-lang="zh" lang="zh-CN" hidden>优先</span></div></header>
+              <div class="priority-stack">
+                <p><span>Gap</span><strong>Proof exists. Relationship missing.</strong></p>
+                <p><span>Action</span><strong>Attach scope, source and market context.</strong></p>
+                <p><span>Publish</span><strong>Place it where AI can inspect.</strong></p>
+              </div>
+              <div class="review-row"><span><i></i><span data-lang="en">Ready for team review</span><span data-lang="zh" lang="zh-CN" hidden>待团队审阅</span></span><button type="button"><span data-lang="en">Prepare record</span><span data-lang="zh" lang="zh-CN" hidden>准备记录</span></button></div>
+            </section>
+
+            <section id="panel-review" class="product-view" role="tabpanel" aria-labelledby="tab-review" data-panel="review" hidden>
+              <header class="ui-header"><div><small><span data-lang="en">Review</span><span data-lang="zh" lang="zh-CN" hidden>复核</span></small><h3><span data-lang="en">What changed after the record was updated?</span><span data-lang="zh" lang="zh-CN" hidden>记录更新后，发生了什么变化？</span></h3></div><div class="condition-pill"><span data-lang="en">Same question</span><span data-lang="zh" lang="zh-CN" hidden>同一问题</span></div></header>
+              <div class="movement-board">
+                <p><span>Reason</span><strong>Visible</strong></p>
+                <p><span>Order</span><strong>Watched</strong></p>
+                <p><span>Next gap</span><strong>Queued</strong></p>
+              </div>
+            </section>
+          </div>
         </div>
-
-        <div class="film-result">
-          <small><span data-lang="en">The same question, again</span><span data-lang="zh" lang="zh-CN" hidden>再次提出同一个问题</span></small>
-          <span class="result-before">Northstar</span>
-          <strong><span data-lang="en">Your brand</span><span data-lang="zh" lang="zh-CN" hidden>你的品牌</span></strong>
-          <em><span data-lang="en">recommended</span><span data-lang="zh" lang="zh-CN" hidden>被推荐</span></em>
-        </div>
-
       </div>
     </section>
 
