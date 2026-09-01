@@ -9,7 +9,7 @@
   const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
   const agentSite = document.querySelector("[data-agent-site]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
-  const storyTheaters = [...document.querySelectorAll(".recommendation-theater")];
+  const storyTheaters = [...document.querySelectorAll(".recommendation-theater, .product-console")];
   const platformSteps = [...document.querySelectorAll(".platform-flow article")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
