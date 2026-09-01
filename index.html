@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#F6F4F1">
-  <meta name="description" content="Yonaris helps teams see how AI explains, compares and recommends them, starting from one real buyer question.">
+  <meta name="description" content="Yonaris helps teams understand how AI compares, explains and recommends them before the buyer reaches a website.">
   <title>Yonaris - When buyers ask AI</title>
   <link rel="icon" href="/public/brand/yonaris-icon.svg" type="image/svg+xml">
   <link rel="preload" href="/public/art/yonaris-hero-canvas.png" as="image" fetchpriority="high">
@@ -44,116 +44,131 @@
       <img class="canvas-image" src="/public/art/yonaris-hero-canvas.png" alt="">
       <div class="canvas-shade"></div>
       <div class="hero-copy">
-        <h1 id="hero-title"><span data-lang="en">When buyers ask AI, the first comparison has begun.</span><span data-lang="zh" lang="zh-CN" hidden>客户问 AI 时，第一轮比较已经开始。</span></h1>
-        <p><span data-lang="en">Yonaris shows how AI explains, compares and recommends you, then surfaces what is worth changing first.</span><span data-lang="zh" lang="zh-CN" hidden>Yonaris 让团队看清：AI 如何解释你、比较你、推荐你，以及哪里值得先改。</span></p>
+        <h1 id="hero-title"><span data-lang="en">When buyers ask AI, the shortlist starts without you.</span><span data-lang="zh" lang="zh-CN" hidden>客户问 AI 时，候选名单已经开始形成。</span></h1>
+        <p><span data-lang="en">Yonaris shows why one company is recommended before another, and turns that reason into work your team can move.</span><span data-lang="zh" lang="zh-CN" hidden>Yonaris 看清一家公司为什么先被推荐，并把这个理由变成团队可以推进的工作。</span></p>
         <div class="hero-actions">
           <a class="light-button" href="#contact"><span data-lang="en">Request a demo</span><span data-lang="zh" lang="zh-CN" hidden>预约演示</span></a>
-          <a class="ghost-button" href="#product"><span data-lang="en">View product</span><span data-lang="zh" lang="zh-CN" hidden>查看产品</span></a>
+          <a class="ghost-button" href="#product"><span data-lang="en">See the story</span><span data-lang="zh" lang="zh-CN" hidden>看推荐如何形成</span></a>
         </div>
       </div>
     </section>
 
     <section class="positioning section-pad reveal" aria-labelledby="positioning-title">
-      <h2 id="positioning-title"><span data-lang="en">It is not whether you have content. It is whether AI reads it as a reason to choose you.</span><span data-lang="zh" lang="zh-CN" hidden>不是你有没有内容，是 AI 有没有把你读成选择理由。</span></h2>
-      <div class="comparison-field" data-motion-surface>
+      <h2 id="positioning-title"><span data-lang="en">AI does not only find content. It chooses reasons.</span><span data-lang="zh" lang="zh-CN" hidden>AI 不只是找到内容，它在选择理由。</span></h2>
+      <div class="reason-field" data-motion-surface>
         <img src="/public/art/yonaris-product-canvas.png" alt="">
-        <div class="comparison-path" aria-hidden="true"></div>
-        <p class="signal-a"><span data-lang="en">Competitor recommended</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐</span></p>
-        <p class="signal-b"><span data-lang="en">You only mentioned</span><span data-lang="zh" lang="zh-CN" hidden>你只是被提到</span></p>
-        <p class="signal-c"><span data-lang="en">Strength missing</span><span data-lang="zh" lang="zh-CN" hidden>优势没有进入答案</span></p>
-        <p class="signal-d"><span data-lang="en">Next action unclear</span><span data-lang="zh" lang="zh-CN" hidden>不知道先改哪里</span></p>
+        <div class="reason-line"></div>
+        <p class="reason-a"><span data-lang="en">You are mentioned</span><span data-lang="zh" lang="zh-CN" hidden>你被提到</span></p>
+        <p class="reason-b"><span data-lang="en">A competitor is explained</span><span data-lang="zh" lang="zh-CN" hidden>竞品被解释</span></p>
+        <p class="reason-c"><span data-lang="en">The reason becomes the recommendation</span><span data-lang="zh" lang="zh-CN" hidden>理由变成推荐</span></p>
       </div>
     </section>
 
-    <section id="product" class="platform section-pad" aria-labelledby="product-title">
-      <header class="platform-heading reveal">
-        <h2 id="product-title"><span data-lang="en">See how AI forms the recommendation.</span><span data-lang="zh" lang="zh-CN" hidden>看见 AI 如何形成推荐。</span></h2>
-        <p><span data-lang="en">One flow: answer, evidence, gap, movement.</span><span data-lang="zh" lang="zh-CN" hidden>一条路径：答案、证据、缺口、变化。</span></p>
+    <section id="product" class="product-story section-pad" aria-labelledby="product-title">
+      <header class="section-heading reveal">
+        <h2 id="product-title"><span data-lang="en">Watch a recommendation take shape.</span><span data-lang="zh" lang="zh-CN" hidden>看见一次推荐如何成型。</span></h2>
+        <p><span data-lang="en">One buyer question becomes a visible path: answer, evidence, gap and next move.</span><span data-lang="zh" lang="zh-CN" hidden>一个客户问题，变成一条可见路径：答案、证据、缺口和下一步。</span></p>
       </header>
 
-      <div class="platform-showcase" data-showcase>
-        <div class="platform-tabs" role="tablist" aria-label="Product views" data-aria-en="Product views" data-aria-zh="产品视图">
-          <button type="button" role="tab" aria-selected="true" aria-controls="panel-observe" id="tab-observe" data-view="observe"><span class="active-dot"></span><strong>Answer</strong><small>01</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-trace" id="tab-trace" data-view="trace"><span class="active-dot"></span><strong>Evidence</strong><small>02</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-prioritize" id="tab-prioritize" data-view="prioritize"><span class="active-dot"></span><strong>Gap</strong><small>03</small></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="panel-review" id="tab-review" data-view="review"><span class="active-dot"></span><strong>Movement</strong><small>04</small></button>
+      <div class="recommendation-theater reveal" data-motion-surface>
+        <img src="/public/art/evidence-room.png" alt="">
+        <div class="theater-shade"></div>
+
+        <div class="question-slip">
+          <small><span data-lang="en">buyer asks</span><span data-lang="zh" lang="zh-CN" hidden>客户提问</span></small>
+          <strong><span data-lang="en">Why is Northstar recommended before us?</span><span data-lang="zh" lang="zh-CN" hidden>为什么竞品先被 AI 推荐？</span></strong>
         </div>
 
-        <div class="product-canvas reveal" data-motion-surface>
-          <img src="/public/art/yonaris-product-canvas.png" alt="">
-          <div class="browser-window">
-            <div class="browser-bar"><span></span><span></span><span></span><p>record.yonaris.com</p></div>
+        <div class="source-chip source-one"><span>ChatGPT</span><b>reason found</b></div>
+        <div class="source-chip source-two"><span>AI Search</span><b>market proof</b></div>
+        <div class="source-chip source-three"><span>Public record</span><b>source gap</b></div>
+        <div class="source-chip source-four"><span>Owned content</span><b>missing link</b></div>
 
-            <section id="panel-observe" class="product-view is-active" role="tabpanel" aria-labelledby="tab-observe" data-panel="observe">
-              <header class="ui-header"><div><small><span data-lang="en">Buyer question</span><span data-lang="zh" lang="zh-CN" hidden>客户问题</span></small><h3><span data-lang="en">Why is Northstar recommended before us?</span><span data-lang="zh" lang="zh-CN" hidden>为什么竞品先被 AI 推荐？</span></h3></div><div class="condition-pill">APAC · EN</div></header>
-              <div class="answer-focus"><div class="answer-score"><strong>04</strong><span><span data-lang="en">surfaces observed</span><span data-lang="zh" lang="zh-CN" hidden>个观测表面</span></span></div><div class="answer-summary"><small><span data-lang="en">Current answer</span><span data-lang="zh" lang="zh-CN" hidden>当前答案</span></small><p><span data-lang="en">Northstar advances because its market proof is easier to inspect.</span><span data-lang="zh" lang="zh-CN" hidden>竞品被推荐，因为它的市场证据更容易被核对。</span></p></div></div>
-              <div class="channel-strip"><span>ChatGPT <b>High</b></span><span>AI Search <b>High</b></span><span>Editorial <b>Medium</b></span><span>Owned Content <b>Gap</b></span></div>
-            </section>
+        <svg class="evidence-routes" viewBox="0 0 1200 620" aria-hidden="true">
+          <path d="M238 164 C430 126 497 241 612 302"></path>
+          <path d="M227 415 C407 438 482 355 612 302"></path>
+          <path d="M918 142 C758 171 717 249 612 302"></path>
+          <path d="M951 458 C781 461 720 359 612 302"></path>
+          <path class="resolved-route" d="M612 302 C715 300 798 300 895 302"></path>
+        </svg>
 
-            <section id="panel-trace" class="product-view" role="tabpanel" aria-labelledby="tab-trace" data-panel="trace" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Evidence path</span><span data-lang="zh" lang="zh-CN" hidden>证据路径</span></small><h3><span data-lang="en">Recommendation reason: local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>推荐理由：本地市场证明</span></h3></div><div class="condition-pill"><span data-lang="en">4 sources</span><span data-lang="zh" lang="zh-CN" hidden>4 个来源</span></div></header>
-              <div class="trace-map">
-                <div class="trace-node source-a">AI answer</div><div class="trace-node source-b">Search</div><div class="trace-node source-c">Public record</div>
-                <div class="trace-node reason"><span data-lang="en">Market proof</span><span data-lang="zh" lang="zh-CN" hidden>市场证明</span></div>
-                <div class="trace-node outcome"><span data-lang="en">Recommended</span><span data-lang="zh" lang="zh-CN" hidden>被推荐</span></div>
-                <svg viewBox="0 0 800 330" preserveAspectRatio="none" aria-hidden="true"><path d="M115 70 C260 70 250 162 398 162M115 165 C260 165 250 162 398 162M115 260 C260 260 250 162 398 162M500 162 C610 162 620 162 705 162"></path><path class="gap-line" d="M115 260 C260 260 250 250 398 250"></path></svg>
-                <p class="gap-note"><span data-lang="en">Capability stated. Connection missing.</span><span data-lang="zh" lang="zh-CN" hidden>能力存在，连接缺失。</span></p>
-              </div>
-            </section>
+        <div class="reason-lens">
+          <img src="/public/brand/yonaris-icon.svg" alt="">
+          <small><span data-lang="en">selection reason</span><span data-lang="zh" lang="zh-CN" hidden>选择理由</span></small>
+          <strong><span data-lang="en">local-market proof</span><span data-lang="zh" lang="zh-CN" hidden>本地市场证明</span></strong>
+        </div>
 
-            <section id="panel-prioritize" class="product-view" role="tabpanel" aria-labelledby="tab-prioritize" data-panel="prioritize" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Next move</span><span data-lang="zh" lang="zh-CN" hidden>下一步</span></small><h3><span data-lang="en">Make the selection reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可被核对。</span></h3></div><div class="condition-pill priority"><span data-lang="en">First</span><span data-lang="zh" lang="zh-CN" hidden>优先</span></div></header>
-              <div class="priority-stack">
-                <p><span>Gap</span><strong>Proof exists. Relationship missing.</strong></p>
-                <p><span>Action</span><strong>Attach scope, source and market context.</strong></p>
-                <p><span>Publish</span><strong>Place it where AI can inspect.</strong></p>
-              </div>
-              <div class="review-row"><span><i></i><span data-lang="en">Ready for team review</span><span data-lang="zh" lang="zh-CN" hidden>待团队审阅</span></span><button type="button"><span data-lang="en">Prepare record</span><span data-lang="zh" lang="zh-CN" hidden>准备记录</span></button></div>
-            </section>
-
-            <section id="panel-review" class="product-view" role="tabpanel" aria-labelledby="tab-review" data-panel="review" hidden>
-              <header class="ui-header"><div><small><span data-lang="en">Review</span><span data-lang="zh" lang="zh-CN" hidden>复核</span></small><h3><span data-lang="en">What changed after the record was updated?</span><span data-lang="zh" lang="zh-CN" hidden>记录更新后，发生了什么变化？</span></h3></div><div class="condition-pill"><span data-lang="en">Same question</span><span data-lang="zh" lang="zh-CN" hidden>同一问题</span></div></header>
-              <div class="movement-board">
-                <p><span>Reason</span><strong>Visible</strong></p>
-                <p><span>Order</span><strong>Watched</strong></p>
-                <p><span>Next gap</span><strong>Queued</strong></p>
-              </div>
-            </section>
-          </div>
+        <div class="outcome-panel">
+          <small><span data-lang="en">next move</span><span data-lang="zh" lang="zh-CN" hidden>下一步</span></small>
+          <strong><span data-lang="en">Make the reason inspectable.</span><span data-lang="zh" lang="zh-CN" hidden>让选择理由可被核对。</span></strong>
+          <p><span data-lang="en">Attach source, scope and market context where AI can read it.</span><span data-lang="zh" lang="zh-CN" hidden>把来源、范围和市场语境放到 AI 能读到的位置。</span></p>
         </div>
       </div>
     </section>
 
-    <section id="platform" class="surface section-pad" aria-labelledby="surface-title" data-motion-surface>
+    <section id="platform" class="platform-layer section-pad" aria-labelledby="platform-title" data-motion-surface>
       <img src="/public/art/yonaris-contact-canvas.png" alt="">
-      <div class="surface-copy reveal">
-        <h2 id="surface-title"><span data-lang="en">AI recommendation is the first entry point.</span><span data-lang="zh" lang="zh-CN" hidden>AI 推荐只是第一个入口。</span></h2>
-        <p><span data-lang="en">The same evidence layer can move into ads, content, commerce and acquisition.</span><span data-lang="zh" lang="zh-CN" hidden>同一层事实关系，会继续进入广告、内容、交易和获客。</span></p>
+      <div class="platform-layer-shade"></div>
+      <div class="platform-layer-copy reveal">
+        <h2 id="platform-title"><span data-lang="en">Recommendation is the first surface.</span><span data-lang="zh" lang="zh-CN" hidden>推荐只是第一层表面。</span></h2>
+        <p><span data-lang="en">The same evidence layer can later support ads, content, commerce and acquisition.</span><span data-lang="zh" lang="zh-CN" hidden>同一层事实关系，之后会进入广告、内容、交易和获客。</span></p>
       </div>
-      <div class="surface-map" aria-label="Yonaris platform direction" data-aria-en="Yonaris platform direction" data-aria-zh="Yonaris 平台方向">
-        <span class="surface-core">AI Recommendation</span>
-        <span class="surface-node ads">AI Ads</span>
-        <span class="surface-node commerce">Agent Commerce</span>
-        <span class="surface-node content">Content Operations</span>
-        <span class="surface-node acquisition">Acquisition</span>
+      <div class="platform-flow" aria-label="Yonaris platform direction" data-aria-en="Yonaris platform direction" data-aria-zh="Yonaris 平台方向">
+        <article>
+          <span>01</span>
+          <strong>AI Recommendation</strong>
+          <p>Observe how AI explains the market.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <strong>AI Ads</strong>
+          <p>Carry the same reasons into agent-mediated media.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <strong>Agent Commerce</strong>
+          <p>Make product facts readable where agents compare.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <strong>Acquisition</strong>
+          <p>Turn signals into content, channels and qualified demand.</p>
+        </article>
       </div>
     </section>
 
     <section id="casework" class="casework section-pad" aria-labelledby="case-title">
-      <header class="case-heading reveal"><p class="section-label"><span data-lang="en">Casework</span><span data-lang="zh" lang="zh-CN" hidden>案例</span></p><h2 id="case-title"><span data-lang="en">Mentioned is not the same as chosen.</span><span data-lang="zh" lang="zh-CN" hidden>被提到，不等于被选择。</span></h2><p><span data-lang="en">The gap was not the capability. It was the missing connection between the capability, the market and public evidence.</span><span data-lang="zh" lang="zh-CN" hidden>缺口不是能力本身，而是能力、市场和公开证据之间没有形成清晰连接。</span></p></header>
-      <div class="case-grid">
-        <article class="case-art reveal" data-motion-surface><img src="/public/art/yonaris-hero-canvas.png" alt=""><div><small>Mentioned</small><strong><span data-lang="en">Present in the answer. Missing from the shortlist.</span><span data-lang="zh" lang="zh-CN" hidden>出现在答案里，却没有进入备选理由。</span></strong></div></article>
-        <article class="case-result reveal"><small><span data-lang="en">After review</span><span data-lang="zh" lang="zh-CN" hidden>复核之后</span></small><strong><span data-lang="en">A clearer reason to consider.</span><span data-lang="zh" lang="zh-CN" hidden>更清楚地被考虑。</span></strong><dl><div><dt>Gap</dt><dd><span data-lang="en">No inspectable reason</span><span data-lang="zh" lang="zh-CN" hidden>缺少可核对理由</span></dd></div><div><dt>Action</dt><dd><span data-lang="en">Scope and source connected</span><span data-lang="zh" lang="zh-CN" hidden>范围和来源被连接</span></dd></div><div><dt>Signal</dt><dd><span data-lang="en">Reason became visible</span><span data-lang="zh" lang="zh-CN" hidden>选择理由出现</span></dd></div></dl></article>
+      <header class="case-heading reveal">
+        <p class="section-label"><span data-lang="en">Casework</span><span data-lang="zh" lang="zh-CN" hidden>案例</span></p>
+        <h2 id="case-title"><span data-lang="en">Mentioned is not the same as chosen.</span><span data-lang="zh" lang="zh-CN" hidden>被提到，不等于被选择。</span></h2>
+        <p><span data-lang="en">The gap is usually not capability. It is the missing connection between capability, market and public proof.</span><span data-lang="zh" lang="zh-CN" hidden>缺口通常不是能力本身，而是能力、市场和公开证据之间没有形成连接。</span></p>
+      </header>
+      <div class="case-composition reveal" data-motion-surface>
+        <img src="/public/art/evidence-field-v2.png" alt="">
+        <div class="case-before">
+          <small>Mentioned</small>
+          <strong><span data-lang="en">Present in the answer. Missing from the shortlist.</span><span data-lang="zh" lang="zh-CN" hidden>出现在答案里，却没有进入备选理由。</span></strong>
+        </div>
+        <div class="case-after">
+          <small><span data-lang="en">After review</span><span data-lang="zh" lang="zh-CN" hidden>复核之后</span></small>
+          <strong><span data-lang="en">A reason AI can inspect.</span><span data-lang="zh" lang="zh-CN" hidden>一个 AI 能核对的选择理由。</span></strong>
+        </div>
       </div>
     </section>
 
     <section id="company" class="company section-pad" aria-labelledby="company-title">
-      <div class="company-copy reveal"><p class="section-label"><span data-lang="en">Company</span><span data-lang="zh" lang="zh-CN" hidden>公司</span></p><h2 id="company-title"><span data-lang="en">Built for marketing work after AI enters the workflow.</span><span data-lang="zh" lang="zh-CN" hidden>为 AI 进入营销工作流之后而建。</span></h2></div>
-      <div class="company-body reveal"><p><span data-lang="en">Traditional MarTech manages campaigns, content, channels and leads. Yonaris works one layer earlier: how AI reads facts, forms answers, shapes recommendations and turns those signals back into team action.</span><span data-lang="zh" lang="zh-CN" hidden>传统 MarTech 管理活动、内容、渠道和线索。Yonaris 关注更早的一层：AI 如何读取事实、形成答案、影响推荐，并把这些信号重新连接到团队动作。</span></p></div>
+      <div class="company-copy reveal">
+        <p class="section-label"><span data-lang="en">Company</span><span data-lang="zh" lang="zh-CN" hidden>公司</span></p>
+        <h2 id="company-title"><span data-lang="en">Built for marketing work after AI enters the workflow.</span><span data-lang="zh" lang="zh-CN" hidden>为 AI 进入营销工作流之后而建。</span></h2>
+      </div>
+      <div class="company-body reveal">
+        <p><span data-lang="en">Traditional MarTech manages campaigns, channels and leads. Yonaris starts earlier: how AI reads facts, forms answers and turns recommendation signals back into work.</span><span data-lang="zh" lang="zh-CN" hidden>传统 MarTech 管理活动、渠道和线索。Yonaris 更早一层：AI 如何读取事实、形成答案，并把推荐信号重新变成团队动作。</span></p>
+      </div>
     </section>
 
     <section id="contact" class="contact page-frame" aria-labelledby="contact-title" data-motion-surface>
-      <img class="canvas-image" src="/public/art/yonaris-contact-canvas.png" alt=""><div class="contact-shade"></div>
+      <img class="canvas-image" src="/public/art/yonaris-contact-canvas.png" alt="">
+      <div class="contact-shade"></div>
       <div class="contact-layout reveal">
         <div class="contact-copy">
           <h2 id="contact-title"><span data-lang="en">Request a demo.</span><span data-lang="zh" lang="zh-CN" hidden>预约演示。</span></h2>
@@ -180,32 +195,25 @@
           <p>agent-readable company record</p>
           <span>content-type: structured_site_summary</span>
         </div>
+        <div class="agent-grid">
+          <article>
+            <small>company</small>
+            <strong>Yonaris</strong>
+          </article>
+          <article>
+            <small>category</small>
+            <strong>AI-native marketing infrastructure</strong>
+          </article>
+          <article>
+            <small>entry point</small>
+            <strong>AI recommendation monitoring</strong>
+          </article>
+        </div>
         <pre><code>{
-  "company": "Yonaris",
-  "category": "AI-native marketing infrastructure",
-  "entry_point": "AI recommendation monitoring",
-  "human_summary": "Yonaris shows teams how AI explains, compares and recommends them.",
   "primary_question": "Why is one company recommended before another?",
-  "inputs": [
-    "buyer_question",
-    "market",
-    "language",
-    "competitors",
-    "public_sources"
-  ],
-  "outputs": [
-    "observed_answers",
-    "recommendation_reasons",
-    "evidence_gaps",
-    "reviewed_actions"
-  ],
-  "platform_direction": [
-    "AI Recommendation",
-    "AI Ads",
-    "Agent Commerce",
-    "Content Operations",
-    "Acquisition"
-  ],
+  "inputs": ["buyer_question", "market", "language", "competitors", "public_sources"],
+  "outputs": ["observed_answers", "recommendation_reasons", "evidence_gaps", "reviewed_actions"],
+  "platform_direction": ["AI Recommendation", "AI Ads", "Agent Commerce", "Content Operations", "Acquisition"],
   "contact": {
     "recipient": "leads@yonaris.com",
     "domestic_fields": ["name", "phone", "company"],
@@ -220,7 +228,7 @@
     <div class="footer-brand"><p>Yonaris</p><span>AI-Native MarTech Infrastructure</span></div>
     <nav aria-label="Footer"><a href="#product">Product</a><a href="#platform">Platform</a><a href="#casework">Casework</a><a href="#contact">Contact</a></nav>
     <details><summary><span data-lang="en">Privacy</span><span data-lang="zh" lang="zh-CN" hidden>隐私说明</span></summary><p><span data-lang="en">We use submitted contact details only to understand and respond to your request.</span><span data-lang="zh" lang="zh-CN" hidden>我们仅使用你提交的联系信息来理解并回复咨询。</span></p></details>
-    <p>© <span data-year></span> Yonaris</p>
+    <p>&copy; <span data-year></span> Yonaris</p>
   </footer>
 </body>
 </html>

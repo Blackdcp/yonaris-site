@@ -5,14 +5,12 @@
   const header = document.querySelector("[data-header]");
   const menu = document.querySelector("[data-menu]");
   const nav = document.querySelector("[data-nav]");
-  const showcase = document.querySelector("[data-showcase]");
   const leadForm = document.querySelector("[data-lead-form]");
   const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
   const agentSite = document.querySelector("[data-agent-site]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
-  const viewOrder = ["observe", "trace", "prioritize", "review"];
   const titles = {
     en: "Yonaris - When buyers ask AI",
     zh: "Yonaris - 客户问 AI 时",
@@ -21,11 +19,6 @@
   let language = "en";
   let siteMode = "human";
   let menuOpen = false;
-  let activeView = "observe";
-  let showcaseVisible = false;
-  let showcaseHovered = false;
-  let userPauseUntil = 0;
-  let cycleTimer = null;
   let motionFrame = null;
 
   try {
@@ -39,7 +32,7 @@
     document.querySelectorAll("[data-region]").forEach((field) => {
       const visible = field.dataset.region === language;
       field.hidden = !visible;
-      field.querySelectorAll("input, textarea").forEach((input) => {
+      field.querySelectorAll("input").forEach((input) => {
         input.required = visible;
         input.disabled = !visible;
       });
@@ -71,6 +64,9 @@
   function setSiteMode(next, persist = true, resetScroll = true) {
     const previousMode = siteMode;
     siteMode = next === "agent" ? "agent" : "human";
+    root.classList.remove("mode-changing");
+    void root.offsetWidth;
+    root.classList.add("mode-changing");
     root.dataset.siteMode = siteMode;
     humanSurfaces.forEach((surface) => { surface.hidden = siteMode === "agent"; });
     if (agentSite) agentSite.hidden = siteMode !== "agent";
@@ -79,6 +75,7 @@
     });
     if (siteMode === "agent") closeMenu();
     if (resetScroll && previousMode !== siteMode) window.scrollTo({ top: 0, behavior: "auto" });
+    window.setTimeout(() => root.classList.remove("mode-changing"), 760);
     if (persist) {
       try {
         localStorage.setItem("yonaris-site-mode", siteMode);
@@ -97,34 +94,6 @@
   function closeMenu() {
     menuOpen = false;
     syncMenu();
-  }
-
-  function setView(name, focus = false) {
-    if (!showcase || !viewOrder.includes(name)) return;
-    activeView = name;
-    showcase.querySelectorAll("[data-view]").forEach((button) => {
-      const active = button.dataset.view === name;
-      button.setAttribute("aria-selected", String(active));
-      button.tabIndex = active ? 0 : -1;
-      if (active && focus) button.focus();
-    });
-    showcase.querySelectorAll("[data-panel]").forEach((panel) => {
-      const active = panel.dataset.panel === name;
-      panel.hidden = !active;
-      panel.classList.toggle("is-active", active);
-    });
-  }
-
-  function cycleView() {
-    if (!showcaseVisible || showcaseHovered || document.hidden || Date.now() < userPauseUntil || siteMode === "agent") return;
-    const index = viewOrder.indexOf(activeView);
-    setView(viewOrder[(index + 1) % viewOrder.length]);
-  }
-
-  function startCycle() {
-    clearInterval(cycleTimer);
-    if (reduced.matches) return;
-    cycleTimer = window.setInterval(cycleView, 5200);
   }
 
   function updateMotion() {
@@ -176,13 +145,6 @@
     items.forEach((element) => observer.observe(element));
   }
 
-  function setupShowcaseObserver() {
-    if (!showcase || !("IntersectionObserver" in window)) return;
-    new IntersectionObserver(([entry]) => {
-      showcaseVisible = entry.isIntersecting;
-    }, { threshold: 0.3 }).observe(showcase);
-  }
-
   function scrollToAnchor(event) {
     const href = event.currentTarget.getAttribute("href");
     if (!href?.startsWith("#")) return;
@@ -231,24 +193,6 @@
   });
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener("click", scrollToAnchor));
-
-  showcase?.querySelectorAll("[data-view]").forEach((button, index, buttons) => {
-    button.addEventListener("click", () => {
-      userPauseUntil = Date.now() + 12000;
-      setView(button.dataset.view);
-    });
-    button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
-      event.preventDefault();
-      userPauseUntil = Date.now() + 12000;
-      const step = event.key === "ArrowRight" ? 1 : -1;
-      const next = (index + step + buttons.length) % buttons.length;
-      setView(buttons[next].dataset.view, true);
-    });
-  });
-
-  showcase?.addEventListener("pointerenter", () => { showcaseHovered = true; });
-  showcase?.addEventListener("pointerleave", () => { showcaseHovered = false; });
   leadForm?.addEventListener("submit", composeLeadEmail);
 
   addEventListener("scroll", requestMotionUpdate, { passive: true });
@@ -256,13 +200,9 @@
     if (innerWidth > 900 && menuOpen) closeMenu();
     requestMotionUpdate();
   }, { passive: true });
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) startCycle();
-  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeMenu();
   });
-  reduced.addEventListener?.("change", startCycle);
 
   document.querySelectorAll("[data-year]").forEach((element) => {
     element.textContent = String(new Date().getFullYear());
@@ -270,11 +210,8 @@
 
   setLanguage(language, false);
   syncMenu();
-  setView("observe");
   setSiteMode(siteMode, false, false);
   setupReveal();
   setupMotionSurfaces();
-  setupShowcaseObserver();
-  startCycle();
   updateMotion();
 })();
