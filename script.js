@@ -5,14 +5,12 @@
   const header = document.querySelector("[data-header]");
   const menu = document.querySelector("[data-menu]");
   const nav = document.querySelector("[data-nav]");
-  const showcase = document.querySelector("[data-showcase]");
   const leadForm = document.querySelector("[data-lead-form]");
   const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
   const agentSite = document.querySelector("[data-agent-site]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
-  const viewOrder = ["observe", "trace", "prioritize", "review"];
   const titles = {
     en: "Yonaris - When buyers ask AI",
     zh: "Yonaris - 客户问 AI 时",
@@ -21,7 +19,6 @@
   let language = "en";
   let siteMode = "human";
   let menuOpen = false;
-  let activeView = "observe";
   let motionFrame = null;
 
   try {
@@ -95,25 +92,6 @@
     syncMenu();
   }
 
-  function setView(name, focus = false, scroll = false) {
-    if (!showcase || !viewOrder.includes(name)) return;
-    activeView = name;
-    showcase.querySelectorAll("[data-view]").forEach((button) => {
-      const active = button.dataset.view === name;
-      button.setAttribute("aria-pressed", String(active));
-      if (active && focus) button.focus();
-    });
-    showcase.querySelectorAll("[data-story]").forEach((story) => {
-      story.classList.toggle("is-active", story.dataset.story === name);
-    });
-    if (scroll) {
-      showcase.querySelector(`[data-story="${name}"]`)?.scrollIntoView({
-        behavior: reduced.matches ? "auto" : "smooth",
-        block: "start",
-      });
-    }
-  }
-
   function updateMotion() {
     motionFrame = null;
     header?.classList.toggle("scrolled", scrollY > 8);
@@ -161,17 +139,6 @@
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
     items.forEach((element) => observer.observe(element));
-  }
-
-  function setupShowcaseObserver() {
-    if (!showcase || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target.dataset.story) setView(visible.target.dataset.story);
-    }, { threshold: [.28, .52, .72], rootMargin: "-12% 0px -34%" });
-    showcase.querySelectorAll("[data-story]").forEach((story) => observer.observe(story));
   }
 
   function scrollToAnchor(event) {
@@ -223,19 +190,6 @@
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener("click", scrollToAnchor));
 
-  showcase?.querySelectorAll("[data-view]").forEach((button, index, buttons) => {
-    button.addEventListener("click", () => {
-      setView(button.dataset.view, false, true);
-    });
-    button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
-      event.preventDefault();
-      const step = ["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1;
-      const next = (index + step + buttons.length) % buttons.length;
-      setView(buttons[next].dataset.view, true, true);
-    });
-  });
-
   leadForm?.addEventListener("submit", composeLeadEmail);
 
   addEventListener("scroll", requestMotionUpdate, { passive: true });
@@ -253,10 +207,8 @@
 
   setLanguage(language, false);
   syncMenu();
-  setView("observe");
   setSiteMode(siteMode, false, false);
   setupReveal();
   setupMotionSurfaces();
-  setupShowcaseObserver();
   updateMotion();
 })();
