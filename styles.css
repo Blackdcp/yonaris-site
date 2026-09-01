@@ -63,7 +63,7 @@ html[data-language="zh"] .section-kicker {
 
 body:before {
   position: fixed;
-  z-index: 1;
+  z-index: 0;
   inset: 0;
   content: "";
   pointer-events: none;
@@ -599,33 +599,42 @@ button { cursor: pointer; }
 .deliver-grid article {
   min-height: 16.5rem;
   padding: 1.6rem;
-  border: 1px solid rgba(11, 18, 32, .13);
+  border: 1px solid rgba(11, 18, 32, .09);
   background:
-    linear-gradient(180deg, rgba(246, 244, 241, .96), rgba(255, 255, 255, .98)),
+    radial-gradient(circle at 85% 12%, rgba(208, 226, 232, .42), transparent 30%),
+    linear-gradient(180deg, rgba(251, 250, 248, .98), rgba(255, 255, 255, .99)),
     white;
-  box-shadow: 0 1.2rem 3rem rgba(11, 18, 32, .04);
-  transition: transform .45s var(--ease), border-color .45s, background .45s;
+  box-shadow: 0 1rem 2.8rem rgba(11, 18, 32, .035);
+  transition: transform .45s var(--ease), border-color .45s, background .45s, box-shadow .45s;
 }
 
 .deliver-grid article:hover {
-  border-color: rgba(255, 106, 0, .36);
+  border-color: rgba(11, 18, 32, .18);
   background: white;
+  box-shadow: 0 1.8rem 4rem rgba(11, 18, 32, .08);
   transform: translateY(-.35rem);
 }
 
-.deliver-grid article span,
-.teams-list article span,
-.future-list article span {
+.deliver-grid article > span,
+.teams-list article > span,
+.future-list article > span {
   color: var(--orange);
   font-size: .72rem;
   font-weight: 650;
+}
+
+.human-site,
+.agent-site,
+.footer {
+  position: relative;
+  z-index: 2;
 }
 
 .deliver-grid article strong {
   display: block;
   margin-top: 4.2rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(11, 18, 32, .64);
+  border-top: 1px solid rgba(11, 18, 32, .46);
   color: var(--ink);
   font-size: 1.2rem;
   font-weight: 620;
@@ -791,11 +800,10 @@ button { cursor: pointer; }
   gap: .25rem;
   padding: .75rem .9rem;
   font-size: .75rem;
-  opacity: 0;
   background: rgba(11, 18, 32, .46);
   color: rgba(246, 244, 241, .92);
   box-shadow: none;
-  opacity: .42;
+  opacity: .62;
   transform: translateY(.55rem);
 }
 
@@ -879,7 +887,7 @@ button { cursor: pointer; }
   bottom: 9%;
   width: min(20rem, 30%);
   padding: 1.05rem 1.15rem;
-  opacity: .28;
+  opacity: .48;
   transform: translateY(.6rem);
 }
 
@@ -1940,8 +1948,13 @@ button { cursor: pointer; }
 }
 
 html[data-language="zh"] .hero h1 {
-  max-width: 9ch;
+  max-width: 15ch;
   line-height: 1.02;
+  word-break: keep-all;
+}
+
+html[data-language="zh"] .hero h1 [data-lang="zh"] {
+  white-space: nowrap;
 }
 
 html[data-language="zh"] .hero-copy > p,
@@ -2058,6 +2071,7 @@ html[data-language="zh"] .agent-shell code {
   .page-frame { margin-right: var(--pad); margin-left: var(--pad); }
   .hero { min-height: calc(100svh - 5.4rem); }
   .hero h1 { font-size: 3.2rem; }
+  html[data-language="zh"] .hero h1 [data-lang="zh"] { white-space: normal; }
   .hero-copy { width: 94%; margin-left: 1.2rem; }
   .hero-copy > p { font-size: 1rem; }
   .positioning { padding-top: 7rem; padding-bottom: 7rem; }
