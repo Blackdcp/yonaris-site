@@ -12,6 +12,9 @@
     { "source": "/company", "destination": "/#company", "permanent": false },
     { "source": "/contact", "destination": "/#contact", "permanent": false }
   ],
+  "rewrites": [
+    { "source": "/:path((?!public/|styles\\.css|script\\.js|favicon\\.ico).*)", "destination": "/" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
