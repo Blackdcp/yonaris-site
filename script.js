@@ -9,11 +9,13 @@
   const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
   const agentSite = document.querySelector("[data-agent-site]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
+  const storyTheaters = [...document.querySelectorAll(".recommendation-theater")];
+  const platformSteps = [...document.querySelectorAll(".platform-flow article")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
   const titles = {
-    en: "Yonaris - When buyers ask AI",
-    zh: "Yonaris - 客户问 AI 时",
+    en: "Yonaris - AI Visibility & GEO Monitoring",
+    zh: "Yonaris - AI 可见性与 GEO 监测",
   };
 
   let language = "en";
@@ -105,6 +107,22 @@
       const distance = (rect.top + rect.height / 2 - innerHeight / 2) / innerHeight;
       surface.style.setProperty("--scroll", String(Math.max(-1, Math.min(1, distance))));
     });
+    storyTheaters.forEach((theater) => {
+      const rect = theater.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, (innerHeight - rect.top) / (innerHeight + rect.height * .55)));
+      theater.style.setProperty("--story-progress", progress.toFixed(3));
+      theater.dataset.stage = progress < .34 ? "ask" : progress < .68 ? "compare" : "resolve";
+    });
+    if (platformSteps.length) {
+      let activeStep = 0;
+      platformSteps.forEach((step, index) => {
+        const rect = step.getBoundingClientRect();
+        if (rect.top < innerHeight * .72) activeStep = index;
+      });
+      platformSteps.forEach((step, index) => {
+        step.classList.toggle("active", index === activeStep);
+      });
+    }
   }
 
   function requestMotionUpdate() {
