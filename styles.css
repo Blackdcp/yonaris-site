@@ -37,6 +37,30 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html[data-language="zh"] body {
+  font-family: Instrument, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.58;
+  letter-spacing: .01em;
+}
+
+html[data-language="zh"] h1,
+html[data-language="zh"] h2,
+html[data-language="zh"] h3,
+html[data-language="zh"] strong {
+  font-weight: 520;
+  letter-spacing: -.015em;
+}
+
+html[data-language="zh"] .section-label,
+html[data-language="zh"] .section-kicker,
+html[data-language="zh"] small {
+  letter-spacing: .04em;
+}
+
+html[data-language="zh"] .section-kicker {
+  text-transform: none;
+}
+
 body:before {
   position: fixed;
   z-index: 1;
@@ -1882,6 +1906,58 @@ button { cursor: pointer; }
   16% { opacity: .75; }
   72% { opacity: .75; }
   100% { transform: translateY(31rem); opacity: 0; }
+}
+
+html[data-language="zh"] .hero h1 {
+  max-width: 9ch;
+  line-height: 1.02;
+}
+
+html[data-language="zh"] .hero-copy > p,
+html[data-language="zh"] .positioning-intro,
+html[data-language="zh"] .section-heading p,
+html[data-language="zh"] .case-heading > p:last-child,
+html[data-language="zh"] .contact-copy p {
+  line-height: 1.78;
+}
+
+html[data-language="zh"] .positioning h2,
+html[data-language="zh"] .section-heading h2,
+html[data-language="zh"] .case-heading h2,
+html[data-language="zh"] .company h2,
+html[data-language="zh"] .contact h2 {
+  line-height: 1.08;
+}
+
+html[data-language="zh"] .deliver-grid article strong {
+  font-size: 1.16rem;
+  line-height: 1.22;
+}
+
+html[data-language="zh"] .deliver-grid article p,
+html[data-language="zh"] .answer-row p,
+html[data-language="zh"] .teams-list strong,
+html[data-language="zh"] .future-list p {
+  line-height: 1.68;
+}
+
+html[data-language="zh"] .screen-question strong {
+  max-width: 23rem;
+  line-height: 1.18;
+}
+
+html[data-language="zh"] .answer-row {
+  gap: .5rem 1rem;
+}
+
+html[data-language="zh"] .team-question strong {
+  max-width: 24rem;
+  line-height: 1.12;
+}
+
+html[data-language="zh"] .agent-shell code {
+  line-height: 1.82;
+  letter-spacing: 0;
 }
 
 @media (max-width: 1100px) {

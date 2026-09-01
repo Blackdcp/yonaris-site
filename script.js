@@ -8,6 +8,7 @@
   const leadForm = document.querySelector("[data-lead-form]");
   const humanSurfaces = [...document.querySelectorAll("[data-human-site]")];
   const agentSite = document.querySelector("[data-agent-site]");
+  const metaDescription = document.querySelector('meta[name="description"]');
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
   const storyTheaters = [...document.querySelectorAll(".recommendation-theater, .product-console")];
   const platformSteps = [...document.querySelectorAll(".platform-flow article")];
@@ -16,6 +17,10 @@
   const titles = {
     en: "Yonaris - AI-Native Growth Platform",
     zh: "Yonaris - AI 原生增长平台",
+  };
+  const descriptions = {
+    en: "Yonaris helps brands win when buyers ask AI: understand how AI reads the market, why competitors are chosen, and what to do next.",
+    zh: "Yonaris 帮助品牌看清 AI 如何读取市场、为什么推荐某家公司，以及团队下一步该做什么。",
   };
 
   let language = "en";
@@ -46,6 +51,7 @@
     root.lang = language === "zh" ? "zh-CN" : "en";
     root.dataset.language = language;
     document.title = titles[language];
+    metaDescription?.setAttribute("content", descriptions[language]);
     document.querySelectorAll("[data-lang]").forEach((element) => {
       element.hidden = element.dataset.lang !== language;
     });
@@ -56,6 +62,8 @@
       element.setAttribute("aria-label", language === "zh" ? element.dataset.ariaZh : element.dataset.ariaEn);
     });
     setRegionalFields();
+    revealVisibleItems();
+    requestMotionUpdate();
     if (persist) {
       try {
         localStorage.setItem("yonaris-language", language);
@@ -77,6 +85,10 @@
     });
     if (siteMode === "agent") closeMenu();
     if (resetScroll && previousMode !== siteMode) window.scrollTo({ top: 0, behavior: "auto" });
+    window.setTimeout(() => {
+      revealVisibleItems();
+      requestMotionUpdate();
+    }, 40);
     window.setTimeout(() => root.classList.remove("mode-changing"), 760);
     if (persist) {
       try {
@@ -161,6 +173,16 @@
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
     items.forEach((element) => observer.observe(element));
+  }
+
+  function revealVisibleItems() {
+    document.querySelectorAll(".reveal").forEach((element) => {
+      if (element.hidden) return;
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom >= 0 && rect.top <= innerHeight * 1.08) {
+        element.classList.add("visible");
+      }
+    });
   }
 
   function scrollToAnchor(event) {
