@@ -6,14 +6,15 @@
   const menu = document.querySelector("[data-menu]");
   const nav = document.querySelector("[data-nav]");
   const showcase = document.querySelector("[data-showcase]");
-  const morph = document.querySelector("[data-morph]");
+  const reader = document.querySelector("[data-reader]");
+  const leadForm = document.querySelector("[data-lead-form]");
   const motionSurfaces = [...document.querySelectorAll("[data-motion-surface]")];
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = matchMedia("(pointer: fine)");
-  const viewOrder = ["observe", "trace", "decide", "human"];
+  const viewOrder = ["observe", "trace", "prioritize", "review"];
   const titles = {
-    en: "Yonaris — Know what buyers are being told",
-    zh: "Yonaris — 看清客户听到了什么",
+    en: "Yonaris - When buyers ask AI",
+    zh: "Yonaris - 客户问 AI 时",
   };
 
   let language = "en";
@@ -28,7 +29,18 @@
   try {
     language = localStorage.getItem("yonaris-language") === "zh" ? "zh" : "en";
   } catch (_error) {
-    // Language switching remains available when storage is blocked.
+    // Language switching still works when local storage is blocked.
+  }
+
+  function setRegionalFields() {
+    document.querySelectorAll("[data-region]").forEach((field) => {
+      const visible = field.dataset.region === language;
+      field.hidden = !visible;
+      field.querySelectorAll("input, textarea").forEach((input) => {
+        input.required = visible;
+        input.disabled = !visible;
+      });
+    });
   }
 
   function setLanguage(next, persist = true) {
@@ -45,6 +57,7 @@
     document.querySelectorAll("[data-aria-en][data-aria-zh]").forEach((element) => {
       element.setAttribute("aria-label", language === "zh" ? element.dataset.ariaZh : element.dataset.ariaEn);
     });
+    setRegionalFields();
     if (persist) {
       try {
         localStorage.setItem("yonaris-language", language);
@@ -80,7 +93,18 @@
       panel.hidden = !active;
       panel.classList.toggle("is-active", active);
     });
-    if (name === "human") buildParticles();
+  }
+
+  function setReaderView(name) {
+    if (!reader || !["human", "agent"].includes(name)) return;
+    reader.querySelectorAll("[data-reader-view]").forEach((button) => {
+      button.setAttribute("aria-selected", String(button.dataset.readerView === name));
+    });
+    reader.querySelectorAll("[data-reader-panel]").forEach((panel) => {
+      const active = panel.dataset.readerPanel === name;
+      panel.hidden = !active;
+      panel.classList.toggle("is-active", active);
+    });
   }
 
   function cycleView() {
@@ -93,31 +117,6 @@
     clearInterval(cycleTimer);
     if (reduced.matches) return;
     cycleTimer = window.setInterval(cycleView, 5200);
-  }
-
-  function buildParticles() {
-    const field = morph?.querySelector("[data-particles]");
-    if (!field || field.childElementCount) return;
-    for (let index = 0; index < 74; index += 1) {
-      const particle = document.createElement("span");
-      particle.style.left = `${(index * 37) % 100}%`;
-      particle.style.top = `${(index * 61) % 100}%`;
-      particle.style.setProperty("--dx", `${((index % 7) - 3) * 5}px`);
-      particle.style.setProperty("--dy", `${((index % 11) - 5) * 3}px`);
-      particle.style.animationDelay = `${(index % 13) * -0.17}s`;
-      field.append(particle);
-    }
-  }
-
-  function updateMorph(event) {
-    if (!morph || reduced.matches) return;
-    const rect = morph.getBoundingClientRect();
-    const position = Math.max(22, Math.min(78, ((event.clientX - rect.left) / rect.width) * 100));
-    morph.style.setProperty("--split", `${position}%`);
-  }
-
-  function resetMorph() {
-    morph?.style.setProperty("--split", "52%");
   }
 
   function updateMotion() {
@@ -186,14 +185,45 @@
     history.pushState?.(null, "", href);
   }
 
+  function composeLeadEmail(event) {
+    event.preventDefault();
+    if (!leadForm?.reportValidity()) return;
+
+    const formData = new FormData(leadForm);
+    const subject = language === "zh" ? "Yonaris 客户问题咨询" : "Yonaris buyer question";
+    const lines = language === "zh"
+      ? [
+          `姓名：${formData.get("name") || ""}`,
+          `电话：${formData.get("phone") || ""}`,
+          `公司：${formData.get("company") || ""}`,
+          "",
+          "客户问题：",
+          formData.get("question") || "",
+        ]
+      : [
+          `Name: ${formData.get("name") || ""}`,
+          `Work email: ${formData.get("email") || ""}`,
+          `Company: ${formData.get("company") || ""}`,
+          "",
+          "Question:",
+          formData.get("question") || "",
+        ];
+
+    const query = new URLSearchParams({ subject, body: lines.join("\n") });
+    location.href = `mailto:leads@yonaris.com?${query.toString()}`;
+  }
+
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.addEventListener("click", () => setLanguage(button.dataset.language));
   });
+
   menu?.addEventListener("click", () => {
     menuOpen = !menuOpen;
     syncMenu();
   });
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener("click", scrollToAnchor));
+
   showcase?.querySelectorAll("[data-view]").forEach((button, index, buttons) => {
     button.addEventListener("click", () => {
       userPauseUntil = Date.now() + 12000;
@@ -208,11 +238,15 @@
       setView(buttons[next].dataset.view, true);
     });
   });
+
+  reader?.querySelectorAll("[data-reader-view]").forEach((button) => {
+    button.addEventListener("click", () => setReaderView(button.dataset.readerView));
+  });
+
   showcase?.addEventListener("pointerenter", () => { showcaseHovered = true; });
   showcase?.addEventListener("pointerleave", () => { showcaseHovered = false; });
-  morph?.addEventListener("pointermove", updateMorph);
-  morph?.addEventListener("pointerleave", resetMorph);
-  morph?.addEventListener("pointerdown", updateMorph);
+  leadForm?.addEventListener("submit", composeLeadEmail);
+
   addEventListener("scroll", requestMotionUpdate, { passive: true });
   addEventListener("resize", () => {
     if (innerWidth > 900 && menuOpen) closeMenu();
@@ -232,6 +266,7 @@
   setLanguage(language, false);
   syncMenu();
   setView("observe");
+  setReaderView("human");
   setupReveal();
   setupMotionSurfaces();
   setupShowcaseObserver();
